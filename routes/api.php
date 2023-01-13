@@ -31,4 +31,41 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::post('store', 'UnitsController@store');
     Route::get('destroy/{id}', 'UnitsController@destroy');
   });
+  
+  Route::group(['prefix' =>'Pcategory'], function(){
+    Route::get('', 'ProductCategoryController@index');
+    Route::get('show/{id}', 'ProductCategoryController@show');
+    Route::post('store', 'ProductCategoryController@store');
+    Route::get('destroy/{id}', 'ProductCategoryController@destroy');
+  });
+
+  Route::group(['prefix' =>'Company'], function(){
+    Route::get('', 'CompanyController@index');
+    Route::get('show/{id}', 'CompanyController@show');
+    Route::post('store', 'CompanyController@store');
+    Route::get('destroy/{id}', 'CompanyController@destroy');
+  });
+
+  Route::group(['prefix' => 'Insurance'], function(){
+    Route::get('', 'InsurancesController@index');
+    Route::get('show/{id}', 'InsurancesController@show');
+    Route::post('store', 'InsurancesController@store');
+    Route::get('destroy/{id}', 'InsurancesController@destroy');
+  });
+
+  Route::group(['prefix' => 'Supplier'], function(){
+    Route::get('', 'SuppliersController@index');
+    Route::get('show/{id}', 'SuppliersController@show');
+    Route::post('store', 'SuppliersController@store');
+    Route::get('destroy/{id}', 'SuppliersController@destroy');
+  });
+});
+
+Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'auth:api', 'prefix' => 'Shared'], function(){
+  Route::group(['prefix' =>'Role'], function(){
+    Route::get('', 'RolesController@index');
+    Route::get('show/{id}', 'RolesController@show');
+    Route::post('store', 'RolesController@store');
+    Route::get('destroy/{id}', 'RolesController@destroy');
+  });
 });

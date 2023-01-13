@@ -17,7 +17,7 @@ class UnitsController extends Controller
     {
         return response()->json([
             'status' => 1,
-            'rows'   => Unit::orderBy('id', 'DESC')
+            'rows'   => Unit::orderByDesc('id')->get()
         ]);
     }
 

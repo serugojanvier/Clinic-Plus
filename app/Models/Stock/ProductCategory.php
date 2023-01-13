@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class ProductCategory extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'company_id',
+        'parent_id',
+        'name',
+        'description'
+    ];
+
+    public $timestamps = false;
 }

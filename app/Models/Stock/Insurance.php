@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Insurance extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'group_ref',
+        'name',
+        'description',
+        'discount'
+    ];
+
+    public $timestamps = false;
 }
