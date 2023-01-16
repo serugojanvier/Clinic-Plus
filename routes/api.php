@@ -17,13 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'App\Http\Controllers\Auth' ,'middleware' => 'api', 'prefix' => 'auth'], function(){
     Route::post('login', 'AuthController@login')->middleware(['throttle:60,1']);
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
+    Route::get('logout', 'AuthController@logout');
+    Route::get('refresh', 'AuthController@refresh');
     Route::get('me', 'AuthController@me');
     Route::post('me', 'AuthController@updateUser');
     Route::post('change-password', 'AuthController@changePassword');
 });
 
+//Stock API'S
 Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth:api', 'prefix' => 'stock'], function(){
   Route::group(['prefix' => 'units'], function(){
     Route::get('', 'UnitsController@index');
@@ -59,8 +60,51 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::post('store', 'SuppliersController@store');
     Route::get('destroy/{id}', 'SuppliersController@destroy');
   });
+
+  Route::group(['prefix' => 'Product'], function(){
+    Route::get('', 'ProductsController@index');
+    Route::get('show/{id}', 'ProductsController@show');
+    Route::post('store', 'ProductsController@store');
+    Route::get('destroy/{id}', 'ProductsController@destroy');
+  });
+
+  Route::group(['prefix' => 'Stock'], function(){
+    Route::get('', 'StockController@index');
+    Route::get('show/{id}', 'StockController@show');
+    Route::post('store', 'StockController@store');
+    Route::get('destroy/{id}', 'StockController@destroy');
+  });
+
+  Route::group(['prefix' => 'StockInHistory'], function(){
+    Route::get('', 'StockInHistoryController@index');
+    Route::get('show/{id}', 'StockInHistoryController@show');
+    Route::post('store', 'StockInHistoryController@store');
+    Route::get('destroy/{id}', 'StockInHistoryController@destroy');
+  });
+  
+  Route::group(['prefix' => 'StockReceives'], function(){
+    Route::get('', 'StockReceivesController@index');
+    Route::get('show/{id}', 'StockReceivesController@show');
+    Route::post('store', 'StockReceivesController@store');
+    Route::get('destroy/{id}', 'StockReceivesController@destroy');
+  });
+
+  Route::group(['prefix' => 'StockOut'], function(){
+    Route::get('', 'StockOutController@index');
+    Route::get('show/{id}', 'StockOutController@show');
+    Route::post('store', 'StockOutController@store');
+    Route::get('destroy/{id}', 'StockOutController@destroy');
+  });
+
+  Route::group(['prefix' => 'StockOutItems'], function(){
+    Route::get('', 'StockOutItemsController@index');
+    Route::get('show/{id}', 'StockOutItemsController@show');
+    Route::post('store', 'StockOutItemsController@store');
+    Route::get('destroy/{id}', 'StockOutItemsController@destroy');
+  });
 });
 
+// Shared API'S
 Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'auth:api', 'prefix' => 'Shared'], function(){
   Route::group(['prefix' =>'Role'], function(){
     Route::get('', 'RolesController@index');

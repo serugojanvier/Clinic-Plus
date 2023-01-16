@@ -5,16 +5,16 @@ namespace App\Models\Stock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StockoutItem extends Model
+class StockReceive extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'stockout_id',
-        'product_id',
-        'quantity',
-        'price'
+        'company_id',
+        'date_receives',
+        'supplier_id',
+        'amount',
+        'vat',
+        'file_url'
     ];
-
-    public $timestamps = false;
 }
