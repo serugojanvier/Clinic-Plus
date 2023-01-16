@@ -14,10 +14,11 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function index(){
+     public function index()
+     {
         return response()->json([
-            'status'=>1,
-            'rows'  =>Company::OrderByDesc('id')->get()
+            'status' => 1,
+            'rows'   => Company::OrderByDesc('id')->with('creator')->paginate(45)
         ]);
      }
 

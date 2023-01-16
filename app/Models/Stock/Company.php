@@ -2,8 +2,9 @@
 
 namespace App\Models\Stock;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends Model
 {
@@ -16,6 +17,13 @@ class Company extends Model
         'tin_number',
         'address_line',	
         'created_by',	
-        'reference'
+        'reference',
+        'logo'
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by')
+                    ->select('users.name', 'users.id');
+    }
 }
