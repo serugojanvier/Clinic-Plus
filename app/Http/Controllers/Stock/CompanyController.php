@@ -91,7 +91,7 @@ class CompanyController extends Controller
             ]);
         }
 
-        $DeletedCompany ->delete();
+        $DeletedCompany->delete();
 
         return response()->json([
             'status'=>1,
