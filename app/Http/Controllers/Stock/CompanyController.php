@@ -33,20 +33,23 @@ class CompanyController extends Controller
 
         // if request has id then perfom update
         if($request->has('id')){
-            $Company = Company::find($request->input('id'));
+            $company = Company::find($request->input('id'));
             $message = "Record Updated Successfuly!";
         } else{
-            $Company = new Company();
+            $company = new Company();
             $message = "Record Saved Successfuly!";
+            $company->reference = generateReference(20);
+            $company->created_by = auth()->id();
         }
 
-        $Company ->fill($request->input());
-        $Company->save();
+        $company->fill($request->input());
+        $company->logo = $request->input('logo');
+        $company->save();
 
         return response()->json([
             'status'=>1,
             'message'=>$message,
-            'row'    => Company::find($Company->id)
+            'row'    => Company::find($company->id)
         ]);
      }
 
@@ -58,8 +61,8 @@ class CompanyController extends Controller
      */
 
      public function show($id){
-        $Company = Company::findOrFail($id);
-        if(!$Company){
+        $company = Company::findOrFail($id);
+        if(!$company){
             return response()->json([
                 'status'=>0,
                 'error' =>'Company can\'t Found!'
@@ -68,7 +71,7 @@ class CompanyController extends Controller
 
         return response()->json([
             'status'=>1,
-            'row'   =>$Company
+            'row'   =>$company
         ]);
      }
 
