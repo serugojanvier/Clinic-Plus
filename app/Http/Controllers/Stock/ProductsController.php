@@ -14,7 +14,8 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function index(){
+     public function index()
+     {
         return response()->json([
             'status'=>1,
             'rows'  => Product::orderByDesc('id')->get()
@@ -28,7 +29,8 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function store(Request $request){
+     public function store(Request $request)
+     {
         // Check if request contain id then perfom update
 
         if($request->has('id')){
@@ -42,8 +44,8 @@ class ProductsController extends Controller
         $Product->save();
 
         return response()->json([
-            'status'=>1,
-            'row'   =>Product::find($Product->id)
+            'status' => 1,
+            'row'    => Product::find($Product->id)
         ]);
      }
 
@@ -54,18 +56,19 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function show($id){
+     public function show($id)
+     {
         $Product = Product::findOrFail($id);
         if(!$Product){
             return response()->json([
-                'status'=>0,
-                'error' =>'Product can\'t Found!'
+                'status'=> 0,
+                'error' => 'Product can\'t Found!'
             ]);
         }
 
         return response()->json([
-            'status'=>1,
-            'row'   =>$Product
+            'status'=> 1,
+            'row'   => $Product
         ]);
      }
 

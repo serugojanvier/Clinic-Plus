@@ -4,20 +4,30 @@ namespace App\Http\Controllers\Stock;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Stock\ProductCategory;
+use App\Models\Stock\ProductCategory as Category;
 
-class ProductCategoryController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
+        $categories = Category::select('*');
+        if (!empty($parent = $request->get('parent_id'))) {
+            $categories->where('parent_id', $parent);
+        } else {
+            $categories->where(function ($query) {
+                $query->whereNull('parent_id')
+                      ->orWhere('parent_id', 0)
+                      ->orWhere('parent_id', '');
+            });
+        }
         return response()->json([
             'status' => 1,
-            'rows'   => ProductCategory::orderByDesc('id')->get()
+            'rows'   => $categories->orderByDesc('id')->get()
         ]);
     }
 
@@ -33,9 +43,9 @@ class ProductCategoryController extends Controller
         // if request has id then perfom update
 
         if($request->has('id')){
-            $Pcategory = ProductCategory::find($request->input('id'));
+            $Pcategory = Category::find($request->input('id'));
         } else{
-            $Pcategory = new ProductCategory();
+            $Pcategory = new Category();
         }
 
         $Pcategory->fill($request->input());
@@ -43,7 +53,7 @@ class ProductCategoryController extends Controller
 
         return response()->json([
             'status'=>1,
-            'row'   => ProductCategory::find($Pcategory->id)
+            'row'   => Category::find($Pcategory->id)
         ]);
      }
 
@@ -56,7 +66,7 @@ class ProductCategoryController extends Controller
      */
 
      public function show($id){
-        $Pcategory = ProductCategory::findOrFail($id);
+        $Pcategory = Category::findOrFail($id);
         if(!$Pcategory){
             return response()->json([
                 'status'=>0,
@@ -78,7 +88,7 @@ class ProductCategoryController extends Controller
      */
 
      public function destroy($id){
-        $Pcategory = ProductCategory::findOrFail($id);
+        $Pcategory = Category::findOrFail($id);
         if(!$Pcategory){
             return response()->json([
                 'status'=>0,

@@ -17,4 +17,35 @@ class ProductCategory extends Model
     ];
 
     public $timestamps = false;
+
+    /**
+     * 
+     * Appendable columns
+     */
+    protected $appends = ['children_total'];
+
+     /**
+     * @return BelongsTo
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(ProductCategory::class, 'parent_id')->withDefault();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(ProductCategory::class, 'parent_id');
+    }
+
+    /**
+     * @return int
+     */
+
+     public function getChildrenTotalAttribute() : int
+     {
+        return self::where('parent_id', $this->id)->count();
+     }
 }

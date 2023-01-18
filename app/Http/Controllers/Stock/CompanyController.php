@@ -29,8 +29,8 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function store(Request $request){
-
+     public function store(Request $request)
+     {
         // if request has id then perfom update
         if($request->has('id')){
             $company = Company::find($request->input('id'));
@@ -49,7 +49,7 @@ class CompanyController extends Controller
         return response()->json([
             'status'=>1,
             'message'=>$message,
-            'row'    => Company::find($company->id)
+            'row'    => Company::where('id', $company->id)->with('creator')->first()
         ]);
      }
 
@@ -60,9 +60,10 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function show($id){
+     public function show($id)
+     {
         $company = Company::findOrFail($id);
-        if(!$company){
+        if (!$company) {
             return response()->json([
                 'status'=>0,
                 'error' =>'Company can\'t Found!'
@@ -82,7 +83,8 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function destroy($id){
+     public function destroy($id)
+     {
         $DeletedCompany = Company::findOrFail($id);
         if(!$DeletedCompany){
             return response()->json([
@@ -96,6 +98,23 @@ class CompanyController extends Controller
         return response()->json([
             'status'=>1,
             'message'=>'Company deleted Successfuly!'
+        ]);
+     }
+
+     /**
+      * 
+      * Handle Bulk Delete
+      * @param string $id
+      * @return \Illuminate\Http\JsonResponse
+      */
+     public function bulkDelete($ids)
+     {
+        $companies = explode(",", $ids);
+        Company::whereIn('id', $companies)->delete();
+        
+        return response()->json([
+            'status' => 1,
+            'message' => 'Companies deleted Successfuly!'
         ]);
      }
 }
