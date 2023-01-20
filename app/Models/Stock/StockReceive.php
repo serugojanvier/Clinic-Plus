@@ -5,11 +5,12 @@ namespace App\Models\Stock;
 use App\Traits\CrudTrait;
 use App\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StockReceive extends Model
 {
-    use HasFactory, CrudTrait;
+    use HasFactory, CrudTrait, SoftDeletes;
 
     protected static function booted()
     {
@@ -24,5 +25,9 @@ class StockReceive extends Model
         'vat',
         'file_url',
         'created_by'
+    ];
+
+    protected $casts = [
+        'date_receives' => 'date'
     ];
 }

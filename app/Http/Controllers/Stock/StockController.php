@@ -2,97 +2,120 @@
 
 namespace App\Http\Controllers\Stock;
 
-use Illuminate\Http\Request;
 use App\Models\Stock\Stock;
+use App\Models\Stock\StockOut;
+use Illuminate\Http\Request;
+use App\Models\Stock\Product;
+use App\Models\Stock\StockReceive;
+use Illuminate\Support\Facades\DB;
+use App\Models\Stock\StockoutItem;
+use App\Models\Stock\StockinHistory;
 use App\Http\Controllers\Controller;
+use App\Models\Stock\ProductCategory;
 
 class StockController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * Receive items from supplier
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function receive(Request $request)
+    {
+        $id = StockReceive::create([
+            'date_receives' => $request->input('date_receives'),
+            'supplier_id'   => $request->input('supplier_id'),
+            'amount'        => $request->input('amount'),
+            'vat'           => $request->input('vat'),
+            'file_url'      => $request->input('file_url'),
+        ])->id;
+
+        $items = json_decode($request->input('items'));
+        $this->commitRecievedItems($id, $items);
+        return response()->json([
+            'status'  => 1,
+            'message' => 'Records saved successfully'
+        ]);
+    }
+
+    /**
+     * Edit Receive items from supplier
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function deleteReceive($id)
+    {
+        $row = StockReceive::findOrFail($id);
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'Record not found'
+            ], 404);
+        }
+        $items = StockinHistory::where('stockin_id', $row->id)->get();
+        foreach($items as $item) {
+            $stock = Stock::where('product_id', $item->product_id)->first();
+            $stock->quantity -= $item->quantity;
+            $stock->save();
+        }
+        $row->delete();
+        return response()->json([
+            'status' => 1,
+            'message'  => 'Deleted successfully'
+        ]);
+    }
+
+    /**
+     * Add Items to recieve record
+     * @param Request $request
+     * @return JsonResponse
      */
 
-     public function index(){
+     public function addReceiveItems(Request $request)
+     {
+        $row = StockReceive::findOrFail($request->input('record_id'));
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'Record not found'
+            ], 404);
+        }
+        $row->amount += $request->input('amount');
+        $row->save();
+        $items = json_decode($request->input('items'));
+        $this->commitRecievedItems($row->id, $items);
         return response()->json([
-            'status'=>1,
-            'rows'  => Stock::orderByDesc('id')->get()
+            'status'  => 1,
+            'message' => 'Records saved successfully'
         ]);
      }
 
      /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+      * Record stock of recieved items
+      * @param int $receivedId
+      * @params array $items
+      * @return void
+      */
+     private function commitRecievedItems($receivedId, $items)
+     {
+        foreach($items as $item) {
+            $stock = Stock::where('product_id', $item->id)->first();
+            if(!$stock) {
+                $stock = new Stock();
+                $stock->product_id = $item->id;
+            }
+            $stock->quantity += $item->quantity;
+            $stock->save();
 
-     public function store(Request $request){
-        // check if request has id in it then perform update
-
-        if($request->has('id')){
-            $Stock = Stock::find($request->input('id'));
-            $message = "Record Updated Successfuly!";
-        } else{
-            $Stock = new Stock();
-            $message = "Record Saved Successfuly!";
-        }
-
-        $Stock->fill($request->input());
-        $Stock->save();
-
-        return response()->json([
-            'status'=>1,
-            'message'=>$message,
-            'row'   => Stock::find($Stock->id)
-        ]);
-     }
-
-     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-
-     public function show($id){
-        $Stock = Stock::findOrFail($id);
-        if(!$Stock){
-            return response()->json([
-                'status'=>0,
-                'error' =>'Stock can\'t Found!'
+            StockinHistory::create([
+                'stockin_id' => $receivedId,
+                'product_id' => $item->id,	
+                'quantity'   => $item->quantity,	
+                'price'      => $item->price,
+                'expiration_date' => $item->expiration_date ?? NULL,	
+                'barcode'    => $item->barcode ?? NULL
             ]);
         }
-
-        return response()->json([
-            'status'=>1,
-            'row'   =>$Stock
-        ]);
      }
 
-
-          /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $is
-     * @return \Illuminate\Http\JsonResponse
-     */
-
-     public function destroy($id){
-        $DeletedStock = Stock::findOrFail($id);
-        if(!$DeletedStock){
-            return response()->json([
-                'status'=>0,
-                'error' =>'Stock can\'t Found!'
-            ]);
-        }
-
-        $DeletedStock ->delete();
-
-        return response()->json([
-            'status'=>1,
-            'message'=>'Stock deleted Successfuly!'
-        ]);
-     }  
 }

@@ -19,4 +19,8 @@ class StockinHistory extends Model
     ];
 
     public $timestamps = false;
+
+    protected $casts = [
+        'expiration_date' => 'date'
+    ];
 }

@@ -21,7 +21,7 @@ class ProductsController extends Controller
         return response()->json([
             'status'=>1,
             'rows'  => Product::orderByDesc('id')
-                                ->with('creator', 'company', 'category', 'unit')->get()
+                                ->with('creator', 'company', 'category', 'unit')->paginate(45)
         ]);
      }
 

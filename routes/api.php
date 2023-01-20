@@ -69,7 +69,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('show/{id}', 'ProductsController@show');
     Route::post('store', 'ProductsController@store');
     Route::get('destroy/{id}', 'ProductsController@destroy');
-    Route::get('bulk-destroy/{ids}', 'SuppliersController@bulkDelete');
+    Route::get('bulk-destroy/{ids}', 'ProductsController@bulkDelete');
   });
 
   Route::group(['prefix' => 'Stock'], function(){
