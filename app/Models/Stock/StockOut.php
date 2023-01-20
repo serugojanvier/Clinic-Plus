@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StockOut extends Model
 {
-    use HasFactory;
+    use HasFactory, CrudTrait;
 
     protected static function booted()
     {

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Stock;
 
+use App\Models\Stock\Unit;
 use Illuminate\Http\Request;
 use App\Models\Stock\Product;
 use App\Http\Controllers\Controller;
+use App\Models\Stock\ProductCategory;
 
 class ProductsController extends Controller
 {
@@ -18,7 +20,8 @@ class ProductsController extends Controller
      {
         return response()->json([
             'status'=>1,
-            'rows'  => Product::orderByDesc('id')->get()
+            'rows'  => Product::orderByDesc('id')
+                                ->with('creator', 'company', 'category', 'unit')->get()
         ]);
      }
 
@@ -34,18 +37,22 @@ class ProductsController extends Controller
         // Check if request contain id then perfom update
 
         if($request->has('id')){
-            $Product = Product::find($request->input('id'));
-            $message = 'Updated Successfuly!';
+            $product = Product::find($request->input('id'));
         } else{
-            $Product = new Product();
+            $product = new Product();
+            $product->reference = generateReference(20);
+            $product->status = 1;
+            if (empty($request->input('code'))) { 
+                $product->code = generateRowCode(8);
+            }
         }
 
-        $Product->fill($request->input());
-        $Product->save();
+        $product->fill($request->input());
+        $product->save();
 
         return response()->json([
             'status' => 1,
-            'row'    => Product::find($Product->id)
+            'row'    => Product::where('id', $product->id)->with('creator', 'company', 'category', 'unit')->first()
         ]);
      }
 
@@ -58,8 +65,8 @@ class ProductsController extends Controller
 
      public function show($id)
      {
-        $Product = Product::findOrFail($id);
-        if(!$Product){
+        $product = Product::findOrFail($id);
+        if(!$product){
             return response()->json([
                 'status'=> 0,
                 'error' => 'Product can\'t Found!'
@@ -68,7 +75,7 @@ class ProductsController extends Controller
 
         return response()->json([
             'status'=> 1,
-            'row'   => $Product
+            'row'   => $product
         ]);
      }
 
@@ -81,15 +88,15 @@ class ProductsController extends Controller
      */
 
      public function destroy($id){
-        $DeletedProduct = Product::findOrFail($id);
-        if(!$DeletedProduct){
+        $product = Product::findOrFail($id);
+        if(!$product){
             return response()->json([
                 'status'=>0,
                 'error' =>'Product can\'t Found!'
             ]);
         }
 
-        $DeletedProduct ->delete();
+        $product ->delete();
 
         return response()->json([
             'status'=>1,
@@ -112,4 +119,34 @@ class ProductsController extends Controller
             return response()->json($result->where('name', 'LIKE', '%' . $keyword . '%')->orderBy('name', 'ASC')->get());
         }
     }
+
+    /**
+     * Get products extraxs
+     * @return JsonResponse
+     */
+    public function extras()
+    {
+        return response()->json([
+            'status'     => 1,
+            'categories' => ProductCategory::orderBy('name', 'ASC')->get(),
+            'units'      => Unit::all()
+        ]);
+    }
+
+    /**
+      * 
+      * Handle Bulk Delete
+      * @param string $id
+      * @return \Illuminate\Http\JsonResponse
+      */
+      public function bulkDelete($ids)
+      {
+         $products = explode(",", $ids);
+         Product::whereIn('id', $products)->delete();
+         
+         return response()->json([
+             'status' => 1,
+             'message' => 'Products deleted Successfuly!'
+         ]);
+      }
 }

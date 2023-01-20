@@ -32,23 +32,23 @@ class InsurancesController extends Controller
         // check if request has id then perfom update
 
         if($request->has('id')){
-            $Insurance = Insurance::find($request->input('id'));
+            $insurance = Insurance::find($request->input('id'));
             $message = "Record Updated Successfuly!";
         } else{
-            $Insurance = new Insurance;
+            $insurance = new Insurance;
+            $insurance->status = 1;
             $message = "Record Saved Successfuly!";
         }
 
-        $Insurance->fill($request->input());
-        $Insurance->save();
+        $insurance->fill($request->input());
+        $insurance->save();
 
         return response()->json([
             'status'=>1,
             'message'=>$message,
-            'row'   => Insurance::find($Insurance->id)
+            'row'   => Insurance::find($insurance->id)
         ]);
      }
-
 
       /**
      * Display the specified resource.
@@ -58,8 +58,8 @@ class InsurancesController extends Controller
      */
 
      public function show($id){
-        $Insurance = Insurance::findOrFail($id);
-        if(!$Insurance){
+        $insurance = Insurance::findOrFail($id);
+        if(!$insurance){
             return response()->json([
                 'status'=>0,
                 'error' =>'Insurance can\'t Found!'
@@ -68,7 +68,7 @@ class InsurancesController extends Controller
 
         return response()->json([
             'status'=>1,
-            'row'   =>$Insurance
+            'row'   =>$insurance
         ]);
      }
 

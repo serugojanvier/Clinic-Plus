@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, CrudTrait;
     protected static function booted()
     {
         static::addGlobalScope(new CompanyScope);
@@ -28,4 +28,14 @@ class Product extends Model
         'category_id',
         'created_by'
     ];
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id')->select('units.id', 'units.name');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProductCategory::class, 'category_id')->select('product_categories.id', 'product_categories.name');
+    }
 }
