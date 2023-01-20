@@ -17,6 +17,9 @@ class UserController extends Controller
      public function index(Request $request)
      {
         $users = User::select('*')->whereNotNull('role_id');
+        if (!empty($company = auth()->user()->company_id)) {
+            $users->company();
+        }
         return response()->json([
             'status' => 1,
             'rows'   => $users->OrderByDesc('id')
@@ -43,7 +46,7 @@ class UserController extends Controller
                 'email' => ['required', 'email', 'unique:users'],
                 'phone' => ['unique:users'],
             ];
-            $message = [
+            $messages = [
                 'email.required' => 'Email field is required', 
                 'email.email'    => 'Email field must be a valid email', 
                 'email.unique'   => 'User with the same email address exists',
@@ -51,7 +54,7 @@ class UserController extends Controller
             ];
 
             $validator = Validator::make($request->all(), $rules, $messages);
-            if ($validator->fail()) {
+            if ($validator->fails()) {
                 return response()->json([
                     'status' => 0,
                     'error' => $validator->errors()
@@ -60,12 +63,12 @@ class UserController extends Controller
 
             $user = new User();
             $message = "User Saved Successfuly!";
-            $user->created_by = auth()->id();
             $user->status = 1;
             $user->role_id = 1;
         }
 
         $user->fill($request->input());
+        $user->name = implode(" ", [$request->input('first_name'), $request->input('last_name')]);
         if($request->has('password')) {
             $user->password = Hash::make($request->input('password'));
         }

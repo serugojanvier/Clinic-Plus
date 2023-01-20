@@ -14,10 +14,11 @@ class SuppliersController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function index(){
+     public function index()
+     {
         return response()->json([
-            'status'=>1,
-            'rows'  => Supplier::orderByDesc('id')->get()
+            'status' => 1,
+            'rows'   => Supplier::orderByDesc('id')->get()
         ]);
      }
 
@@ -33,7 +34,7 @@ class SuppliersController extends Controller
 
         if($request->has('id')){
             $Supplier = Supplier::find($request->input('id'));
-            $message = "Record Updated Successfuly!";
+            $message  = "Record Updated Successfuly!";
         } else{
             $Supplier = new Supplier();
             $message = "Record Saved Successfuly!";
@@ -79,20 +80,38 @@ class SuppliersController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function destroy($id){
-        $DeletedSupplier = Supplier::findOrFail($id);
-        if(!$DeletedSupplier){
+     public function destroy($id)
+     {
+        $supplier = Supplier::findOrFail($id);
+        if(!$supplier){
             return response()->json([
                 'status'=>0,
                 'error' =>'Supplier can\'t Found!'
             ]);
         }
 
-        $DeletedSupplier ->delete();
+        $supplier->delete();
 
         return response()->json([
             'status'=>1,
             'message'=>'Supplier deleted Successfuly!'
         ]);
      }  
+
+         /**
+      * 
+      * Handle Bulk Delete
+      * @param string $id
+      * @return \Illuminate\Http\JsonResponse
+      */
+      public function bulkDelete($ids)
+      {
+         $suppliers = explode(",", $ids);
+         Supplier::whereIn('id', $suppliers)->delete();
+         
+         return response()->json([
+             'status' => 1,
+             'message' => 'Suppliers deleted Successfuly!'
+         ]);
+      }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Events\SuccessLoginEvent;
 use JWTAuth;
 
 class AuthController extends Controller
@@ -88,7 +89,7 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         $user = User::where('email', \request()->input('email'))->first();
-        //event(new SuccessLoginEvent($user));
+        event(new SuccessLoginEvent($user));
         return response()->json([
             'status'=>1,
             'access_token' => $token,

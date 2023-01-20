@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -47,6 +49,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_login' => 'datetime',
     ];
 
         // Rest omitted for brevity
@@ -94,6 +97,20 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(User::class, 'created_by')
                     ->select('users.name', 'users.id');
+    }
+
+    /**
+     * Scope a query to only include orders matching period of time.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCompany($query)
+    {
+        $company = \request()->query('current_company') ?? auth()->user()->company_id;
+        if(!empty($company)) {
+            $query->where('company_id', $company);
+        }
     }
     
 }
