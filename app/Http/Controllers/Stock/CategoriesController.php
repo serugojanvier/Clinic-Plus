@@ -43,17 +43,17 @@ class CategoriesController extends Controller
         // if request has id then perfom update
 
         if($request->has('id')){
-            $Pcategory = Category::find($request->input('id'));
+            $category = Category::find($request->input('id'));
         } else{
-            $Pcategory = new Category();
+            $category = new Category();
         }
 
-        $Pcategory->fill($request->input());
-        $Pcategory->save();
+        $category->fill($request->input());
+        $category->save();
 
         return response()->json([
             'status'=>1,
-            'row'   => Category::find($Pcategory->id)
+            'row'   => Category::find($category->id)
         ]);
      }
 
@@ -103,4 +103,20 @@ class CategoriesController extends Controller
             'message'=>'Product Category deleted Successfuly!'
         ]);
      }
+
+    /**
+     * search fora category
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $result = Category::select('id', 'name');
+        $keyword = $request->get('query');
+        if (empty($keyword)) {
+            return  response()->json($result->orderBy('name', 'ASC')->take(50)->get());
+        } else {
+            return response()->json($result->where('name', 'LIKE', '%' . $keyword . '%')->orderBy('name', 'ASC')->get());
+        }
+    }
 }

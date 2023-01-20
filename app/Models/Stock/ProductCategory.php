@@ -2,13 +2,14 @@
 
 namespace App\Models\Stock;
 
+use App\Traits\CrudTrait;
 use App\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, CrudTrait;
     
     protected static function booted()
     {
@@ -19,10 +20,11 @@ class ProductCategory extends Model
         'company_id',
         'parent_id',
         'name',
-        'description'
+        'description',
+        'created_by'
     ];
 
-    public $timestamps = false;
+    //public $timestamps = false;
 
     /**
      * 

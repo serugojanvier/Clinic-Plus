@@ -18,7 +18,7 @@ class SuppliersController extends Controller
      {
         return response()->json([
             'status' => 1,
-            'rows'   => Supplier::orderByDesc('id')->get()
+            'rows'   => Supplier::orderByDesc('id')->with('company', 'creator')->paginate(45)
         ]);
      }
 
@@ -46,7 +46,8 @@ class SuppliersController extends Controller
         return response()->json([
             'status'=>1,
             'message'=>$message,
-            'row'   => Supplier::find($Supplier->id)
+            'row'   => Supplier::where('id', $Supplier->id)
+                                ->with('company', 'creator')->first()
         ]);
      }
 
@@ -68,7 +69,7 @@ class SuppliersController extends Controller
 
         return response()->json([
             'status'=>1,
-            'row'   =>$Supplier
+            'row'   => $Supplier
         ]);
      }
 
@@ -114,4 +115,20 @@ class SuppliersController extends Controller
              'message' => 'Suppliers deleted Successfuly!'
          ]);
       }
+
+    /**
+     * search fora category
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $result = Supplier::select('id', 'name');
+        $keyword = $request->get('query');
+        if (empty($keyword)) {
+            return  response()->json($result->orderBy('name', 'ASC')->take(50)->get());
+        } else {
+            return response()->json($result->where('name', 'LIKE', '%' . $keyword . '%')->orderBy('name', 'ASC')->get());
+        }
+    }
 }

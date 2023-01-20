@@ -96,4 +96,20 @@ class ProductsController extends Controller
             'message'=>'Product deleted Successfuly!'
         ]);
      } 
+
+     /**
+     * search fora category
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $result = Product::select('id', 'name');
+        $keyword = $request->get('query');
+        if (empty($keyword)) {
+            return  response()->json($result->orderBy('name', 'ASC')->take(50)->get());
+        } else {
+            return response()->json($result->where('name', 'LIKE', '%' . $keyword . '%')->orderBy('name', 'ASC')->get());
+        }
+    }
 }

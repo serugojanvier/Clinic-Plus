@@ -1,6 +1,10 @@
 <?php
- namespace App\Traits;
- use Illuminate\Support\Facades\Auth;
+
+namespace App\Traits;
+use App\Models\Stock\Company;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
  Trait CrudTrait {
 
@@ -11,16 +15,27 @@
     {
         parent::boot();
         static::saving(function ($table) {
-            if ($table->created_by) {
-                $table->created_by = auth()->id();
-            }
-
-            if ($table->company_id) {
-                $company = \request()->get('company_id') ?? auth()->user()->company_id;
-                if ($company) {
-                    $table->company_id = $company;
-                }
-            }
+            $table->created_by = auth()->id();
+            $table->company_id = auth()->user()->company_id;
         });
     }
+
+    /**
+     * @return belongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id')
+                     ->select('companies.id', 'companies.name');
+    }
+
+    /**
+     * @return belongsTo
+     */
+
+     public function creator()
+     {
+        return $this->belongsTo(User::class, 'created_by')
+                    ->select('users.id', 'users.name');
+     }
  }

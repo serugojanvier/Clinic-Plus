@@ -2,6 +2,7 @@
 
 namespace App\Models\Stock;
 
+use App\Traits\CrudTrait;
 use App\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
