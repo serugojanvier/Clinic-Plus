@@ -19,7 +19,7 @@ class StockReceive extends Model
 
     protected $fillable = [
         'company_id',
-        'date_receives',
+        'date_received',
         'supplier_id',
         'amount',
         'vat',
@@ -28,7 +28,7 @@ class StockReceive extends Model
     ];
 
     protected $casts = [
-        'date_receives' => 'date'
+        'date_received' => 'date'
     ];
 
     /**

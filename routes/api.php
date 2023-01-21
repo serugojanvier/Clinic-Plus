@@ -57,6 +57,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
 
   Route::group(['prefix' => 'suppliers'], function(){
     Route::get('', 'SuppliersController@index');
+    Route::get('search', 'SuppliersController@search');
     Route::get('show/{id}', 'SuppliersController@show');
     Route::post('store', 'SuppliersController@store');
     Route::get('destroy/{id}', 'SuppliersController@destroy');

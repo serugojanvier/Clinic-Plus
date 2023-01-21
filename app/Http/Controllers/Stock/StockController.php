@@ -23,7 +23,7 @@ class StockController extends Controller
     public function receive(Request $request)
     {
         $id = StockReceive::create([
-            'date_receives' => $request->input('date_receives'),
+            'date_received' => $request->input('date_received'),
             'supplier_id'   => $request->input('supplier_id'),
             'amount'        => $request->input('amount'),
             'vat'           => $request->input('vat'),

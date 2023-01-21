@@ -126,7 +126,7 @@ class SuppliersController extends Controller
         $result = Supplier::select('id', 'name');
         $keyword = $request->get('query');
         if (empty($keyword)) {
-            return  response()->json($result->orderBy('name', 'ASC')->take(50)->get());
+            return  response()->json($result->orderBy('name', 'ASC')->take(250)->get());
         } else {
             return response()->json($result->where('name', 'LIKE', '%' . $keyword . '%')->orderBy('name', 'ASC')->get());
         }
