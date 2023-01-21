@@ -118,4 +118,13 @@ class StockController extends Controller
         }
      }
 
+     /**
+      * Get all stock receives wih filters
+      * @param Request $request
+      * @return JsonResponse
+      */
+     public function getReceives(Request $request)
+     {
+       
+     }
 }

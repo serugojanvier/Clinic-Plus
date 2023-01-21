@@ -30,4 +30,12 @@ class StockReceive extends Model
     protected $casts = [
         'date_receives' => 'date'
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function items()
+    {
+        return $this->hasMany(StockinHistory::class, 'stockin_id', 'id');
+    }
 }

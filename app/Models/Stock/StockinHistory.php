@@ -9,6 +9,7 @@ class StockinHistory extends Model
 {
     use HasFactory;
 
+    protected $table = ['stockin_histories'];
     protected $fillable = [
         'stockin_id',
         'product_id',	
@@ -23,4 +24,14 @@ class StockinHistory extends Model
     protected $casts = [
         'expiration_date' => 'date'
     ];
+    
+    /**
+     * @return BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id')
+                    ->select('products.id', 'products.name')
+                    ->with('category', 'unit');
+    }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Stock\Unit;
+use App\Scopes\CompanyScope;
+use App\Models\Stock\Product;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +16,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
-    return Hash::make("123456");
+   $products = Product::whereNull('unit_id')->get();
+   foreach($products as $product) {
+    $row = Unit::inRandomOrder()
+                ->first();
+                if($row){
+
+               
+    $product->unit_id = $row->id;
+    $product->save();
+}
+   }
 });

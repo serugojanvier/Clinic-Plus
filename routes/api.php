@@ -27,10 +27,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth' ,'middleware' => 'api',
 //Stock API'S
 Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth:api', 'prefix' => 'stock'], function(){
   Route::group(['prefix' => 'units'], function(){
-    Route::get('', 'UnitsController@index');
-    Route::get('show/{id}', 'UnitsController@show');
-    Route::post('store', 'UnitsController@store');
-    Route::get('destroy/{id}', 'UnitsController@destroy');
+    Route::get('receives', 'StockController@index');
+    Route::get('show/{id}', 'StockController@show');
+    Route::post('store', 'StockController@store');
+    Route::get('destroy/{id}', 'StockController@destroy');
   });
   
   Route::group(['prefix' =>'categories'], function(){
@@ -66,13 +66,14 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
   Route::group(['prefix' => 'products'], function(){
     Route::get('', 'ProductsController@index');
     Route::get('extras', 'ProductsController@extras');
+    Route::get('search', 'ProductsController@search');
     Route::get('show/{id}', 'ProductsController@show');
     Route::post('store', 'ProductsController@store');
     Route::get('destroy/{id}', 'ProductsController@destroy');
     Route::get('bulk-destroy/{ids}', 'ProductsController@bulkDelete');
   });
 
-  Route::group(['prefix' => 'Stock'], function(){
+  Route::group(['prefix' => 'inventory'], function(){
     Route::get('', 'StockController@index');
     Route::get('show/{id}', 'StockController@show');
     Route::post('store', 'StockController@store');
