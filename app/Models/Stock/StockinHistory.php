@@ -9,7 +9,7 @@ class StockinHistory extends Model
 {
     use HasFactory;
 
-    protected $table = ['stockin_histories'];
+    protected $table = 'stockin_histories';
     protected $fillable = [
         'stockin_id',
         'product_id',	

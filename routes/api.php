@@ -75,7 +75,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
   });
 
   Route::group(['prefix' => 'inventory'], function(){
-    Route::get('', 'StockController@index');
+    Route::post('receive', 'StockController@receive');
     Route::get('show/{id}', 'StockController@show');
     Route::post('store', 'StockController@store');
     Route::get('destroy/{id}', 'StockController@destroy');

@@ -2,6 +2,7 @@
 
 namespace App\Models\Stock;
 
+use App\Models\User;
 use App\Traits\CrudTrait;
 use App\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Model;
@@ -37,5 +38,29 @@ class StockReceive extends Model
     public function items()
     {
         return $this->hasMany(StockinHistory::class, 'stockin_id', 'id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
     }
 }
