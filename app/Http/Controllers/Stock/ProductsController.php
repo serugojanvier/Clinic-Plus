@@ -42,6 +42,7 @@ class ProductsController extends Controller
             $product = new Product();
             $product->reference = generateReference(20);
             $product->status = 1;
+            $product->quantity = 0;
             if (empty($request->input('code'))) { 
                 $product->code = generateRowCode(8);
             }

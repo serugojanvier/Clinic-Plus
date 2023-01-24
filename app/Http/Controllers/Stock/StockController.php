@@ -9,12 +9,14 @@ use App\Models\Stock\Product;
 use App\Models\Stock\StockOut;
 use App\Models\Stock\StockoutItem;
 use App\Models\Stock\StockReceive;
+use App\Models\Stock\StockTransfer;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Stock\StockinHistory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Stock\ProductCategory;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Stock\StockTransferItems;
 
 class StockController extends Controller
 {
@@ -92,9 +94,9 @@ class StockController extends Controller
         }
         $items = StockinHistory::where('stockin_id', $row->id)->get();
         foreach($items as $item) {
-            $stock = Stock::where('product_id', $item->product_id)->first();
-            $stock->quantity -= $item->quantity;
-            $stock->save();
+            $product = Product::find($item->product_id);
+            $product->quantity -= $item->quantity;
+            $product->save();
             $item->delete();
         }
         $row->delete();
@@ -123,9 +125,9 @@ class StockController extends Controller
         $receive->amount -= ($row->price * $row->quantity);
         $receive->save();
 
-        $stock = Stock::where('product_id', $row->product_id)->first();
-        $stock->quantity -= $row->quantity;
-        $stock->save();
+        $product = Product::find($row->product_id);
+        $product->quantity -= $row->quantity;
+        $product->save();
         $row->delete();
 
         return response()->json([
@@ -133,31 +135,6 @@ class StockController extends Controller
             'message'  => 'Deleted successfully'
         ]);
     }
-
-    /**
-     * Add Items to recieve record
-     * @param Request $request
-     * @return JsonResponse
-     */
-
-     public function addReceiveItems(Request $request)
-     {
-        $row = StockReceive::findOrFail($request->input('record_id'));
-        if (!$row) {
-            return response()->json([
-                'status' => 0,
-                'error'  => 'Record not found'
-            ], 404);
-        }
-        $row->amount += $request->input('amount');
-        $row->save();
-        $items = json_decode($request->input('items'));
-        $this->commitReceivedItems($row->id, $items);
-        return response()->json([
-            'status'  => 1,
-            'message' => 'Records saved successfully'
-        ]);
-     }
 
      /**
       * Record stock of recieved items
@@ -168,29 +145,25 @@ class StockController extends Controller
      private function commitReceivedItems($receivedId, $items)
      {
          foreach($items as $item) {
-            $stock = Stock::where('product_id', $item->id)->first();
+            $product = Product::find($item->id);
             if (!empty($item->alreadyExist) || !empty($item->rowId)) {
                 $row = StockinHistory::find($item->rowId);
                 if ($row->quantity != $item->quantity) {
                     if ($row->quantity > $item->quantity) {
                         $difference = $row->quantity - $item->quantity;
-                        $stock->quantity -= $difference;
+                        $product->quantity -= $difference;
                     } else {
                         $difference = $item->quantity - $row->quantity;
-                        $stock->quantity += $difference;
+                        $product->quantity += $difference;
                     }
-                    $stock->save();
+                    $product->save();
                     $row->quantity = $item->quantity;
                     $row->price = $item->price;
                     $row->save();
                 }
             } else {
-                if(!$stock) {
-                    $stock = new Stock();
-                    $stock->product_id = $item->id;
-                }
-                $stock->quantity += $item->quantity;
-                $stock->save();
+                $product->quantity += $item->quantity;
+                $product->save();
                 StockinHistory::create([
                     'stockin_id' => $receivedId,
                     'product_id' => $item->id,	
@@ -251,4 +224,199 @@ class StockController extends Controller
                                         ->with('product')->get()
         ]);
       }
+
+     /**
+     * Transfer items to department
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function transfer(Request $request)
+    {
+        if (!empty($id = $request->input('receive_id'))) {
+            $record = StockTransfer::find($id);
+            $record->date_received = $request->input('date_received');
+            $record->supplier_id = $request->input('supplier_id');
+            $record->amount = $request->input('amount');
+            $record->vat = $request->input('vat');
+            $record->save();
+        } else {
+            $id = StockTransfer::create([
+                'reference' => generateReference(20),
+                'date_received' => $request->input('date_received'),
+                'supplier_id'   => $request->input('supplier_id'),
+                'amount'        => $request->input('amount'),
+                'vat'           => $request->input('vat'),
+            ])->id;
+        }
+        $items = json_decode($request->input('items'));
+        $this->commitTransferItems($id, $items, $request->input('department_id'));
+        return response()->json([
+            'status'  => 1,
+            'message' => 'Records saved successfully'
+        ]);
+    }
+
+    /**
+     * Get Transfer Items
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getTransferItems($id)
+    {
+        $row = StockTransfer::findOrFail($id);
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'Record not found'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 1,
+            'items'  => StockTransferItems::where('transfer_id', $id)
+                                        ->with('product')->get()
+        ]);
+    }
+
+    /**
+     * Delete Transfer
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function deleteTransfer($id)
+    {
+        $row = StockTransfer::findOrFail($id);
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'Record not found'
+            ], 404);
+        }
+        $items = StockTransferItems::where('transfer_id', $row->id)->get();
+        foreach($items as $item) {
+            $stock = Stock::where('product_id', $item->product_id)
+                            ->where('department_id', $row->department_id)
+                            ->first();
+            $stock->quantity -= $item->quantity;
+            $stock->save();
+            $product = Product::find($item->product_id);
+            $product->quantity += $item->quantity;
+            $product->save();
+            $item->delete();
+        }
+        $row->delete();
+        return response()->json([
+            'status' => 1,
+            'message'  => 'Deleted successfully'
+        ]);
+    }
+
+    /**
+     * Delete Transfer Item
+     * @param int $id
+     * @param int $itemId
+     * @return JsonResponse
+     */
+    public function deleteTransferItem($id, $itemId)
+    {
+        $row = StockTransferItems::findOrFail($itemId);
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'Item not found'
+            ], 404);
+        }
+        $transfer = StockTransfer::find($row->transfer_id);
+        $transfer->amount -= ($row->price * $row->quantity);
+        $transfer->save();
+
+        $stock = Stock::where('product_id', $row->product_id)
+                        ->where('department_id', $transfer->department_id)
+                        ->first();
+        $stock->quantity -= $row->quantity;
+        $stock->save();
+        $product = Product::find($row->product_id);
+        $product->quantity += $row->quantity;
+        $product->save();
+        $row->delete();
+
+        return response()->json([
+            'status' => 1,
+            'message'  => 'Deleted successfully'
+        ]);
+    }
+
+
+     /**
+      * Edit stock of received items
+      * @param int $transferdId
+      * @params array $items
+      * @return void
+      */
+     private function commitTransferItems($transferdId, $items, $departmentId)
+     {
+         foreach($items as $item) {
+            $stock = Stock::where('product_id', $item->id)
+                            ->where('department_id', $departmentId)
+                            ->first();
+            $product = Product::find($item->id);
+            if (!empty($item->alreadyExist) || !empty($item->rowId)) {
+                $row = StockTransferItems::find($item->rowId);
+                if ($row->quantity != $item->quantity) {
+                    if ($row->quantity > $item->quantity) {
+                        $difference = $row->quantity - $item->quantity;
+                        $stock->quantity -= $difference;
+                        $product->quantity += $difference;
+                    } else {
+                        $difference = $item->quantity - $row->quantity;
+                        $stock->quantity += $difference;
+                        $product->quantity -= $difference;
+                    }
+                    $stock->save();
+                    $product->save();
+                    $row->quantity = $item->quantity;
+                    $row->price = $item->price;
+                    $row->save();
+                }
+            } else {
+                if(!$stock) {
+                    $stock = new Stock();
+                    $stock->product_id = $item->id;
+                    $stock->department_id = $departmentId;
+                }
+                $stock->quantity += $item->quantity;
+                $stock->save();
+                $product->quantity -= $item->quantity;
+                $product->save();
+                StockTransferItems::create([
+                    'transfer_id' => $transferdId,
+                    'product_id' => $item->id,	
+                    'quantity'   => $item->quantity,	
+                    'price'      => $item->price
+                ]);
+            }
+        }
+     }
+
+    /**
+     * Show a transfer record and its items
+     * @params string reference
+     * @return JsonResponse
+     */
+    public function showTransfer($reference)
+    {
+        $row = StockTransfer::where('reference', $reference)->with('department', 'employee')->first();
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'Record not found'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 1,
+            'row'    => $row,
+            'items'  => StockTransferItems::select('id', 'product_id', 'quantity', 'price')
+                                        ->where('transfer_id', $row->id)
+                                        ->with('product')->get()
+        ]);
+    }
 }

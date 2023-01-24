@@ -147,4 +147,23 @@ class UserController extends Controller
             'message' => 'Users deleted Successfuly!'
         ]);
      }
+
+      /**
+     * search fora category
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $result = User::select('id', 'name');
+        if (!empty($company = auth()->user()->company_id)) {
+            $result->company();
+        }
+        $keyword = $request->get('query');
+        if (empty($keyword)) {
+            return  response()->json($result->orderBy('name', 'ASC')->take(250)->get());
+        } else {
+            return response()->json($result->where('name', 'LIKE', '%' . $keyword . '%')->orderBy('name', 'ASC')->get());
+        }
+    }
 }

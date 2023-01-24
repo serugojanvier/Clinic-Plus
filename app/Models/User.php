@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Company;
 use App\Scopes\CompanyScope;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -87,7 +88,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function company()
     {
-        return $this->belongsTo("App\Models\Stock\Company", "company_id");
+        return $this->belongsTo(Company::class, "company_id");
     }
 
     /**

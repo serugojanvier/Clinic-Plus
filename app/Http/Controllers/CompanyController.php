@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Stock;
+namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Http\Request;
-use App\Models\Stock\Company;
 use App\Http\Controllers\Controller;
 
 class CompanyController extends Controller

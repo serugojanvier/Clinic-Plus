@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Stock;
+namespace App\Http\Controllers;
 
+use App\Models\Insurance;
 use Illuminate\Http\Request;
-use App\Models\Stock\Insurance;
 use App\Http\Controllers\Controller;
 
 class InsurancesController extends Controller

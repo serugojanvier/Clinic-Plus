@@ -27,10 +27,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth' ,'middleware' => 'api',
 //Stock API'S
 Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth:api', 'prefix' => 'stock'], function(){
   Route::group(['prefix' => 'units'], function(){
-    Route::get('receives', 'StockController@index');
-    Route::get('show/{id}', 'StockController@show');
-    Route::post('store', 'StockController@store');
-    Route::get('destroy/{id}', 'StockController@destroy');
+    Route::get('show/{id}', 'UnitsController@show');
+    Route::post('store', 'UnitsController@store');
+    Route::get('destroy/{id}', 'UnitsController@destroy');
   });
   
   Route::group(['prefix' =>'categories'], function(){
@@ -38,21 +37,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('show/{id}', 'CategoriesController@show');
     Route::post('store', 'CategoriesController@store');
     Route::get('destroy/{id}', 'CategoriesController@destroy');
-  });
-
-  Route::group(['prefix' =>'companies'], function(){
-    Route::get('', 'CompanyController@index');
-    Route::get('show/{id}', 'CompanyController@show');
-    Route::post('store', 'CompanyController@store');
-    Route::get('destroy/{id}', 'CompanyController@destroy');
-    Route::get('bulk-destroy/{ids}', 'CompanyController@bulkDelete');
-  });
-
-  Route::group(['prefix' => 'insurances'], function(){
-    Route::get('', 'InsurancesController@index');
-    Route::get('show/{id}', 'InsurancesController@show');
-    Route::post('store', 'InsurancesController@store');
-    Route::get('destroy/{id}', 'InsurancesController@destroy');
   });
 
   Route::group(['prefix' => 'suppliers'], function(){
@@ -75,12 +59,19 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
   });
 
   Route::group(['prefix' => 'inventory'], function(){
+    /** For Receives */
     Route::post('receives/store', 'StockController@receive');
     Route::get('receives/show/{reference}', 'StockController@showReceive');
     Route::get('receives/{id}/destroy', 'StockController@deleteReceive');
     Route::get('receives/{id}/items', 'StockController@getReceiveItems');
     Route::get('receives/{id}/items/{itemId}/destroy', 'StockController@deleteReceiveItem');
-    Route::get('destroy/{id}', 'StockController@destroy');
+   
+    /** For Transfers */
+    Route::post('transfers/store', 'StockController@transfer');
+    Route::get('transfers/show/{reference}', 'StockController@showTransfer');
+    Route::get('transfers/{id}/destroy', 'StockController@deleteTransfer');
+    Route::get('transfers/{id}/items', 'StockController@getTransferItems');
+    Route::get('transfers/{id}/items/{itemId}/destroy', 'StockController@deleteTransferItem');
   });
 
   Route::group(['prefix' => 'reports'], function(){
@@ -93,19 +84,45 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
 });
 
 // Shared API'S
-Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'auth:api', 'prefix' => 'Shared'], function(){
-  Route::group(['prefix' =>'Role'], function(){
+
+Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'auth:api'], function() {
+  Route::group(['prefix' => 'users'], function(){
+    Route::get('', 'UserController@index');
+    Route::get('show/{id}', 'UserController@show');
+    Route::post('store', 'UserController@store');
+    Route::get('destroy/{id}', 'UserController@destroy');
+    Route::get('bulk-destroy/{ids}', 'UserController@bulkDelete');
+    Route::get('search', 'UserController@search');
+  });
+
+  Route::group(['prefix' =>'companies'], function(){
+    Route::get('', 'CompanyController@index');
+    Route::get('show/{id}', 'CompanyController@show');
+    Route::post('store', 'CompanyController@store');
+    Route::get('destroy/{id}', 'CompanyController@destroy');
+    Route::get('bulk-destroy/{ids}', 'CompanyController@bulkDelete');
+  });
+
+  Route::group(['prefix' => 'insurances'], function(){
+    Route::get('', 'InsurancesController@index');
+    Route::get('show/{id}', 'InsurancesController@show');
+    Route::post('store', 'InsurancesController@store');
+    Route::get('destroy/{id}', 'InsurancesController@destroy');
+  });
+
+  Route::group(['prefix' => 'roles'], function(){
     Route::get('', 'RolesController@index');
     Route::get('show/{id}', 'RolesController@show');
     Route::post('store', 'RolesController@store');
     Route::get('destroy/{id}', 'RolesController@destroy');
   });
-});
 
-Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'auth:api', 'prefix' => 'users'], function() {
-  Route::get('', 'UserController@index');
-  Route::get('show/{id}', 'UserController@show');
-  Route::post('store', 'UserController@store');
-  Route::get('destroy/{id}', 'UserController@destroy');
-  Route::get('bulk-destroy/{ids}', 'UserController@bulkDelete');
+  Route::group(['prefix' => 'departments'], function(){
+    Route::get('', 'DepartmentsController@index');
+    Route::get('search', 'DepartmentsController@search');
+    Route::get('show/{id}', 'DepartmentsController@show');
+    Route::post('store', 'DepartmentsController@store');
+    Route::get('destroy/{id}', 'DepartmentsController@destroy');
+  });
+
 });
