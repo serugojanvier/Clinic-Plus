@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory, CrudTrait, SoftDeletes;
+
     protected static function booted()
     {
         static::addGlobalScope(new CompanyScope);

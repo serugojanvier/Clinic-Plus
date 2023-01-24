@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Stock\ProductCategory;
 use Illuminate\Support\Facades\Storage;
 
-class StockController extends Controller
+class ReportsController extends Controller
 {
     /**
      * @var $from
@@ -30,10 +30,10 @@ class StockController extends Controller
 
     public function __construct(Request $request)
     {
-        $from = $request->input('from');
-        $to = $request->input('to');
-        if (empty($from)) {
-            $from = date('Y-m-d');
+        $this->from = $request->input('from');
+        $this->to = $request->input('to');
+        if (empty($this->from)) {
+            $this->from = date('Y-m-d');
         }
     }
 
@@ -42,7 +42,7 @@ class StockController extends Controller
     * @param Request $request
     * @return JsonResponse
     */
-    public function getReceives(Request $request)
+    public function getReceivesReport(Request $request)
     {
         $result = StockReceive::select('*');
         if (!empty($company = $request->input('company'))) {

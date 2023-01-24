@@ -76,37 +76,18 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
 
   Route::group(['prefix' => 'inventory'], function(){
     Route::post('receive', 'StockController@receive');
-    Route::get('show/{id}', 'StockController@show');
-    Route::post('store', 'StockController@store');
+    Route::get('receives/{id}/destroy', 'StockController@deleteReceive');
+    Route::get('receives/{id}/items', 'StockController@getReceiveItems');
+
     Route::get('destroy/{id}', 'StockController@destroy');
   });
 
-  Route::group(['prefix' => 'StockInHistory'], function(){
-    Route::get('', 'StockInHistoryController@index');
-    Route::get('show/{id}', 'StockInHistoryController@show');
-    Route::post('store', 'StockInHistoryController@store');
-    Route::get('destroy/{id}', 'StockInHistoryController@destroy');
-  });
-  
-  Route::group(['prefix' => 'StockReceives'], function(){
-    Route::get('', 'StockReceivesController@index');
-    Route::get('show/{id}', 'StockReceivesController@show');
-    Route::post('store', 'StockReceivesController@store');
-    Route::get('destroy/{id}', 'StockReceivesController@destroy');
-  });
-
-  Route::group(['prefix' => 'StockOut'], function(){
-    Route::get('', 'StockOutController@index');
-    Route::get('show/{id}', 'StockOutController@show');
-    Route::post('store', 'StockOutController@store');
-    Route::get('destroy/{id}', 'StockOutController@destroy');
-  });
-
-  Route::group(['prefix' => 'StockOutItems'], function(){
-    Route::get('', 'StockOutItemsController@index');
-    Route::get('show/{id}', 'StockOutItemsController@show');
-    Route::post('store', 'StockOutItemsController@store');
-    Route::get('destroy/{id}', 'StockOutItemsController@destroy');
+  Route::group(['prefix' => 'reports'], function(){
+    Route::get('receives', 'ReportsController@getReceivesReport');
+    Route::get('show/{id}', 'ReportsController@show');
+    Route::post('store', 'ReportsController@store');
+    Route::get('destroy/{id}', 'ReportsController@destroy');
+    
   });
 });
 

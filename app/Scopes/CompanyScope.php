@@ -2,9 +2,9 @@
  
 namespace App\Scopes;
  
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Eloquent\Builder;
  
 class CompanyScope implements Scope
 {
@@ -19,7 +19,7 @@ class CompanyScope implements Scope
     {
         $company = \request()->query('current_company') ?? auth()->user()->company_id;
         if(!empty($company)) {
-            $builder->where('company_id', $company);
+            $builder->where("{$model->getTable()}.company_id", $company);
         }
     }
 } 

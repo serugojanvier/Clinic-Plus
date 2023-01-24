@@ -31,7 +31,8 @@ class StockinHistory extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id')
-                    ->select('products.id', 'products.name')
-                    ->with('category', 'unit');
+                    ->select('products.id', 'products.name', 'units.name as unit', 'product_categories.name as category')
+                    ->leftJoin('units', 'products.unit_id', '=', 'units.id')
+                    ->leftJoin('product_categories', 'products.category_id', '=', 'product_categories.id');
     }
 }

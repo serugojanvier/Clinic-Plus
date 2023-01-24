@@ -26,6 +26,7 @@ class StockController extends Controller
     public function receive(Request $request)
     {
         $id = StockReceive::create([
+            'reference' => generateReference(20),
             'date_received' => $request->input('date_received'),
             'supplier_id'   => $request->input('supplier_id'),
             'amount'        => $request->input('amount'),
@@ -43,6 +44,27 @@ class StockController extends Controller
         return response()->json([
             'status'  => 1,
             'message' => 'Records saved successfully'
+        ]);
+    }
+
+    /**
+     * Get Receive Items
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getReceiveItems($id)
+    {
+        $row = StockReceive::findOrFail($id);
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'Record not found'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 1,
+            'items'  => StockinHistory::where('stockin_id', $id)
+                                      ->with('product')->get()
         ]);
     }
 

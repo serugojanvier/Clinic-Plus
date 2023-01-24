@@ -19,6 +19,7 @@ class StockReceive extends Model
     }
 
     protected $fillable = [
+        'reference',
         'company_id',
         'date_received',
         'supplier_id',
@@ -31,6 +32,8 @@ class StockReceive extends Model
     protected $casts = [
         'date_received' => 'date'
     ];
+
+    protected $appends = ['total_items'];
 
     /**
      * @return HasMany
@@ -62,5 +65,13 @@ class StockReceive extends Model
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalItemsAttribute()
+    {
+        return StockinHistory::where('stockin_id', $this->id)->count();
     }
 }
