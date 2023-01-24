@@ -2,12 +2,13 @@
 
 namespace App\Models\Stock;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StockinHistory extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'stockin_histories';
     protected $fillable = [
@@ -19,7 +20,7 @@ class StockinHistory extends Model
         'barcode'
     ];
 
-    public $timestamps = false;
+   // public $timestamps = false;
 
     protected $casts = [
         'expiration_date' => 'date'

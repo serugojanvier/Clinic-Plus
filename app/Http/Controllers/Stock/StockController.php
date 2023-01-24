@@ -25,14 +25,22 @@ class StockController extends Controller
      */
     public function receive(Request $request)
     {
-        $id = StockReceive::create([
-            'reference' => generateReference(20),
-            'date_received' => $request->input('date_received'),
-            'supplier_id'   => $request->input('supplier_id'),
-            'amount'        => $request->input('amount'),
-            'vat'           => $request->input('vat'),
-        ])->id;
-
+        if (!empty($id = $request->input('receive_id'))) {
+            $record = StockReceive::find($id);
+            $record->date_received = $request->input('date_received');
+            $record->supplier_id = $request->input('supplier_id');
+            $record->amount = $request->input('amount');
+            $record->vat = $request->input('vat');
+            $record->save();
+        } else {
+            $id = StockReceive::create([
+                'reference' => generateReference(20),
+                'date_received' => $request->input('date_received'),
+                'supplier_id'   => $request->input('supplier_id'),
+                'amount'        => $request->input('amount'),
+                'vat'           => $request->input('vat'),
+            ])->id;
+        }
         $items = json_decode($request->input('items'));
         $this->commitReceivedItems($id, $items);
         if (!empty($file = $request->file('file'))) {
@@ -87,8 +95,39 @@ class StockController extends Controller
             $stock = Stock::where('product_id', $item->product_id)->first();
             $stock->quantity -= $item->quantity;
             $stock->save();
+            $item->delete();
         }
         $row->delete();
+        return response()->json([
+            'status' => 1,
+            'message'  => 'Deleted successfully'
+        ]);
+    }
+
+    /**
+     * Delete Receive Item
+     * @param int $id
+     * @param int $itemId
+     * @return JsonResponse
+     */
+    public function deleteReceiveItem($id, $itemId)
+    {
+        $row = StockinHistory::findOrFail($itemId);
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'Item not found'
+            ], 404);
+        }
+        $receive = StockReceive::find($row->stockin_id);
+        $receive->amount -= ($row->price * $row->quantity);
+        $receive->save();
+
+        $stock = Stock::where('product_id', $row->product_id)->first();
+        $stock->quantity -= $row->quantity;
+        $stock->save();
+        $row->delete();
+
         return response()->json([
             'status' => 1,
             'message'  => 'Deleted successfully'
@@ -130,20 +169,37 @@ class StockController extends Controller
      {
          foreach($items as $item) {
             $stock = Stock::where('product_id', $item->id)->first();
-            if(!$stock) {
-                $stock = new Stock();
-                $stock->product_id = $item->id;
+            if (!empty($item->alreadyExist) || !empty($item->rowId)) {
+                $row = StockinHistory::find($item->rowId);
+                if ($row->quantity != $item->quantity) {
+                    if ($row->quantity > $item->quantity) {
+                        $difference = $row->quantity - $item->quantity;
+                        $stock->quantity -= $difference;
+                    } else {
+                        $difference = $item->quantity - $row->quantity;
+                        $stock->quantity += $difference;
+                    }
+                    $stock->save();
+                    $row->quantity = $item->quantity;
+                    $row->price = $item->price;
+                    $row->save();
+                }
+            } else {
+                if(!$stock) {
+                    $stock = new Stock();
+                    $stock->product_id = $item->id;
+                }
+                $stock->quantity += $item->quantity;
+                $stock->save();
+                StockinHistory::create([
+                    'stockin_id' => $receivedId,
+                    'product_id' => $item->id,	
+                    'quantity'   => $item->quantity,	
+                    'price'      => $item->price,
+                    'expiration_date' => $item->expiration_date ?? NULL,	
+                    'barcode'    => $item->barcode ?? NULL
+                ]);
             }
-            $stock->quantity += $item->quantity;
-            $stock->save();
-            StockinHistory::create([
-                'stockin_id' => $receivedId,
-                'product_id' => $item->id,	
-                'quantity'   => $item->quantity,	
-                'price'      => $item->price,
-                'expiration_date' => $item->expiration_date ?? NULL,	
-                'barcode'    => $item->barcode ?? NULL
-            ]);
         }
      }
 
@@ -167,9 +223,32 @@ class StockController extends Controller
               $newFileName2 = $newFileName . ($i ? $i : '');
               $testPath = $folder . '/' . $newFileName2 . '.' . $file->getClientOriginalExtension();
               $i++;
-          } while (Storage::disk('uploads')->exists($testPath));
+          } while (Storage::disk('public')->exists($testPath));
   
-          $check = $file->storeAs( $folder, $newFileName2 . '.' . $file->getClientOriginalExtension(),'uploads');
+          $check = $file->storeAs( $folder, $newFileName2 . '.' . $file->getClientOriginalExtension(),'public');
           return $check;
+      }
+
+      /**
+       * Show a receive and its items
+       * @params string reference
+       * @return JsonResponse
+       */
+      public function showReceive($reference)
+      {
+        $row = StockReceive::where('reference', $reference)->with('supplier')->first();
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'Record not found'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 1,
+            'row'    => $row,
+            'items'  => StockinHistory::select('id', 'product_id', 'quantity', 'price')
+                                        ->where('stockin_id', $row->id)
+                                        ->with('product')->get()
+        ]);
       }
 }

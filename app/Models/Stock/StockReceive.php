@@ -26,7 +26,9 @@ class StockReceive extends Model
         'amount',
         'vat',
         'file_url',
-        'created_by'
+        'created_by',
+        'amount_paid',
+        'paid'
     ];
 
     protected $casts = [

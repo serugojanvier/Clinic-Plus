@@ -75,10 +75,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
   });
 
   Route::group(['prefix' => 'inventory'], function(){
-    Route::post('receive', 'StockController@receive');
+    Route::post('receives/store', 'StockController@receive');
+    Route::get('receives/show/{reference}', 'StockController@showReceive');
     Route::get('receives/{id}/destroy', 'StockController@deleteReceive');
     Route::get('receives/{id}/items', 'StockController@getReceiveItems');
-
+    Route::get('receives/{id}/items/{itemId}/destroy', 'StockController@deleteReceiveItem');
     Route::get('destroy/{id}', 'StockController@destroy');
   });
 
