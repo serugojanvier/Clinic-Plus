@@ -112,9 +112,11 @@ class ProductsController extends Controller
      */
     public function search(Request $request)
     {
-        $result = Product::select('products.id', 'products.name', 'code', 'cost_price', 'rhia_price', 'private_price','inter_price', 'units.name as unit')
+        $result = Product::select('products.id', 'products.name', 'code', 'cost_price', 'quantity', 'rhia_price', 'private_price','inter_price', 'units.name as unit')
                           ->leftJoin('units', 'products.unit_id', '=', 'units.id');
-               
+        if (!empty($request->get('with_quantity'))) {
+            $result->where('quantity', '>', 0);
+        }        
         $keyword = $request->get('query');
         if (empty($keyword)) {
             return  response()->json($result->orderBy('products.name', 'ASC')->take(250)->get());

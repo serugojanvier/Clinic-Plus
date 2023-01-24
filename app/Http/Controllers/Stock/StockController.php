@@ -146,6 +146,7 @@ class StockController extends Controller
      {
          foreach($items as $item) {
             $product = Product::find($item->id);
+            $product->cost_price = $item->price;
             if (!empty($item->alreadyExist) || !empty($item->rowId)) {
                 $row = StockinHistory::find($item->rowId);
                 if ($row->quantity != $item->quantity) {
@@ -232,20 +233,20 @@ class StockController extends Controller
      */
     public function transfer(Request $request)
     {
-        if (!empty($id = $request->input('receive_id'))) {
+        if (!empty($id = $request->input('transfer_id'))) {
             $record = StockTransfer::find($id);
-            $record->date_received = $request->input('date_received');
-            $record->supplier_id = $request->input('supplier_id');
+            $record->date_transfered = $request->input('date_transfered');
+            $record->department_id = $request->input('department_id');
             $record->amount = $request->input('amount');
-            $record->vat = $request->input('vat');
+            $record->taken_by = $request->input('taken_by');
             $record->save();
         } else {
             $id = StockTransfer::create([
                 'reference' => generateReference(20),
-                'date_received' => $request->input('date_received'),
-                'supplier_id'   => $request->input('supplier_id'),
-                'amount'        => $request->input('amount'),
-                'vat'           => $request->input('vat'),
+                'date_transfered' => $request->input('date_transfered'),
+                'department_id'   => $request->input('department_id'),
+                'amount'          => $request->input('amount'),
+                'taken_by'        => $request->input('taken_by'),
             ])->id;
         }
         $items = json_decode($request->input('items'));
