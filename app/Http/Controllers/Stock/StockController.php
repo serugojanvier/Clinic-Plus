@@ -7,14 +7,16 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Stock\Product;
 use App\Models\Stock\StockOut;
+use App\Models\Stock\Requisition;
 use App\Models\Stock\StockoutItem;
 use App\Models\Stock\StockReceive;
-use App\Models\Stock\StockTransfer;
 use Illuminate\Support\Facades\DB;
+use App\Models\Stock\StockTransfer;
 use App\Http\Controllers\Controller;
 use App\Models\Stock\StockinHistory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Stock\ProductCategory;
+use App\Models\Stock\RequisitionItem;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Stock\StockTransferItems;
 
@@ -247,7 +249,14 @@ class StockController extends Controller
                 'department_id'   => $request->input('department_id'),
                 'amount'          => $request->input('amount'),
                 'taken_by'        => $request->input('taken_by'),
+                'requisition_id'  => $request->input('requisition_id')
             ])->id;
+
+            if (!empty($requisitionId = $request->input('requisition_id'))) {
+                $requisition = Requisition::find($requisitionId);
+                $requisition->status = 'ACCEPTED';
+                $requisition->save();
+            }
         }
         $items = json_decode($request->input('items'));
         $this->commitTransferItems($id, $items, $request->input('department_id'));
@@ -304,6 +313,12 @@ class StockController extends Controller
             $product->save();
             $item->delete();
         }
+
+        if (!empty($row->requisition_id)) {
+            $requisition = Requisition::find($row->requisition_id);
+            $requisition->status = 'PENDING';
+            $requisition->save();
+        }
         $row->delete();
         return response()->json([
             'status' => 1,
@@ -349,11 +364,11 @@ class StockController extends Controller
 
      /**
       * Edit stock of received items
-      * @param int $transferdId
+      * @param int $transferId
       * @params array $items
       * @return void
       */
-     private function commitTransferItems($transferdId, $items, $departmentId)
+     private function commitTransferItems($transferId, $items, $departmentId)
      {
          foreach($items as $item) {
             $stock = Stock::where('product_id', $item->id)
@@ -389,11 +404,20 @@ class StockController extends Controller
                 $product->quantity -= $item->quantity;
                 $product->save();
                 StockTransferItems::create([
-                    'transfer_id' => $transferdId,
+                    'transfer_id' => $transferId,
                     'product_id' => $item->id,	
                     'quantity'   => $item->quantity,	
                     'price'      => $item->price
                 ]);
+            }
+        }
+        if (!empty($requisitionId = \request()->input('requisition_id'))) {
+            foreach ($items as $item) {
+                $row = RequisitionItem::where('requisition_id', $requisitionId)
+                                        ->where('product_id', $item->id)
+                                        ->first();
+                $row->requested_qty =  $item->quantity;
+                $row->save();
             }
         }
      }

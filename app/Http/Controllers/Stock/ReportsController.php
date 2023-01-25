@@ -59,7 +59,7 @@ class ReportsController extends Controller
         }
         return response()->json([
             'status' => 1,
-            'rows'   => $result->with('supplier', 'creator', 'company')
+            'rows'   => $result->with('supplier', 'creator')
                                ->orderBy('id', 'DESC')
                                ->paginate(45)
         ]);
@@ -87,7 +87,7 @@ class ReportsController extends Controller
         }
         return response()->json([
             'status' => 1,
-            'rows'   => $result->with('department', 'creator', 'company', 'employee')
+            'rows'   => $result->with('department', 'creator', 'employee')
                                ->orderBy('id', 'DESC')
                                ->paginate(45)
         ]);

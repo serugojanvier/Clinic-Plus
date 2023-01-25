@@ -77,6 +77,15 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
   Route::group(['prefix' => 'reports'], function(){
     Route::get('receives', 'ReportsController@getReceivesReport');
     Route::get('transfers', 'ReportsController@getTransfersReport');  
+    Route::get('requisitions', 'RequisitionsController@index');  
+  });
+
+  Route::group(['prefix' => 'requisitions'], function(){
+    Route::get('show/{reference}/items', 'RequisitionsController@getItems');
+    Route::get('status/{id}update', 'RequisitionsController@updateStatus');
+    Route::post('store', 'RequisitionsController@store');
+    Route::get('destroy/{id}', 'RequisitionsController@destroy');
+    Route::get('items/{itemId}/destroy', 'RequisitionsController@deleteItem');
   });
 });
 

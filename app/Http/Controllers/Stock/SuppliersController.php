@@ -18,7 +18,7 @@ class SuppliersController extends Controller
      {
         return response()->json([
             'status' => 1,
-            'rows'   => Supplier::orderByDesc('id')->with('company', 'creator')->paginate(45)
+            'rows'   => Supplier::orderByDesc('id')->with('creator')->paginate(45)
         ]);
      }
 
@@ -47,7 +47,7 @@ class SuppliersController extends Controller
             'status'=>1,
             'message'=>$message,
             'row'   => Supplier::where('id', $Supplier->id)
-                                ->with('company', 'creator')->first()
+                                ->with('creator')->first()
         ]);
      }
 

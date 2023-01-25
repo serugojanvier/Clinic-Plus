@@ -26,7 +26,8 @@ class StockTransfer extends Model
         'date_transfered',	
         'amount',	
         'taken_by',
-        'created_by'
+        'created_by',
+        'requisition_id'
     ];
 
     protected $casts = [
