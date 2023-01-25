@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Traits;
-use App\Models\Stock\Company;
+use App\Models\Company;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;

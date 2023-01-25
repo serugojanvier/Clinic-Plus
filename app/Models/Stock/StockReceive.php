@@ -54,22 +54,6 @@ class StockReceive extends Model
     }
 
     /**
-     * @return BelongsTo
-     */
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function company()
-    {
-        return $this->belongsTo(Company::class, 'company_id');
-    }
-
-    /**
      * @return int
      */
     public function getTotalItemsAttribute()

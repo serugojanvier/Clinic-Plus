@@ -40,7 +40,7 @@ class StockTransfer extends Model
      */
     public function items()
     {
-        return $this->hasMany(StockTransferItems::class, 'stockin_id', 'id');
+        return $this->hasMany(StockTransferItems::class, 'transfer_id', 'id');
     }
 
     /**
@@ -66,6 +66,6 @@ class StockTransfer extends Model
      */
     public function getTotalItemsAttribute()
     {
-        return StockTransferItems::where('stockin_id', $this->id)->count();
+        return StockTransferItems::where('transfer_id', $this->id)->count();
     }
 }
