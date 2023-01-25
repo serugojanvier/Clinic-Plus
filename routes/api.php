@@ -78,6 +78,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('receives', 'ReportsController@getReceivesReport');
     Route::get('transfers', 'ReportsController@getTransfersReport');  
     Route::get('requisitions', 'RequisitionsController@index');  
+    Route::get('adjustments', 'AdjustmentsController@index');  
   });
 
   Route::group(['prefix' => 'requisitions'], function(){
@@ -86,6 +87,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::post('store', 'RequisitionsController@store');
     Route::get('destroy/{id}', 'RequisitionsController@destroy');
     Route::get('items/{itemId}/destroy', 'RequisitionsController@deleteItem');
+  });
+
+  Route::group(['prefix' => 'adjustments'], function(){
+    Route::get('show/{reference}/items', 'AdjustmentsController@getItems');
+    Route::post('store', 'AdjustmentsController@store');
+    Route::get('destroy/{id}', 'AdjustmentsController@destroy');
   });
 });
 
