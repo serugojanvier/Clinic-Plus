@@ -15,11 +15,10 @@ class AdjustedItem extends Model
     protected $fillable = [
         'adjustment_id',	
         'product_id',	
-        'quantity',	
-        'price',
+        'quantity',
         'details'
     ];
-    
+
     protected $casts = [
         'details' => 'object'
     ];

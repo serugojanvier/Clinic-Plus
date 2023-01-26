@@ -138,19 +138,20 @@ class ProductsController extends Controller
     }
 
     /**
-      * 
-      * Handle Bulk Delete
-      * @param string $id
-      * @return \Illuminate\Http\JsonResponse
-      */
-      public function bulkDelete($ids)
-      {
-         $products = explode(",", $ids);
-         Product::whereIn('id', $products)->delete();
-         
-         return response()->json([
-             'status' => 1,
-             'message' => 'Products deleted Successfuly!'
-         ]);
-      }
+    * 
+    * Handle Bulk Delete
+    * @param string $id
+    * @return \Illuminate\Http\JsonResponse
+    */
+    public function bulkDelete($ids)
+    {
+        $products = explode(",", $ids);
+        Product::whereIn('id', $products)->delete();
+        
+        return response()->json([
+            'status' => 1,
+            'message' => 'Products deleted Successfuly!'
+        ]);
+    }
+
 }

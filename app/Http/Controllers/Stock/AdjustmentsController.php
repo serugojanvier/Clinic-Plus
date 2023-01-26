@@ -64,8 +64,7 @@ class AdjustmentsController extends Controller
                 $product->save();
                 AdjustedItem::create([
                     'product_id'     => $item->id,	
-                    'quantity'       => $item->adjusted,		
-                    'price'          => $item->price,		
+                    'quantity'       => $item->adjusted,	
                     'adjustment_id'  => $adjustmentId,
                     'details'        => $item
                 ]);
@@ -76,12 +75,16 @@ class AdjustmentsController extends Controller
                 $stock = Stock::where('product_id', $item->id)
                                 ->where('department_id', $department)
                                 ->first();
+                if (!$stock) {
+                    $stock = new Stock();
+                    $stock->product_id = $item->id;
+                    $stock->department_id = $department;
+                }
                 $stock->quantity += $item->adjusted;
                 $stock->save();
                 AdjustedItem::create([
                     'product_id'     => $item->id,	
-                    'quantity'       => $item->adjusted,		
-                    'price'          => $item->price,		
+                    'quantity'       => $item->adjusted,			
                     'adjustment_id'  => $adjustmentId,
                     'details'        => $item
                 ]);
