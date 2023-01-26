@@ -20,9 +20,6 @@ class AdjustmentsController extends Controller
     {
         $from = $request->input('from');
         $to = $request->input('to');
-        if (empty($from)) {
-            $from = date('Y-m-d');
-        }
         $result = Adjustment::select('*');
         if (!empty($from)) {
             $result->where('adjustment_date', '>=', $from)
@@ -110,7 +107,10 @@ class AdjustmentsController extends Controller
         return response()->json([
             'status' => 1,
             'row'    => $record,
-            'items'  => AdjustedItem::where('adjustment_id', $record->id)->get()
+            'items'  => AdjustedItem::select('adjustment_id', 'product_id', 'quantity', 'details')
+                                     ->where('adjustment_id', $record->id)
+                                     ->with('product')
+                                     ->get()
         ]);
     }
 

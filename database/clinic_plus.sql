@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 24, 2023 at 07:07 PM
+-- Generation Time: Jan 26, 2023 at 11:32 AM
 -- Server version: 5.7.36
 -- PHP Version: 5.6.40
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `companies`;
 CREATE TABLE IF NOT EXISTS `companies` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -65,25 +65,45 @@ INSERT INTO `companies` (`id`, `name`, `phone`, `email`, `tin_number`, `address_
 
 DROP TABLE IF EXISTS `departments`;
 CREATE TABLE IF NOT EXISTS `departments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `leader_id` int(11) DEFAULT NULL,
+  `leader_id` int(11) UNSIGNED DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
+  `created_by` int(11) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `departments`
 --
 
 INSERT INTO `departments` (`id`, `company_id`, `name`, `description`, `leader_id`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 5, 'Pediatric', 'Test 2', 2, 1, 3, '2023-01-24 16:56:02', '2023-01-24 16:59:44', NULL);
+(1, 5, 'Pediatric', 'Test 2', 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(2, 5, 'Anesthesiology & Critical Care', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(3, 5, 'Cardiology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(4, 5, 'Cardiovascular Sciences', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(5, 5, 'Cardiovascular Surgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(6, 5, 'Medicine', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(7, 5, 'Nanomedicine', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(8, 5, 'Neurology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(9, 5, 'Neurosurgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(10, 5, 'Nursing', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(11, 5, 'Obstetrics and Gynecology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(12, 5, 'Ophthalmology - Blanton Eye Institute', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(13, 5, 'Oral & Maxillofacial Surgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(14, 5, 'Orthopedic Surgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(15, 5, 'Otolaryngology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(16, 5, 'Pathology & Genomic Medicine', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(17, 5, 'Pharmacy', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(18, 5, 'Radiation Oncology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(19, 5, 'Radiology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(20, 5, 'Surgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
+(21, 5, 'Urology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -93,11 +113,11 @@ INSERT INTO `departments` (`id`, `company_id`, `name`, `description`, `leader_id
 
 DROP TABLE IF EXISTS `insurances`;
 CREATE TABLE IF NOT EXISTS `insurances` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `group_ref` enum('RHIA','PRIVATE','INTERNATIONAL','OTHER') NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `discount` double DEFAULT NULL,
+  `discount` double UNSIGNED DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
@@ -118,20 +138,20 @@ INSERT INTO `insurances` (`id`, `group_ref`, `name`, `description`, `discount`, 
 
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE IF NOT EXISTS `products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) UNSIGNED NOT NULL,
   `code` varchar(100) DEFAULT NULL,
   `reference` varchar(20) DEFAULT NULL,
   `name` varchar(100) NOT NULL,
-  `unit_id` int(11) DEFAULT NULL,
-  `cost_price` double DEFAULT NULL,
-  `rhia_price` double DEFAULT NULL,
-  `private_price` double DEFAULT NULL,
-  `inter_price` double(18,2) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
-  `quantity` double NOT NULL DEFAULT '0',
+  `unit_id` int(11) UNSIGNED DEFAULT NULL,
+  `cost_price` double UNSIGNED DEFAULT NULL,
+  `rhia_price` double UNSIGNED DEFAULT NULL,
+  `private_price` double UNSIGNED DEFAULT NULL,
+  `inter_price` double(18,2) UNSIGNED DEFAULT NULL,
+  `category_id` int(11) UNSIGNED DEFAULT NULL,
+  `quantity` double UNSIGNED NOT NULL DEFAULT '0',
   `status` tinyint(1) DEFAULT '1',
-  `created_by` int(11) DEFAULT NULL,
+  `created_by` int(11) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -1773,7 +1793,7 @@ INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_i
 (2843, 5, '1B6DTKUF', 'a0a9e8fe480cb0149f76', 'GLOVES STER PRE POWERED 8**', 20, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:51', NULL),
 (2844, 5, '3HYENFKX', '69aa5a6541d4bdd592af', 'GLOVES STER PRE-POWDERED 7**', 20, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:51', NULL),
 (2845, 5, '1LBUGB7B', '6a41c22740a8b787e463', 'GLOVES STER PRE-POWDERED 7.5**', 44, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:51', NULL),
-(2846, 5, '1P35B831', 'a40b6128462eb1719da5', '1.0 BAND PROMEX YELLOW FOR INFANT. ONCE**', 39, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:51', NULL),
+(2846, 5, '1P35B831', 'a40b6128462eb1719da5', '1.0 BAND PROMEX YELLOW FOR INFANT. ONCE**', 39, 200, 0, 0, 0.00, NULL, 86, 1, 3, '2023-01-21 16:44:08', '2023-01-25 09:57:15', NULL),
 (2847, 5, 'HHBHE60M', '8204daa94158b22a523f', 'I.D BANDS PINK ADULT**', 39, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:51', NULL),
 (2848, 5, '1FT8VIEF', '8669dc634acbb85ea026', 'I.D. BANDS PROMEX PINK CHILD**', 39, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:51', NULL),
 (2849, 5, 'B39JHEFJ', '03e24f14480ea5bfb69f', 'I.D. BANDS PROMEX WHITE ADULT**', 38, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:51', NULL),
@@ -2403,8 +2423,8 @@ INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_i
 (3471, 5, '8DII0H1G', '5c81d6714e789a005b49', 'SURGICRYL 910 3/0', 5, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:52', NULL),
 (3472, 5, '1AN77PUP', '57a123ca46d78baaa4b8', 'CHROMIC CATGUT', 5, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:52', NULL),
 (3473, 5, '3U5X6VFP', 'b0c6659443808ba90414', 'NYLON MONOFILAMENT 1/0', 5, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:52', NULL),
-(3474, 5, '1MZAD9RS', 'a8d47b6d4b61a63e8ae3', ' NYLON MONOFILAMENT 2/0', 5, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:52', NULL),
-(3475, 5, 'CXAOF8E9', '4730d8314a98a212227f', ' NYLON MONOFILAMENT 4/0', 5, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:52', NULL),
+(3474, 5, '1MZAD9RS', 'a8d47b6d4b61a63e8ae3', ' NYLON MONOFILAMENT 2/0', 5, 400, 0, 0, 0.00, NULL, 71, 1, 3, '2023-01-21 16:44:08', '2023-01-25 16:10:53', NULL),
+(3475, 5, 'CXAOF8E9', '4730d8314a98a212227f', ' NYLON MONOFILAMENT 4/0', 5, 500, 0, 0, 0.00, NULL, 58, 1, 3, '2023-01-21 16:44:08', '2023-01-25 16:10:53', NULL),
 (3476, 5, '5SVEWHM7', '61d413c945508759dd97', 'INTRA UTERINE CONTRACEPTIVE MEDICAL DEVICE', 5, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:52', NULL),
 (3477, 5, 'ANJN17II', '5b20447b4461a4e53dc8', 'BANDE ELASTIQUE CREPE 10CM×4.5M', 5, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:52', NULL),
 (3478, 5, '1CNZSTH5', '45e70dec4a37a9ba0dd6', 'NASAL OXYGEN CANULA ADULT', 5, NULL, 0, 0, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:24:52', NULL),
@@ -4049,10 +4069,10 @@ INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_i
 (5111, 5, '270CQCW9', '7255c4da4a3ca29d5513', 'NEXIUM 20MG', 43, NULL, 0, 611.2, 0.69, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5112, 5, '1MQ1JOEE', '608ed7584084927c9af4', 'SYRINGUE 5ML ', 14, NULL, 30, 36, 0.04, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5113, 5, '144CQYQU', '3f11734f4be9b50c4dda', 'INFUSION SET FLOW REGULATER *”', 46, NULL, 700, 840, 0.95, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
-(5114, 5, 'D3E86KT9', '02d4645849488deb91ed', '1CANNULA 24 G, YELLOW ', 26, NULL, 118, 141.6, 0.16, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
+(5114, 5, 'D3E86KT9', '02d4645849488deb91ed', '1CANNULA 24 G, YELLOW ', 26, 300, 118, 141.6, 0.16, NULL, 86, 1, 3, '2023-01-21 16:44:08', '2023-01-25 09:57:15', NULL),
 (5115, 5, 'IEH9KZA6', '224b369847199d75b5c9', 'GLOVES DISP NON ST MEDIUM ', 34, NULL, 58, 69.6, 0.08, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5116, 5, 'D5IPH6R3', '8243118f4a56aa8a66a1', 'GLOVES STER PRE-POWDERED 7 .5', 31, NULL, 298, 357.6, 0.41, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
-(5117, 5, '1NPI34KC', '22977e0f43078d52782d', ' SYRINGE 10ML  ', 31, NULL, 32, 38.4, 0.04, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
+(5117, 5, '1NPI34KC', '22977e0f43078d52782d', ' SYRINGE 10ML  ', 31, 600, 32, 38.4, 0.04, NULL, 83, 1, 3, '2023-01-21 16:44:08', '2023-01-25 16:08:45', NULL),
 (5118, 5, 'JWV0SXK5', '69dadd4144d994a61799', 'LIDOCAINE 2% 20 ML INJ', 46, NULL, 504, 604.8, 0.67, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5119, 5, 'AZW8FR8F', '5f7c4b1d4a378c7a2dbb', 'I.V CANNULA 22 G, BLUE ', 5, NULL, 118, 141, 0.16, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5120, 5, '1IJ8NCB3', '16739a4143cf9d977386', 'CIPRO-DENK 500MG', 10, NULL, 0, 544, 0.62, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
@@ -4097,8 +4117,8 @@ INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_i
 (5159, 5, 'AZYWXL84', 'd5d9fef8497289c162b0', 'SUCTION CATH CONTROL 38CM X 8FG', 21, NULL, 216, 259.2, 0.29, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5160, 5, '2HWWL6C3', 'a102a3324eb4978e9808', 'SUCTION CATH 12FG ', 49, NULL, 198, 237.6, 0.27, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5161, 5, '15SZRGZA', '8acfc6d34a5cad8c0927', 'NEBULIZER MASK C 2M OXYGEN TUBING ADULT ', 8, NULL, 1080, 1296, 1.47, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
-(5162, 5, '1MDNP5EV', '8c8b28294255a1a24ddf', ' NON REBREATHER OXYGEN MASK ADULT', 17, NULL, 1200, 1440, 1.63, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
-(5163, 5, '18P4XX0W', '0a60001d4698a57b3d35', ' NON REBREATHER OXYGEN MASK PEDIATRIC', 52, NULL, 1440, 1728, 1.96, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
+(5162, 5, '1MDNP5EV', '8c8b28294255a1a24ddf', ' NON REBREATHER OXYGEN MASK ADULT', 17, 800, 1200, 1440, 1.63, NULL, 72, 1, 3, '2023-01-21 16:44:08', '2023-01-25 16:10:53', NULL),
+(5163, 5, '18P4XX0W', '0a60001d4698a57b3d35', ' NON REBREATHER OXYGEN MASK PEDIATRIC', 52, 900, 1440, 1728, 1.96, NULL, 72, 1, 3, '2023-01-21 16:44:08', '2023-01-25 16:10:53', NULL),
 (5164, 5, 'KAJDNHZ9', 'd76b1c1247ffb94d1174', 'OXYGEN CANNULA PAEDW/TUBING', 41, NULL, 480, 576, 0.65, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5165, 5, '287ITYSP', 'b5b4e56e486db76b18aa', 'OXYGEN CANNULA ADULT', 10, NULL, 480, 576, 0.65, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5166, 5, '1A8W195M', 'fc76c9f0485a9f6db0c8', 'BRUFEN', 31, NULL, 0, 147.2, 0.17, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
@@ -4108,7 +4128,7 @@ INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_i
 (5170, 5, 'IAOZLUWX', '82c2f0d94b7bb98049b1', 'FOLEY CATH 2- WAY BRILLANT PEAD 100% SILICONE, STERILE CH 12  ', 6, NULL, 2944, 3532.8, 4.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5171, 5, '271FYG0V', '9d1bfc6d41b7a7742d33', 'FOLEY CATH 2- WAY BRILLANT PEAD 100% SILICONE, STERILE CH 6  ', 48, NULL, 2944, 3532.8, 4.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5172, 5, 'JY2RUQMW', '7e2f16e84081b281fc9c', 'FOLEY CATH 2- WAY BRILLENT PEAD 100%  SILICONE STERILE CH 8  ', 40, NULL, 2944, 3532.8, 4.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
-(5173, 5, 'M6WJDRNA', 'dbe828ed41f789b562b6', ' FOLEY CATHETER 2 WAYS BRILLANT 100% SILICON CH 14 ', 26, NULL, 2944, 3532.8, 4.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
+(5173, 5, 'M6WJDRNA', 'dbe828ed41f789b562b6', ' FOLEY CATHETER 2 WAYS BRILLANT 100% SILICON CH 14 ', 26, 700, 2944, 3532.8, 4.00, NULL, 48, 1, 3, '2023-01-21 16:44:08', '2023-01-26 02:02:12', NULL),
 (5174, 5, '16LX7D2O', '04e3e5624195bdbf1772', 'FOLEY CATHETER 2 WAY5 BRILLANT 100% SILICON CH 16 ', 6, NULL, 2944, 3532.8, 4.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5175, 5, 'JSS77NG2', '9695c3db4a9291c3f6d9', 'FOLEY CATHETER 2 WAYS BRILLANT 100% SILICON CH 18 ', 27, NULL, 2944, 3532.8, 4.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5176, 5, 'HSA6IBAD', 'd71b5b26489b808ac289', 'FOLEY BALLOON CATHETER, SIZE 20 FG 3 WAY ', 27, NULL, 450, 540, 0.61, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
@@ -4144,7 +4164,7 @@ INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_i
 (5206, 5, '1E16LYKH', '088430bf43b99ef3ebdd', 'FEEDING TUBE SIZE6', 24, NULL, 207, 248.4, 0.28, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5207, 5, '1JYG9QMM', 'd91de215420a92ce34de', 'FEEDING TUBE INFANT 40CM X 6FG ', 6, NULL, 207, 248.4, 0.28, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5208, 5, '2FMV99QP', 'b156f9a249f492a3723d', 'FEEDING TUBE SIZE18', 19, NULL, 0, 300, 0.00, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
-(5209, 5, '1Q4QN5TV', '86f55fc64eaca54816f6', ' SYRINGE 2OML WITHOUT  NEEDLE (DISPOSABLE)', 13, NULL, 84, 100.8, 0.11, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
+(5209, 5, '1Q4QN5TV', '86f55fc64eaca54816f6', ' SYRINGE 2OML WITHOUT  NEEDLE (DISPOSABLE)', 13, 100, 84, 100.8, 0.11, NULL, 86, 1, 3, '2023-01-21 16:44:08', '2023-01-25 09:57:15', NULL),
 (5210, 5, 'MYSWT0PP', '37a6888b40c6810cbe6c', 'SYRINGE 50ML ', 36, NULL, 276, 331.2, 0.38, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5211, 5, '1MZZTZQT', '750561894dae9531f5f2', 'IV CANNULA G16', 9, NULL, 118, 141, 0.16, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
 (5212, 5, '1FVH01UV', '7ca20cef4e8dae645e9f', 'PROPOFOL INJECTION 200MG/20ML', 11, NULL, 4200, 5040, 5.70, NULL, 0, 1, 3, '2023-01-21 16:44:08', '2023-01-21 14:28:55', NULL),
@@ -4277,12 +4297,12 @@ INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_i
 
 DROP TABLE IF EXISTS `product_categories`;
 CREATE TABLE IF NOT EXISTS `product_categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) UNSIGNED NOT NULL,
   `parent_id` int(11) DEFAULT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
+  `created_by` int(11) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -4310,18 +4330,28 @@ INSERT INTO `product_categories` (`id`, `company_id`, `parent_id`, `name`, `desc
 
 DROP TABLE IF EXISTS `requisitions`;
 CREATE TABLE IF NOT EXISTS `requisitions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
-  `department_id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `reference` varchar(30) DEFAULT NULL,
+  `company_id` int(11) UNSIGNED NOT NULL,
+  `department_id` int(11) UNSIGNED NOT NULL,
   `date_initiated` date NOT NULL,
   `amount` double NOT NULL,
   `status` enum('PENDING','CANCELLED','ACCEPTED') NOT NULL,
-  `created_by` int(11) NOT NULL,
+  `created_by` int(11) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `requisitions`
+--
+
+INSERT INTO `requisitions` (`id`, `reference`, `company_id`, `department_id`, `date_initiated`, `amount`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, '69478fdgsd', 5, 4, '2023-01-25', 1500, 'PENDING', 3, '2023-01-25 14:35:30', '2023-01-25 15:20:44', '2023-01-25 15:20:44'),
+(2, 'd412bf1f4a46afa37249', 5, 10, '2023-01-25', 20500, 'ACCEPTED', 3, '2023-01-25 15:21:28', '2023-01-25 16:08:45', NULL),
+(3, 'a6aeaf98478a82a34860', 5, 4, '2023-01-25', 38000, 'ACCEPTED', 3, '2023-01-25 16:10:34', '2023-01-25 16:10:53', NULL);
 
 -- --------------------------------------------------------
 
@@ -4331,16 +4361,34 @@ CREATE TABLE IF NOT EXISTS `requisitions` (
 
 DROP TABLE IF EXISTS `requisition_items`;
 CREATE TABLE IF NOT EXISTS `requisition_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `requisition_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `requested_qty` double NOT NULL,
-  `received_qty` double DEFAULT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `requisition_id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `requested_qty` double UNSIGNED NOT NULL,
+  `price` double UNSIGNED NOT NULL,
+  `received_qty` double UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `requisition_items`
+--
+
+INSERT INTO `requisition_items` (`id`, `requisition_id`, `product_id`, `requested_qty`, `price`, `received_qty`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(4, 2, 5162, 5, 800, 0, '2023-01-25 15:21:28', '2023-01-25 15:21:28', NULL),
+(3, 2, 5173, 6, 700, 0, '2023-01-25 15:21:28', '2023-01-25 15:21:28', NULL),
+(5, 2, 5163, 5, 900, 0, '2023-01-25 15:21:28', '2023-01-25 15:21:28', NULL),
+(6, 2, 3475, 8, 500, 0, '2023-01-25 15:21:28', '2023-01-25 15:21:28', NULL),
+(7, 2, 5117, 3, 600, 0, '2023-01-25 15:21:28', '2023-01-25 15:21:28', NULL),
+(8, 2, 3474, 5, 400, 0, '2023-01-25 15:21:28', '2023-01-25 15:21:28', NULL),
+(9, 3, 5173, 10, 700, 0, '2023-01-25 16:10:34', '2023-01-25 16:10:34', NULL),
+(10, 3, 5162, 10, 800, 0, '2023-01-25 16:10:34', '2023-01-25 16:10:34', NULL),
+(11, 3, 5163, 10, 900, 0, '2023-01-25 16:10:34', '2023-01-25 16:10:34', NULL),
+(12, 3, 3474, 10, 400, 0, '2023-01-25 16:10:34', '2023-01-25 16:10:34', NULL),
+(13, 3, 3475, 20, 500, 0, '2023-01-25 16:10:34', '2023-01-25 16:10:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -4375,13 +4423,57 @@ INSERT INTO `roles` (`id`, `name`, `permissions`, `company_id`, `status`) VALUES
 
 DROP TABLE IF EXISTS `stock`;
 CREATE TABLE IF NOT EXISTS `stock` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
-  `department_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` double NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) UNSIGNED NOT NULL,
+  `department_id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `quantity` double UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stock`
+--
+
+INSERT INTO `stock` (`id`, `company_id`, `department_id`, `product_id`, `quantity`) VALUES
+(22, 5, 2, 5173, 6),
+(23, 5, 2, 5162, 3),
+(24, 5, 2, 5163, 3),
+(25, 5, 2, 3474, 4),
+(26, 5, 2, 3475, 4),
+(27, 5, 2, 5117, 4),
+(28, 5, 2, 5209, 4),
+(29, 5, 2, 2846, 4),
+(30, 5, 2, 5114, 4),
+(31, 5, 11, 5173, 10),
+(32, 5, 11, 5162, 10),
+(33, 5, 11, 5163, 10),
+(34, 5, 11, 3474, 10),
+(35, 5, 11, 3475, 10),
+(36, 5, 11, 5117, 10),
+(37, 5, 11, 5209, 10),
+(38, 5, 11, 2846, 10),
+(39, 5, 11, 5114, 10),
+(40, 5, 10, 5162, 5),
+(41, 5, 10, 5173, 126),
+(42, 5, 10, 5163, 5),
+(43, 5, 10, 3475, 8),
+(44, 5, 10, 5117, 3),
+(45, 5, 10, 3474, 5),
+(46, 5, 4, 5173, 10),
+(47, 5, 4, 5162, 10),
+(48, 5, 4, 5163, 10),
+(49, 5, 4, 3474, 10),
+(50, 5, 4, 3475, 20),
+(51, 5, 5, 4758, 10),
+(52, 5, 5, 2375, 0),
+(53, 5, 5, 2730, 0),
+(54, 5, 5, 5143, 0),
+(55, 5, 5, 3447, 0),
+(56, 5, 5, 2008, 0),
+(57, 5, 5, 3432, 0),
+(58, 5, 5, 4387, 0),
+(59, 5, 5, 1986, 0);
 
 -- --------------------------------------------------------
 
@@ -4391,18 +4483,34 @@ CREATE TABLE IF NOT EXISTS `stock` (
 
 DROP TABLE IF EXISTS `stockin_histories`;
 CREATE TABLE IF NOT EXISTS `stockin_histories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `stockin_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` double NOT NULL,
-  `price` double DEFAULT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `stockin_id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `quantity` double UNSIGNED NOT NULL,
+  `price` double UNSIGNED DEFAULT NULL,
   `expiration_date` date DEFAULT NULL,
   `barcode` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stockin_histories`
+--
+
+INSERT INTO `stockin_histories` (`id`, `stockin_id`, `product_id`, `quantity`, `price`, `expiration_date`, `barcode`, `created_at`, `deleted_at`, `updated_at`) VALUES
+(44, 5, 5114, 100, 300, NULL, NULL, '2023-01-25 09:10:31', NULL, '2023-01-25 09:10:31'),
+(43, 5, 2846, 100, 200, NULL, NULL, '2023-01-25 09:10:31', NULL, '2023-01-25 09:10:31'),
+(42, 5, 5209, 100, 100, NULL, NULL, '2023-01-25 09:10:31', NULL, '2023-01-25 09:10:31'),
+(41, 5, 5117, 100, 600, NULL, NULL, '2023-01-25 09:10:31', NULL, '2023-01-25 09:10:31'),
+(40, 5, 3475, 100, 500, NULL, NULL, '2023-01-25 09:10:31', NULL, '2023-01-25 09:10:31'),
+(39, 5, 3474, 100, 400, NULL, NULL, '2023-01-25 09:10:31', NULL, '2023-01-25 09:10:31'),
+(38, 5, 5163, 100, 900, NULL, NULL, '2023-01-25 09:10:31', NULL, '2023-01-25 09:10:31'),
+(37, 5, 5162, 100, 800, NULL, NULL, '2023-01-25 09:10:31', NULL, '2023-01-25 09:10:31'),
+(36, 5, 5173, 100, 700, NULL, NULL, '2023-01-25 09:10:31', NULL, '2023-01-25 09:10:31'),
+(45, 6, 5173, 100, 700, NULL, NULL, '2023-01-26 02:01:16', NULL, '2023-01-26 02:01:16');
 
 -- --------------------------------------------------------
 
@@ -4412,13 +4520,76 @@ CREATE TABLE IF NOT EXISTS `stockin_histories` (
 
 DROP TABLE IF EXISTS `stockout_items`;
 CREATE TABLE IF NOT EXISTS `stockout_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `stockout_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` double NOT NULL,
-  `price` double NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `stockout_id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `quantity` double UNSIGNED NOT NULL,
+  `price` double UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_adjustments`
+--
+
+DROP TABLE IF EXISTS `stock_adjustments`;
+CREATE TABLE IF NOT EXISTS `stock_adjustments` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `reference` varchar(30) DEFAULT NULL,
+  `company_id` int(11) UNSIGNED NOT NULL,
+  `adjustment_date` date DEFAULT NULL,
+  `reason` varchar(100) DEFAULT NULL,
+  `department_id` int(11) UNSIGNED DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_by` int(11) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stock_adjustments`
+--
+
+INSERT INTO `stock_adjustments` (`id`, `reference`, `company_id`, `adjustment_date`, `reason`, `department_id`, `description`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(3, '393acc5f4b829a686ceb', 5, '2023-01-25', 'Initialize Stock', 5, NULL, 3, '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_adjustment_items`
+--
+
+DROP TABLE IF EXISTS `stock_adjustment_items`;
+CREATE TABLE IF NOT EXISTS `stock_adjustment_items` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `adjustment_id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `quantity` double NOT NULL,
+  `details` text,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stock_adjustment_items`
+--
+
+INSERT INTO `stock_adjustment_items` (`id`, `adjustment_id`, `product_id`, `quantity`, `details`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 3, 4758, 10, '{\"id\":4758,\"name\":\"AMITRIPTYLINE 25mg tablet\",\"unit\":\"BOX OF 7 PESSARIES\",\"quantity\":10,\"adjusted\":10,\"current_qty\":0}', '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47'),
+(2, 3, 2375, 10, '{\"id\":2375,\"name\":\"AMITRIPTYLINE 25mg tablet\",\"unit\":\"TABLET\",\"quantity\":10,\"adjusted\":10,\"current_qty\":0}', '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47'),
+(3, 3, 2730, 10, '{\"id\":2730,\"name\":\"AMLOR 5MG\",\"unit\":\"TABLET\",\"quantity\":10,\"adjusted\":10,\"current_qty\":0}', '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47'),
+(4, 3, 5143, 10, '{\"id\":5143,\"name\":\"AMLOR 5MG\",\"unit\":\"6 Tablets\",\"quantity\":10,\"adjusted\":10,\"current_qty\":0}', '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47'),
+(5, 3, 3447, 10, '{\"id\":3447,\"name\":\"AMLOZAAR5\\/50\",\"unit\":\"BOTTLE\",\"quantity\":10,\"adjusted\":10,\"current_qty\":0}', '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47'),
+(6, 3, 2008, 10, '{\"id\":2008,\"name\":\"AMOXICILLIN+CLAVULANIC ACID 125mg\\/5ml Syrup 100ml\",\"unit\":\"BOTTLE\",\"quantity\":10,\"adjusted\":10,\"current_qty\":0}', '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47'),
+(7, 3, 3432, 10, '{\"id\":3432,\"name\":\"AMOXIDENK 1000 MG\",\"unit\":\"TUBE\",\"quantity\":10,\"adjusted\":10,\"current_qty\":0}', '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47'),
+(8, 3, 4387, 10, '{\"id\":4387,\"name\":\"AMOXYCILLIN + CLAVULANIC ACID 1.2g Injection\",\"unit\":\"ROLL\",\"quantity\":10,\"adjusted\":10,\"current_qty\":0}', '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47'),
+(9, 3, 1986, 10, '{\"id\":1986,\"name\":\"AMOXYCILLIN 125mg\\/5ml syrup 100ml\",\"unit\":\"BOTTLE\",\"quantity\":10,\"adjusted\":10,\"current_qty\":0}', '2023-01-25 21:55:37', '2023-01-26 11:28:47', '2023-01-26 11:28:47');
 
 -- --------------------------------------------------------
 
@@ -4428,12 +4599,12 @@ CREATE TABLE IF NOT EXISTS `stockout_items` (
 
 DROP TABLE IF EXISTS `stock_out`;
 CREATE TABLE IF NOT EXISTS `stock_out` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) UNSIGNED NOT NULL,
   `date_taken` date NOT NULL,
-  `category` enum('SALES','PRESCRIPTIONS') NOT NULL,
+  `category` enum('SALES','PRESCRIPTIONS','EXPIRED','DAMAGED') NOT NULL,
   `patient_id` int(11) NOT NULL,
-  `insurance_id` int(11) NOT NULL,
+  `insurance_id` int(11) UNSIGNED NOT NULL,
   `created_by` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -4449,22 +4620,30 @@ CREATE TABLE IF NOT EXISTS `stock_out` (
 
 DROP TABLE IF EXISTS `stock_receives`;
 CREATE TABLE IF NOT EXISTS `stock_receives` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `reference` varchar(30) DEFAULT NULL,
-  `company_id` int(11) NOT NULL,
+  `company_id` int(11) UNSIGNED NOT NULL,
   `date_received` date NOT NULL,
-  `supplier_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
+  `supplier_id` int(11) UNSIGNED NOT NULL,
+  `amount` double UNSIGNED NOT NULL,
   `vat` enum('inclusive','exclusive') NOT NULL,
   `file_url` varchar(255) DEFAULT NULL,
-  `amount_paid` double DEFAULT NULL,
+  `amount_paid` double UNSIGNED DEFAULT NULL,
   `paid` tinyint(1) DEFAULT '0',
   `created_by` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stock_receives`
+--
+
+INSERT INTO `stock_receives` (`id`, `reference`, `company_id`, `date_received`, `supplier_id`, `amount`, `vat`, `file_url`, `amount_paid`, `paid`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(5, 'de2704dd41448931b8e5', 5, '2023-01-25', 335, 450000, 'inclusive', '0000/3/2023/01/25/screenshot-5.png', NULL, 0, 3, '2023-01-25 09:10:31', '2023-01-25 09:10:31', NULL),
+(6, '0be1b42c4afab58ad5ad', 5, '2023-01-26', 405, 70000, 'inclusive', NULL, NULL, 0, 3, '2023-01-26 02:01:16', '2023-01-26 02:01:16', NULL);
 
 -- --------------------------------------------------------
 
@@ -4474,19 +4653,31 @@ CREATE TABLE IF NOT EXISTS `stock_receives` (
 
 DROP TABLE IF EXISTS `stock_transfers`;
 CREATE TABLE IF NOT EXISTS `stock_transfers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
-  `department_id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) UNSIGNED NOT NULL,
+  `department_id` int(11) UNSIGNED NOT NULL,
   `reference` varchar(255) DEFAULT NULL,
   `date_transfered` date NOT NULL,
-  `amount` double NOT NULL,
-  `taken_by` int(11) DEFAULT NULL,
-  `created_by` int(11) NOT NULL,
+  `amount` double UNSIGNED NOT NULL,
+  `taken_by` int(11) UNSIGNED DEFAULT NULL,
+  `created_by` int(11) UNSIGNED NOT NULL,
+  `requisition_id` int(11) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stock_transfers`
+--
+
+INSERT INTO `stock_transfers` (`id`, `company_id`, `department_id`, `reference`, `date_transfered`, `amount`, `taken_by`, `created_by`, `requisition_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(2, 5, 2, 'a3f168f74a11b72f18d3', '2023-01-25', 15600, 2, 3, NULL, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(3, 5, 11, 'a6c6e2ab4033ba1fe9e8', '2023-01-25', 45000, 2, 3, NULL, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(4, 5, 10, 'ad5157b6437db824fe22', '2023-01-25', 20500, 2, 3, 2, '2023-01-25 16:08:45', '2023-01-25 16:08:45', NULL),
+(5, 5, 4, '11ad7e2348f5afc672b9', '2023-01-25', 38000, 2, 3, 3, '2023-01-25 16:10:53', '2023-01-25 16:10:53', NULL),
+(6, 5, 10, '4e66697b4dae8e90fe53', '2023-01-26', 84000, 3, 3, NULL, '2023-01-26 02:02:12', '2023-01-26 02:02:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -4496,15 +4687,52 @@ CREATE TABLE IF NOT EXISTS `stock_transfers` (
 
 DROP TABLE IF EXISTS `stock_transfer_items`;
 CREATE TABLE IF NOT EXISTS `stock_transfer_items` (
-  `id` int(11) NOT NULL,
-  `transfer_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` double NOT NULL,
-  `price` double NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `transfer_id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `quantity` double UNSIGNED NOT NULL,
+  `price` double UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stock_transfer_items`
+--
+
+INSERT INTO `stock_transfer_items` (`id`, `transfer_id`, `product_id`, `quantity`, `price`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 2, 5173, 3, 700, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(2, 2, 5162, 3, 800, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(3, 2, 5163, 3, 900, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(4, 2, 3474, 4, 400, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(5, 2, 3475, 4, 500, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(6, 2, 5117, 4, 600, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(7, 2, 5209, 4, 100, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(8, 2, 2846, 4, 200, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(9, 2, 5114, 4, 300, '2023-01-25 09:46:45', '2023-01-25 09:46:45', NULL),
+(10, 3, 5173, 10, 700, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(11, 3, 5162, 10, 800, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(12, 3, 5163, 10, 900, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(13, 3, 3474, 10, 400, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(14, 3, 3475, 10, 500, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(15, 3, 5117, 10, 600, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(16, 3, 5209, 10, 100, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(17, 3, 2846, 10, 200, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(18, 3, 5114, 10, 300, '2023-01-25 09:57:15', '2023-01-25 09:57:15', NULL),
+(19, 4, 5162, 5, 800, '2023-01-25 16:08:45', '2023-01-25 16:08:45', NULL),
+(20, 4, 5173, 6, 700, '2023-01-25 16:08:45', '2023-01-25 16:08:45', NULL),
+(21, 4, 5163, 5, 900, '2023-01-25 16:08:45', '2023-01-25 16:08:45', NULL),
+(22, 4, 3475, 8, 500, '2023-01-25 16:08:45', '2023-01-25 16:08:45', NULL),
+(23, 4, 5117, 3, 600, '2023-01-25 16:08:45', '2023-01-25 16:08:45', NULL),
+(24, 4, 3474, 5, 400, '2023-01-25 16:08:45', '2023-01-25 16:08:45', NULL),
+(25, 5, 5173, 10, 700, '2023-01-25 16:10:53', '2023-01-25 16:10:53', NULL),
+(26, 5, 5162, 10, 800, '2023-01-25 16:10:53', '2023-01-25 16:10:53', NULL),
+(27, 5, 5163, 10, 900, '2023-01-25 16:10:53', '2023-01-25 16:10:53', NULL),
+(28, 5, 3474, 10, 400, '2023-01-25 16:10:53', '2023-01-25 16:10:53', NULL),
+(29, 5, 3475, 20, 500, '2023-01-25 16:10:53', '2023-01-25 16:10:53', NULL),
+(30, 6, 5173, 120, 700, '2023-01-26 02:02:12', '2023-01-26 02:02:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -4514,14 +4742,14 @@ CREATE TABLE IF NOT EXISTS `stock_transfer_items` (
 
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE IF NOT EXISTS `suppliers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `tin_number` double DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL,
-  `created_by` int(11) NOT NULL,
+  `created_by` int(11) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -5044,7 +5272,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 
 DROP TABLE IF EXISTS `units`;
 CREATE TABLE IF NOT EXISTS `units` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -5113,8 +5341,8 @@ INSERT INTO `units` (`id`, `name`, `description`) VALUES
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) DEFAULT NULL,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) UNSIGNED DEFAULT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
@@ -5139,9 +5367,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `company_id`, `first_name`, `last_name`, `name`, `email`, `password`, `phone`, `remember_token`, `email_verified_at`, `role_id`, `last_login`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, NULL, 'Webmaster', 'Admin', 'Webmaster Admin', 'webmaster@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', NULL, NULL, NULL, NULL, '2023-01-23 10:17:23', 1, NULL, NULL, '2023-01-23 08:17:23', NULL),
+(1, NULL, 'Webmaster', 'Admin', 'Webmaster Admin', 'webmaster@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', NULL, NULL, NULL, NULL, '2023-01-26 12:50:24', 1, NULL, NULL, '2023-01-26 10:50:24', NULL),
 (2, 5, 'Serugo', 'Javnvier', 'Serugo Javnvier', 'serugojanvier@gmail.com', '$2y$10$V6IWWclmMuWBXuMPxFqJtexcCM00KstGyDgv.cfpoedqfkHCLZGwy', '788543365', NULL, NULL, 1, NULL, 1, 1, '2023-01-18 15:17:15', '2023-01-18 15:17:15', NULL),
-(3, 5, 'Vah', 'Kwizera', 'Vah Kwizera', 'vah@gmail.com', '$2y$10$VlJ0PYH5dGWFxdDFYTfi4ewxJA45eTRDMx2/Z./9lf.U0.S3g3YLe', '788254478', NULL, NULL, 1, '2023-01-24 21:03:03', 1, 1, '2023-01-18 16:15:50', '2023-01-24 19:03:03', NULL),
+(3, 5, 'Vah', 'Kwizera', 'Vah Kwizera', 'vah@gmail.com', '$2y$10$VlJ0PYH5dGWFxdDFYTfi4ewxJA45eTRDMx2/Z./9lf.U0.S3g3YLe', '788254478', NULL, NULL, 1, '2023-01-26 13:28:22', 1, 1, '2023-01-18 16:15:50', '2023-01-26 11:28:22', NULL),
 (4, 1, 'Mutabazi', 'Jean de amour', 'Mutabazi Jean de amour', 'mutabazi@gmail.com', '$2y$10$ob66nQunFcjYXFNqP128k.7CLlW8H0svaGyMBeg3ATm4DSJrzubB.', '7814192011', NULL, NULL, 1, NULL, 1, 1, '2023-01-19 09:22:17', '2023-01-19 09:22:17', NULL);
 COMMIT;
 
