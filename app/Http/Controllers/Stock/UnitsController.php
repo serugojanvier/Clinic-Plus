@@ -35,7 +35,8 @@ class UnitsController extends Controller
         } else {
             $unit = new Unit();
         }
-        $unit->fill($request->input());
+        $unit->name=$request->input('name');
+        $unit->description=$request->input('description');
         $unit->save();
 
         return response()->json([

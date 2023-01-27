@@ -27,6 +27,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth' ,'middleware' => 'api',
 //Stock API'S
 Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth:api', 'prefix' => 'stock'], function(){
   Route::group(['prefix' => 'units'], function(){
+    Route::get('', 'UnitsController@index');
     Route::get('show/{id}', 'UnitsController@show');
     Route::post('store', 'UnitsController@store');
     Route::get('destroy/{id}', 'UnitsController@destroy');
