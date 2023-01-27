@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Stock;
 use App\Models\Stock\Unit;
 use Illuminate\Http\Request;
 use App\Models\Stock\Product;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Stock\ProductCategory;
 
@@ -111,11 +112,24 @@ class ProductsController extends Controller
      */
     public function search(Request $request)
     {
-        $result = Product::select('products.id', 'products.name', 'code', 'cost_price', 'quantity', 'rhia_price', 'private_price','inter_price', 'units.name as unit')
+        if (empty($department = $request->input('department'))) {
+            $result = Product::select('products.id', 'products.name', 'code', 'cost_price', 'quantity', 'rhia_price', 'private_price','inter_price', 'units.name as unit')
                           ->leftJoin('units', 'products.unit_id', '=', 'units.id');
-        if (!empty($request->get('with_quantity'))) {
-            $result->where('quantity', '>', 0);
-        }        
+            if (!empty($request->get('with_quantity'))) {
+                $result->where('quantity', '>', 0);
+            }
+        } else {
+            $result = Product::select('products.id', 'products.name', 'code', 'cost_price', 'stock.quantity', 'rhia_price', 'private_price','inter_price', 'units.name as unit')
+                          ->leftJoin('units', 'products.unit_id', '=', 'units.id')
+                          ->leftJoin('stock', function($join) use ($department){
+                            $join->on('products.id', '=', 'stock.product_id');
+                            $join->on('stock.department_id', '=', DB::raw("{$department}"));
+                          });
+            if (!empty($request->get('with_quantity'))) {
+                $result->where('stock.quantity', '>', 0);
+            }
+        }
+          
         $keyword = $request->get('query');
         if (empty($keyword)) {
             return  response()->json($result->orderBy('products.name', 'ASC')->take(250)->get());

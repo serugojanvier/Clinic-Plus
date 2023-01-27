@@ -167,4 +167,80 @@ class ReportsController extends Controller
                                ->paginate(45)
         ]);
     }
+
+    /**
+      * Get Dashboard
+      * @param Request $request
+      * @return JsonResponse
+      */
+    public function getDashboard(Request $request)
+    {
+        $receiveData =  $this->getReceivesDashboard();
+        $transferData = $this->getTransfersDashboard();
+        return response()->json([
+            'stock_value' => Product::selectRaw('COALESCE(SUM(quantity * cost_price), 0) as stock_value')
+                                    ->first()
+                                    ->stock_value,
+            'branch_stock' => Stock::selectRaw('COALESCE(SUM(quantity * cost_price), 0) as branch_stock')
+                                    ->first()
+                                    ->branch_stock,
+            'receives_amount' => $receiveData['amount'],      
+            'receives_chart'  => $receiveData['chart'], 
+            'transfers_amount' => $transferData['amount'],      
+            'transfers_chart'  => $transferData['chart'],
+            'total_products'   => Product::count()   
+        ]);
+    }
+
+    /**
+     * Get Both total amount and chart data for receive
+     * @param array $dates
+     * @params int $year
+     * @return  array 
+     */
+    private function getReceivesDashboard($dates = array(), $year = NULL)
+    {
+        if (!$year) {
+            $year = date('Y');
+        }
+        $amount = StockReceive::sum('amount');
+        if (!empty($dates)) {
+            $amount->whereBetween('date_received', $dates);
+        }
+        $monthsData = [];
+        for ($i = 1; $i <= 1; $i++) {
+            $monthsData[] = StockReceive::where('date_received', 'LIKE', "%{$year}-{$i}%")
+                                        ->sum('amount');
+        }
+        return [
+            'amount' => $amount,
+            'chart'  => $monthsData
+        ];
+    }
+
+     /**
+     * Get Both total amount and chart data for transfer
+     * @param array $dates
+     * @params int $year
+     * @return  array 
+     */
+    private function getTransfersDashboard($dates = array(), $year = NULL)
+    {
+        if (!$year) {
+            $year = date('Y');
+        }
+        $amount = StockTransfer::sum('amount');
+        if (!empty($dates)) {
+            $amount->whereBetween('date_transfered', $dates);
+        }
+        $monthsData = [];
+        for ($i = 1; $i <= 1; $i++) {
+            $monthsData[] = StockTransfer::where('date_transfered', 'LIKE', "%{$year}-{$i}%")
+                                        ->sum('amount');
+        }
+        return [
+            'amount' => $amount,
+            'chart'  => $monthsData
+        ];
+    }
 }

@@ -26,3 +26,16 @@ function generateReference($length) {
 function generateRowCode($len = 8){
     return strtoupper(substr(base_convert(uniqid(mt_rand()), 16, 36), 0, $len));
 }
+
+function getMonthDays($month = NULL, $year = NULL)
+{
+    if(is_null($month)) $month = date('m');
+    if(is_null($year)) $year = date('Y');
+    $startDate = "01-" . $month . "-" . $year;
+    $startTime = strtotime($startDate);
+    $endTime = strtotime("+1 month", $startTime);
+    for($i=$startTime; $i < $endTime; $i+=86400){
+        $list[] = date('Y-m-d', $i);
+    }
+    return $list;
+}

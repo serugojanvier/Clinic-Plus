@@ -82,6 +82,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('adjustments', 'AdjustmentsController@index');  
     Route::get('tracker', 'ReportsController@getTrackerReport');  
     Route::get('store-status', 'ReportsController@trackProductsStock');  
+    Route::get('dashboard', 'ReportsController@getDashboard');  
   });
 
   Route::group(['prefix' => 'requisitions'], function(){
