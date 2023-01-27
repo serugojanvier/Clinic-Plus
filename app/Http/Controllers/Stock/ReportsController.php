@@ -181,7 +181,8 @@ class ReportsController extends Controller
             'stock_value' => Product::selectRaw('COALESCE(SUM(quantity * cost_price), 0) as stock_value')
                                     ->first()
                                     ->stock_value,
-            'branch_stock' => Stock::selectRaw('COALESCE(SUM(quantity * cost_price), 0) as branch_stock')
+            'branch_stock' => Stock::selectRaw('COALESCE(SUM(stock.quantity * products.cost_price), 0) as branch_stock')
+                                    ->leftJoin('products', 'stock.product_id', '=', 'products.id')
                                     ->first()
                                     ->branch_stock,
             'receives_amount' => $receiveData['amount'],      
@@ -208,8 +209,9 @@ class ReportsController extends Controller
             $amount->whereBetween('date_received', $dates);
         }
         $monthsData = [];
-        for ($i = 1; $i <= 1; $i++) {
-            $monthsData[] = StockReceive::where('date_received', 'LIKE', "%{$year}-{$i}%")
+        for ($i = 1; $i <= 12; $i++) {
+            $d = sprintf('%02d', $i);
+            $monthsData[] = StockReceive::where('date_received', 'LIKE', "%{$year}-{$d}%")
                                         ->sum('amount');
         }
         return [
@@ -234,8 +236,9 @@ class ReportsController extends Controller
             $amount->whereBetween('date_transfered', $dates);
         }
         $monthsData = [];
-        for ($i = 1; $i <= 1; $i++) {
-            $monthsData[] = StockTransfer::where('date_transfered', 'LIKE', "%{$year}-{$i}%")
+        for ($i = 1; $i <= 12; $i++) {
+            $d = sprintf('%02d', $i);
+            $monthsData[] = StockTransfer::where('date_transfered', 'LIKE', "%{$year}-{$d}%")
                                         ->sum('amount');
         }
         return [
