@@ -129,7 +129,7 @@ Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'auth:api']
 
   Route::group(['prefix' => 'roles'], function(){
     Route::get('', 'RolesController@index');
-    Route::get('show/{id}', 'RolesController@show');
+    Route::get('show/{id}', 'RolesController@index');
     Route::post('store', 'RolesController@store');
     Route::get('destroy/{id}', 'RolesController@destroy');
   });

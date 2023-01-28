@@ -9,89 +9,60 @@ use App\Http\Controllers\Controller;
 class RolesController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
+     * Display a all roles or a specified one.
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function index(){
-        return response()->json([
-            'status'=>1,
-            'rows'  => Role::orderByDesc('id')->get()
-        ]);
+     public function index($id = NULL)
+     {
+         if (!is_null($id)) {
+             return response()->json([
+                 'status' => 1,
+                 'row'    => Role::findOrFail($id)
+             ]);
+         }
+         return response()->json([
+             'status' => 1,
+             'rows'   => Role::select('id', 'name', 'description', 'status')->orderBy('id', 'DESC')->get()
+         ]);
      }
-
-      /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
+ 
+     /**
+     * Create or update \Role model resource.
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
-     public function store(Request $request){
-        // check request contain id field then perform update
-
-        if($request->has('id')){
-            $Role = Role::find($request->input('id'));
-            $message = "Record Updated Successfuly!";
-        } else{
-            $Role = new Role();
-            $message = "Record Saved Successfuly!";
-        }
-
-        $Role->fill($request->input());
-        $Role->save();
-
-        return response()->json([
-            'status'=>1,
-            'message'=>$message,
-            'row'=> Role::find($Role->id)
-        ]);
+     public function store(Request $request)
+     {
+         $row = Role::find($request->input('id'));
+         $permissions = json_decode($request->input('permissions'));
+         if (!$row) {
+             $row = new Role();
+             $row->status = 1;
+         }
+         $row->permissions = $permissions;
+         $row->name        = $request->input('name');
+         $row->description = $request->input('description');
+         $row->status = 1;
+         $row->save();
+         return response()->json([
+             'status'  => 1,
+             'row' => Role::select('id', 'name', 'description', 'status')->where('id', $row->id)->first()
+         ]);
      }
-
-      /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-
-     public function show($id){
-        $Role = Role::findOrFail($id);
-        if(!$Role){
-            return response()->json([
-                'status'=>0,
-                'error' =>'Role can\'t Found!'
-            ]);
-        }
-
-        return response()->json([
-            'status'=>1,
-            'row'   =>$Role
-        ]);
+ 
+     /**
+      * Handle destroy
+      * @param int $id
+      * @return JsonResponse
+      */
+     public function destroy($id)
+     {
+         Role::where('id', $id)->delete();
+         return response()->json([
+             'status'  => 1,
+             'message' => 'Deleted successfully'
+         ]);
      }
-
-      /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $is
-     * @return \Illuminate\Http\JsonResponse
-     */
-
-     public function destroy($id){
-        $DeletedRole = Role::findOrFail($id);
-        if(!$DeletedRole){
-            return response()->json([
-                'status'=>0,
-                'error' =>'Role can\'t Found!'
-            ]);
-        }
-
-        $DeletedRole ->delete();
-
-        return response()->json([
-            'status'=>1,
-            'message'=>'Role deleted Successfuly!'
-        ]);
-     }  
 }

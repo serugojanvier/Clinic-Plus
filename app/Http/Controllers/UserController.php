@@ -17,7 +17,8 @@ class UserController extends Controller
      public function index(Request $request)
      {
         $users = User::select('*')->whereNotNull('role_id');
-        if (!empty($company = auth()->user()->company_id)) {
+        $company = \request()->query('current_company') ?? auth()->user()->company_id;
+        if (!empty($company)) {
             $users->company();
         }
         return response()->json([
@@ -65,9 +66,14 @@ class UserController extends Controller
             $message = "User Saved Successfuly!";
             $user->status = 1;
             $user->role_id = 1;
+            $user->create_by = auth()->id();
         }
 
         $user->fill($request->input());
+        $company = \request()->query('current_company') ?? auth()->user()->company_id;
+        if (!empty($company)) {
+            $user->compay_id = $company;
+        }
         $user->name = implode(" ", [$request->input('first_name'), $request->input('last_name')]);
         if($request->has('password')) {
             $user->password = Hash::make($request->input('password'));
@@ -156,7 +162,8 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $result = User::select('id', 'name');
-        if (!empty($company = auth()->user()->company_id)) {
+        $company = \request()->query('current_company') ?? auth()->user()->company_id;
+        if (!empty($company)) {
             $result->company();
         }
         $keyword = $request->get('query');
