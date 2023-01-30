@@ -18,7 +18,7 @@ class CompanyController extends Controller
      {
         return response()->json([
             'status' => 1,
-            'rows'   => Company::OrderByDesc('id')->with('creator')->paginate(45)
+            'rows'   => Company::OrderByDesc('id')->with('creator')->paginate(\request()->query('per_page') ?? 45)
         ]);
      }
 

@@ -18,7 +18,7 @@ class SuppliersController extends Controller
      {
         return response()->json([
             'status' => 1,
-            'rows'   => Supplier::orderByDesc('id')->with('creator')->paginate(45)
+            'rows'   => Supplier::orderByDesc('id')->with('creator')->paginate(\request()->query('per_page') ?? 45)
         ]);
      }
 

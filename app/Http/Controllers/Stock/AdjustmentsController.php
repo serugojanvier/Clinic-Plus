@@ -32,7 +32,7 @@ class AdjustmentsController extends Controller
             'status' => 1,
             'rows'   => $result->with('creator', 'department')
                             ->orderBy('id', 'DESC')
-                            ->paginate(45)
+                            ->paginate(\request()->query('per_page') ?? 45)
         ]);
     }
 

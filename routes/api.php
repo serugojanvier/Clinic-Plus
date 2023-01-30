@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'api', 'prefix' => 'shared'], function(){
+  Route::post('export/excel', 'SharedController@handleXLSXExport');
+});
 
 Route::group(['namespace' => 'App\Http\Controllers\Auth' ,'middleware' => 'api', 'prefix' => 'auth'], function(){
     Route::post('login', 'AuthController@login')->middleware(['throttle:60,1']);

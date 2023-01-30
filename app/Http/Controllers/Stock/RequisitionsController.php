@@ -41,7 +41,7 @@ class RequisitionsController extends Controller
             'status' => 1,
             'rows'   =>  $result->orderBy('status', 'ASC')
                             ->orderBy('id', 'DESC')
-                            ->paginate(45)
+                            ->paginate(\request()->query('per_page') ?? 45)
         ]);
     }
 

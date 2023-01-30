@@ -25,7 +25,7 @@ class UserController extends Controller
             'status' => 1,
             'rows'   => $users->OrderByDesc('id')
                              ->with('creator','company', 'role')
-                             ->paginate(45)
+                             ->paginate(\request()->query('per_page') ?? 45)
         ]);
      }
 

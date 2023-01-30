@@ -62,7 +62,7 @@ class ReportsController extends Controller
             'status' => 1,
             'rows'   => $result->with('supplier', 'creator')
                                ->orderBy('id', 'DESC')
-                               ->paginate(45)
+                               ->paginate(\request()->query('per_page') ?? 45)
         ]);
     }
 
@@ -90,7 +90,7 @@ class ReportsController extends Controller
             'status' => 1,
             'rows'   => $result->with('department', 'creator', 'employee')
                                ->orderBy('id', 'DESC')
-                               ->paginate(45)
+                               ->paginate(\request()->query('per_page') ?? 45)
         ]);
     }
 
@@ -129,7 +129,7 @@ class ReportsController extends Controller
             'rows'   => $result->groupBy('products.id')
                                ->with('unit')
                                ->orderBy('products.name', 'ASC')
-                               ->paginate(45)
+                               ->paginate(\request()->query('per_page') ?? 45)
         ]);
     }
     /**
@@ -164,7 +164,7 @@ class ReportsController extends Controller
             'rows'   => $result
                                ->with('unit')
                                ->orderBy('name', 'ASC')
-                               ->paginate(45)
+                               ->paginate(\request()->query('per_page') ?? 45)
         ]);
     }
 
