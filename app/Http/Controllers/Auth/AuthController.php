@@ -112,10 +112,10 @@ class AuthController extends Controller
                 'error'  => "New Password cannot be same as your current password. Please choose a different password."
             ]);
         }
-        /*$request->validate([
-            'current_password' => 'required',
-            'new_password'     => 'required|string|min:6',
-        ]); */
+        // $request->validate([
+        //     'current_password' => 'required',
+        //     'new_password'     => 'required|string|min:6',
+        // ]);
         $user = Auth::user();
         $user->password = bcrypt($request->get('new_password'));
         $user->save();
