@@ -49,6 +49,10 @@ class ProductsController extends Controller
         }
 
         $product->fill($request->input());
+        $product->cost_price = $request->input('cost_price');
+        $product->rhia_price = $request->input('rhia_price');
+        $product->private_price = $request->input('private_price');
+        $product->inter_price = $request->input('inter_price');
         $product->save();
 
         return response()->json([
