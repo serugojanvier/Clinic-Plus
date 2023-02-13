@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Stock;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Stock\ProductCategory as Category;
-
 class CategoriesController extends Controller
 {
     /**
@@ -59,26 +58,27 @@ class CategoriesController extends Controller
 
 
      /**
-     * Display the specified resource.
+     * Display the subcategories of specified category resource.
      *
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
      */
 
      public function show($id){
-        $Pcategory = Category::findOrFail($id);
-        if(!$Pcategory){
+        $Pcategory = Category::where('parent_id','=',$id)->orderBy('id', 'ASC')->get();
+        if (sizeof($Pcategory)==0) {
             return response()->json([
-                'status'=>0,
-                'error' =>'Product Category can\'t Found!'
-            ]);
-        } else{
-            return response()->json([
-                'status'=>1,
-                'row'   =>$Pcategory
+                'status' => 0,
+                'error'  => 'SubCategory not found'
             ]);
         }
+
+        return response()->json([
+            'status' => 1,
+            'rows'    => $Pcategory
+        ]);
      }
+
 
      /**
      * Remove the specified resource from storage.
