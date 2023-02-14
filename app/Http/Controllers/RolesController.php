@@ -22,12 +22,16 @@ class RolesController extends Controller
                  'row'    => Role::findOrFail($id)
              ]);
          }
+         $result = Role::select('id', 'name', 'description', 'status');
+         $company = \request()->query('current_company') ?? auth()->user()->company_id;
+        if (!empty($company)) {
+            $result->company();
+        } else {
+            $result->whereNull('company_id');
+        }
          return response()->json([
              'status' => 1,
-             'rows'   => Role::select('id', 'name', 'description', 'status')
-                             ->company()
-                             ->orderBy('id', 'DESC')
-                             ->get()
+             'rows'   => $result->orderBy('id', 'DESC')->get()
          ]);
      }
  

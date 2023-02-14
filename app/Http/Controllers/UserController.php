@@ -16,7 +16,7 @@ class UserController extends Controller
 
      public function index(Request $request)
      {
-        $users = User::select('*')->whereNotNull('role_id');
+        $users = User::select('*')->whereNotNull('role_id')->where('id', '!=', auth()->id());
         $company = \request()->query('current_company') ?? auth()->user()->company_id;
         if (!empty($company)) {
             $users->company();
@@ -24,7 +24,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 1,
             'rows'   => $users->OrderByDesc('id')
-                             ->with('creator','company', 'role')
+                             ->with('creator','company', 'role', 'department')
                              ->paginate(\request()->query('per_page') ?? 45)
         ]);
      }
@@ -66,13 +66,21 @@ class UserController extends Controller
             $message = "User Saved Successfuly!";
             $user->status = 1;
             $user->role_id = 1;
-            $user->create_by = auth()->id();
+            $user->created_by = auth()->id();
         }
 
-        $user->fill($request->input());
+        $user->department_id = $request->input('department_id');
+        $user->first_name = $request->input('first_name');
+        $user->last_name = $request->input('last_name');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
+        $user->role_id = $request->input('role_id');
         $company = \request()->query('current_company') ?? auth()->user()->company_id;
         if (!empty($company)) {
-            $user->compay_id = $company;
+            $user->company_id = $company;
+        }
+        if (!empty($department = $request->input('department_id'))) {
+            $user->department_id = $department;
         }
         $user->name = implode(" ", [$request->input('first_name'), $request->input('last_name')]);
         if($request->has('password')) {

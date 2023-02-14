@@ -27,6 +27,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'company_id',
+        'department_id',
         'first_name',
         'last_name',
         'name',
@@ -122,4 +123,11 @@ class User extends Authenticatable implements JWTSubject
         }
     }
     
+    /**
+     * @return BelongsTo
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
 }
