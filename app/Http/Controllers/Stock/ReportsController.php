@@ -196,7 +196,7 @@ class ReportsController extends Controller
     /**
      * Get Both total amount and chart data for receive
      * @param array $dates
-     * @params int $year
+     * @param int $year
      * @return  array 
      */
     private function getReceivesDashboard($dates = array(), $year = NULL)
@@ -223,7 +223,7 @@ class ReportsController extends Controller
      /**
      * Get Both total amount and chart data for transfer
      * @param array $dates
-     * @params int $year
+     * @param int $year
      * @return  array 
      */
     private function getTransfersDashboard($dates = array(), $year = NULL)

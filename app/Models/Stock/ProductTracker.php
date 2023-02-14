@@ -50,6 +50,7 @@ class ProductTracker extends Model
                       ->selectRaw('COALESCE(SUM(stockin_histories.quantity), 0) AS total')
                       ->join('stock_receives', 'stockin_histories.stockin_id', '=', 'stock_receives.id')
                       ->where('stockin_histories.product_id', $this->id)
+                      ->where('stock_receives.company_id', $this->company_id)
                       ->whereNull('stockin_histories.deleted_at');
         if (empty($this->to)) {
             $result->where('stock_receives.date_received', '=', $this->from);
@@ -66,6 +67,7 @@ class ProductTracker extends Model
                       ->selectRaw('COALESCE(SUM(stock_transfer_items.quantity), 0) AS total')
                       ->join('stock_transfers', 'stock_transfer_items.transfer_id', '=', 'stock_transfers.id')
                       ->where('stock_transfer_items.product_id', $this->id)
+                      ->where('stock_transfers.company_id', $this->company_id)
                       ->whereNull('stock_transfer_items.deleted_at');
         if (empty($this->to)) {
             $result->where('stock_transfers.date_transfered', '=', $this->from);

@@ -141,7 +141,7 @@ class StockController extends Controller
      /**
       * Record stock of recieved items
       * @param int $receivedId
-      * @params array $items
+      * @param array $items
       * @return void
       */
      private function commitReceivedItems($receivedId, $items)
@@ -207,7 +207,7 @@ class StockController extends Controller
 
       /**
        * Show a receive and its items
-       * @params string reference
+       * @param string reference
        * @return JsonResponse
        */
       public function showReceive($reference)
@@ -365,7 +365,7 @@ class StockController extends Controller
      /**
       * Edit stock of received items
       * @param int $transferId
-      * @params array $items
+      * @param array $items
       * @return void
       */
      private function commitTransferItems($transferId, $items, $departmentId)
@@ -424,7 +424,7 @@ class StockController extends Controller
 
     /**
      * Show a transfer record and its items
-     * @params string reference
+     * @param string reference
      * @return JsonResponse
      */
     public function showTransfer($reference)

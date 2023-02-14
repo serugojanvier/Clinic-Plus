@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Models\Stock\Requisition;
 use App\Http\Controllers\Controller;
 use App\Models\Stock\RequisitionItem;
+use App\Notifications\ChannelServices;
+use Illuminate\Support\Facades\Notification;
 
 class RequisitionsController extends Controller
 {
@@ -70,6 +72,14 @@ class RequisitionsController extends Controller
                 'received_qty'  => 0
             ]);
         }
+        $users = getNotifiableUsers(auth()->user());
+        $itemsCount = sizeof($items);
+        $data = [
+            'id'   => $id,
+            'type' => 'Requisition',
+            'message' => "New Requisition created with {$itemsCount} items" 
+        ];
+        Notification::sendNow($users, new ChannelServices($data));
         return response()->json([
             'status' => 1,
             'message' => 'Requisition created successfully'

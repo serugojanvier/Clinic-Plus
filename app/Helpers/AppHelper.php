@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -38,4 +39,9 @@ function getMonthDays($month = NULL, $year = NULL)
         $list[] = date('Y-m-d', $i);
     }
     return $list;
+}
+
+function getNotifiableUsers($user)
+{
+    return User::get();
 }
