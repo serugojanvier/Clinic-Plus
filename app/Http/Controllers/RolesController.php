@@ -24,7 +24,10 @@ class RolesController extends Controller
          }
          return response()->json([
              'status' => 1,
-             'rows'   => Role::select('id', 'name', 'description', 'status')->orderBy('id', 'DESC')->get()
+             'rows'   => Role::select('id', 'name', 'description', 'status')
+                             ->company()
+                             ->orderBy('id', 'DESC')
+                             ->get()
          ]);
      }
  
