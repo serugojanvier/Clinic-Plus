@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'api', 'prefix' => 'shared'], function(){
   Route::post('export/excel', 'SharedController@handleXLSXExport');
+  Route::get('notifications/badges', 'SharedController@getNotificationBadge');
 });
 
 Route::group(['namespace' => 'App\Http\Controllers\Auth' ,'middleware' => 'api', 'prefix' => 'auth'], function(){
@@ -24,6 +25,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth' ,'middleware' => 'api',
     Route::get('me', 'AuthController@me');
     Route::post('me', 'AuthController@updateUser');
     Route::post('change-password', 'AuthController@changePassword');
+    Route::get('notifications/read', 'AuthController@readNotifications');
 });
 
 //Stock API'S

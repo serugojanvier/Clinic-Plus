@@ -12,6 +12,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, SoftDeletes;
+
+    protected $appends = ['alerts'];
+
+    public function getAlertsAttribute()
+    {
+        return $this->notifications()->latest()->take(50)->get();
+    }
+
     /**
      * The attributes that are mass assignable.
      *

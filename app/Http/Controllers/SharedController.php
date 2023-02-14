@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Packages\XLSXWriter;
 use Illuminate\Http\Request;
+use App\Models\Stock\Requisition;
 use App\Http\Controllers\Controller;
 
 class SharedController extends Controller
@@ -33,5 +35,20 @@ class SharedController extends Controller
         }
         $writer->writeToStdOut();
         exit(0);
+    }
+
+    /**
+     * 
+     * Get notifications badge
+     * @return JsonResponse
+     */
+    public function getNotificationBadge()
+    {
+        return response()->json([
+            'status' => 1,
+            'data' => [
+                'requisitions' => Requisition::where('status', 'PENDING')->count(),
+            ]
+        ]);
     }
 }

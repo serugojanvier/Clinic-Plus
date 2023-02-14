@@ -43,5 +43,7 @@ function getMonthDays($month = NULL, $year = NULL)
 
 function getNotifiableUsers($user)
 {
-    return User::get();
+    return User::where('companys_id', $user->company_id)
+                 ->where('id', '!=', $user->id)
+                 ->get();
 }

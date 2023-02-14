@@ -124,4 +124,13 @@ class AuthController extends Controller
             'message' => 'Password changed successfully !'
         ]);
     }
+
+    public function readNotifications()
+    {
+        $user = User::where('id', Auth::id())->first();
+        $user->unreadNotifications->markAsRead();
+        return response()->json([
+            'success' => true
+        ]);
+    }
 }
