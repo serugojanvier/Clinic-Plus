@@ -53,7 +53,7 @@ class AuthController extends Controller
             return response()->json(['user' => JWTAuth::setToken($token)->toUser()]);
         } else{
             return response()->json([
-                'user' => User::where('id', Auth::id())->with('role', 'company')->first()
+                'user' => User::where('id', Auth::id())->with('role', 'company', 'department')->first()
             ]);
         }
     }

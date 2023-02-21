@@ -97,7 +97,8 @@ class User extends Authenticatable implements JWTSubject
      */
     public function company()
     {
-        return $this->belongsTo(Company::class, "company_id");
+        return $this->belongsTo(Company::class, "company_id")
+                    ->select('companies.id', 'companies.name');
     }
 
     /**
@@ -128,6 +129,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function department()
     {
-        return $this->belongsTo(Department::class, 'department_id');
+        return $this->belongsTo(Department::class, 'department_id')
+                    ->select('departments.id', 'departments.name');
     }
 }

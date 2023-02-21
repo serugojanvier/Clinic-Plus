@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Stock;
 
+use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Models\Stock\Requisition;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,7 @@ class RequisitionsController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, $reference = NULL)
     {
         $from = $request->input('from');
         $to = $request->input('to');
@@ -39,6 +40,10 @@ class RequisitionsController extends Controller
                    ->where('date_initiated', '<=', $to);
         }
 
+        if (!empty($reference)) {
+            $result->where('reference', $reference);
+        }
+
         return response()->json([
             'status' => 1,
             'rows'   =>  $result->orderBy('status', 'ASC')
@@ -55,10 +60,12 @@ class RequisitionsController extends Controller
     public function store(Request $request)
     {
         $items = json_decode($request->input('items'));
+        $departmentId = $request->input('department_id') ?? auth()->user()->department_id;
+        $reference = generateRowCode(20);
         $id = Requisition::create([
-            'reference'      =>  generateReference(20),	
+            'reference'      =>  $reference,	
             'date_initiated' =>  $request->input('date_initiated'),
-            'department_id' => $request->input('department_id'),
+            'department_id' => $departmentId,
             'amount'        => $request->input('amount'),
             'status'        => 'PENDING'
         ])->id;
@@ -72,12 +79,15 @@ class RequisitionsController extends Controller
                 'received_qty'  => 0
             ]);
         }
-        $users = getNotifiableUsers(auth()->user());
+        $currentUser = auth()->user();
+        $users = getNotifiableUsers($currentUser);
         $itemsCount = sizeof($items);
+        $department = Department::find($departmentId);
         $data = [
             'id'   => $id,
+            'slug' => $reference,
             'type' => 'Requisition',
-            'message' => "New Requisition created with {$itemsCount} items" 
+            'message' => "New Requisition from <b>{$department->name}</b> of <b>{$itemsCount}</b> items created by <b>{$currentUser->name}</b>" 
         ];
         Notification::sendNow($users, new ChannelServices($data));
         return response()->json([

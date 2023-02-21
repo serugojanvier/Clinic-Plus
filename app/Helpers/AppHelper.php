@@ -21,7 +21,7 @@ function generateReference($length) {
         bin2hex(random_bytes(2))
     ]);
 
-    return strlen($reference) > $length ? substr($reference, 0, $length) : $reference;
+    return strtoupper(strlen($reference) > $length ? substr($reference, 0, $length) : $reference);
 }
 
 function generateRowCode($len = 8){
