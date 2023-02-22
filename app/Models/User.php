@@ -17,7 +17,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getAlertsAttribute()
     {
-        return $this->notifications()->latest()->take(50)->get();
+        return $this->unreadnotifications()->latest()->take(50)->get();
     }
 
     /**
