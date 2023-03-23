@@ -47,3 +47,31 @@ function getNotifiableUsers($user)
                  ->where('id', '!=', $user->id)
                  ->get();
 }
+
+
+function setEnvironment(array $items)
+{
+    $str = file_get_contents(base_path('.env'));
+
+    if (count($items) > 0) {
+        foreach ($items as $item) {
+            $key = strtoupper($item->key);
+            $str .= "\n"; // In case the searched variable is in the last line without \n
+            $keyPosition = strpos($str, "{$key}=");
+            $endOfLinePosition = strpos($str, "\n", $keyPosition);
+            $oldLine = substr($str, $keyPosition, $endOfLinePosition - $keyPosition);
+
+            // If key does not exist, add it
+            if (!$keyPosition || !$endOfLinePosition || !$oldLine) {
+                $str .= "{$key}='{$item->value}'\n";
+            } else {
+                $str = str_replace($oldLine, "{$key}='{$item->value}'", $str);
+            }
+        }
+    }
+
+    $str = substr($str, 0, -1);
+    if (!file_put_contents(base_path('.env'), $str)) return false;
+    return true;
+
+}

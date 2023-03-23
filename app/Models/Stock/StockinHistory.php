@@ -17,7 +17,9 @@ class StockinHistory extends Model
         'quantity',	
         'price',
         'expiration_date',	
-        'barcode'
+        'barcode',
+        'consumed_qty',
+        'status'
     ];
 
    // public $timestamps = false;

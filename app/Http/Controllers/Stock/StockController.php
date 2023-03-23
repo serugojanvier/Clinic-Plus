@@ -173,7 +173,9 @@ class StockController extends Controller
                     'quantity'   => $item->quantity,	
                     'price'      => $item->price,
                     'expiration_date' => $item->expiration_date ?? NULL,	
-                    'barcode'    => $item->barcode ?? NULL
+                    'barcode'    => $item->barcode ?? NULL,
+                    'consumed_qty' => 0,
+                    'status'       => 'IN_STOCK'
                 ]);
             }
         }
