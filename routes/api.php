@@ -147,3 +147,7 @@ Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'auth:api']
   });
 
 });
+
+Route::get('test', function(){
+  //return handleConsumedItems(5333, -1000);
+});

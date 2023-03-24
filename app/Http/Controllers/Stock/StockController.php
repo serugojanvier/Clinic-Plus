@@ -32,9 +32,9 @@ class StockController extends Controller
         if (!empty($id = $request->input('receive_id'))) {
             $record = StockReceive::find($id);
             $record->date_received = $request->input('date_received');
-            $record->supplier_id = $request->input('supplier_id');
+            $record->supplier_id   = $request->input('supplier_id');
             $record->amount = $request->input('amount');
-            $record->vat = $request->input('vat');
+            $record->vat    = $request->input('vat');
             $record->save();
         } else {
             $id = StockReceive::create([
@@ -309,6 +309,7 @@ class StockController extends Controller
                             ->where('department_id', $row->department_id)
                             ->first();
             $stock->quantity -= $item->quantity;
+            handleConsumedItems($item->product_id, -$item->quantity);
             $stock->save();
             $product = Product::find($item->product_id);
             $product->quantity += $item->quantity;
@@ -352,6 +353,7 @@ class StockController extends Controller
                         ->first();
         $stock->quantity -= $row->quantity;
         $stock->save();
+        handleConsumedItems($row->product_id, -$row->quantity);
         $product = Product::find($row->product_id);
         $product->quantity += $row->quantity;
         $product->save();
@@ -382,10 +384,12 @@ class StockController extends Controller
                 if ($row->quantity != $item->quantity) {
                     if ($row->quantity > $item->quantity) {
                         $difference = $row->quantity - $item->quantity;
+                        handleConsumedItems($row->product_id, -$difference);
                         $stock->quantity -= $difference;
                         $product->quantity += $difference;
                     } else {
                         $difference = $item->quantity - $row->quantity;
+                        handleConsumedItems($row->product_id, $difference);
                         $stock->quantity += $difference;
                         $product->quantity -= $difference;
                     }
@@ -405,6 +409,7 @@ class StockController extends Controller
                 $stock->save();
                 $product->quantity -= $item->quantity;
                 $product->save();
+                handleConsumedItems($item->id, $item->quantity);
                 StockTransferItems::create([
                     'transfer_id' => $transferId,
                     'product_id' => $item->id,	

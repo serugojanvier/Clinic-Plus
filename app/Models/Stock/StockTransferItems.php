@@ -11,6 +11,7 @@ class StockTransferItems extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'stock_transfer_items';
+    
     protected $fillable = [
         'transfer_id',
         'product_id',	

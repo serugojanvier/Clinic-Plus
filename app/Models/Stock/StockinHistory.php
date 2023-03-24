@@ -11,6 +11,7 @@ class StockinHistory extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'stockin_histories';
+    
     protected $fillable = [
         'stockin_id',
         'product_id',	

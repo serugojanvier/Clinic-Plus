@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Carbon\Carbon;
+use App\Models\Stock\StockinHistory;
 use Illuminate\Support\Facades\DB;
 
 define( 'MINUTE_IN_SECONDS', 60 );
@@ -73,5 +74,44 @@ function setEnvironment(array $items)
     $str = substr($str, 0, -1);
     if (!file_put_contents(base_path('.env'), $str)) return false;
     return true;
+}
 
+function handleConsumedItems(int $itemId, int $quantity)
+{
+    if ($quantity > 0) {
+        $row = StockinHistory::where('product_id', $itemId)->whereNotIn('status', ['EXPIRED','CONSUMED'])->first();
+        if ($row->quantity > ($row->consumed_qty + $quantity)) {
+            $row->consumed_qty += $quantity;
+            $row->save();
+        } else {
+            $remain = $row->quantity - $row->consumed_qty;
+            $row->consumed_qty = $row->quantity;
+            $row->status = 'CONSUMED';
+            $row->save();
+            $quantity -= $remain;
+            if ($quantity > 0) {
+                return handleConsumedItems($itemId, $quantity);
+            }
+        }
+    } else {
+        $row = StockinHistory::where('product_id', $itemId)
+                                ->whereIn('status', ['IN_STOCK', 'CONSUMED'])
+                                ->where('consumed_qty', '>', 0)
+                                ->orderBy('id', 'DESC')
+                                ->first();
+        // Here will a + (-b) = a - b
+        $quantity = $row->consumed_qty + $quantity;
+        if ($quantity <= 0) {
+            $row->consumed_qty = 0;
+            $row->status = 'IN_STOCK';
+            $row->save();
+            if ($quantity != 0) {
+                return handleConsumedItems($itemId, $quantity);
+            }
+        } else {
+            $row->consumed_qty -= $quantity;
+            $row->status = 'IN_STOCK';
+            $row->save();
+        }
+    }
 }
