@@ -237,7 +237,18 @@ class StockController extends Controller
      */
     public function transfer(Request $request)
     {
-        if (!empty($id = $request->input('transfer_id'))) {
+        $items = json_decode($request->input('items'));
+        $passTransaction = 1;
+
+        foreach($items as $item) {
+            $product = Product::find($item->id);
+
+            if($item->quantity > $product->quantity){
+                $passTransaction = 0;
+            }
+        }
+
+        if (!empty($id = $request->input('transfer_id')) AND  $passTransaction == 1) {
             $record = StockTransfer::find($id);
             $record->date_transfered = $request->input('date_transfered');
             $record->department_id = $request->input('department_id');
@@ -245,27 +256,49 @@ class StockController extends Controller
             $record->taken_by = $request->input('taken_by');
             $record->save();
         } else {
-            $id = StockTransfer::create([
-                'reference' => generateReference(20),
-                'date_transfered' => $request->input('date_transfered'),
-                'department_id'   => $request->input('department_id'),
-                'amount'          => $request->input('amount'),
-                'taken_by'        => $request->input('taken_by'),
-                'requisition_id'  => $request->input('requisition_id')
-            ])->id;
+            // Log::error($passTransaction);
+            if($passTransaction == 1){
+                $id = StockTransfer::create([
+                    'reference' => generateReference(20),
+                    'date_transfered' => $request->input('date_transfered'),
+                    'department_id'   => $request->input('department_id'),
+                    'amount'          => $request->input('amount'),
+                    'taken_by'        => $request->input('taken_by'),
+                    'requisition_id'  => $request->input('requisition_id')
+                ])->id;
 
-            if (!empty($requisitionId = $request->input('requisition_id'))) {
-                $requisition = Requisition::find($requisitionId);
-                $requisition->status = 'ACCEPTED';
-                $requisition->save();
+                if (!empty($requisitionId = $request->input('requisition_id'))) {
+                    $requisition = Requisition::find($requisitionId);
+                    $requisition->status = 'ACCEPTED';
+                    $requisition->save();
+                }
+            }else{
+                if (!empty($requisitionId = $request->input('requisition_id'))) {
+                    $requisition = Requisition::find($requisitionId);
+                    $requisition->status = 'PENDING';
+                    $requisition->save();
+                }
             }
         }
-        $items = json_decode($request->input('items'));
-        $this->commitTransferItems($id, $items, $request->input('department_id'));
-        return response()->json([
-            'status'  => 1,
-            'message' => 'Records saved successfully'
-        ]);
+        if($passTransaction == 1){
+            $this->commitTransferItems($id, $items, $request->input('department_id'));
+            return response()->json([
+                'status'  => 1,
+                'message' => 'Records saved successfully'
+            ]);
+        }else{
+            if (!empty($requisitionId = $request->input('requisition_id'))) {
+                $message = 'Exceeded Quantity And Requisition Nº "'.$request->input('reference').'" CANCELLED.';
+            }else{
+                $message = "Exceeded Quantity. Please Correct it to Proceed.";
+            }
+            
+            // Log::error($message);
+            return response()->json([
+                'status'  => 0,
+                'message' => $message
+            ]);
+        }
     }
 
     /**
