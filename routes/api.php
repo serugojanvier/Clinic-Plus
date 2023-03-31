@@ -147,7 +147,21 @@ Route::group(['namespace' => 'App\Http\Controllers' ,'middleware' => 'auth:api']
     Route::get('destroy/{id}', 'DepartmentsController@destroy');
   });
 
+  // Route::group(['prefix' => 'subscription'], function(){
+  //   Route::get('', 'SubscriptionController@index');
+  //   Route::POST('store', 'SubscriptionController@store');
+  // });
+
 });
+
+// APIs without auth
+Route::group(['namespace' => 'App\Http\Controllers'], function() {
+  Route::group(['prefix' => 'subscription'], function(){
+    Route::get('', 'SubscriptionController@index');
+    Route::POST('store', 'SubscriptionController@store');
+  });
+});
+
 
 Route::get('test', function(){
   //return handleConsumedItems(5333, -1000);
