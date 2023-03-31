@@ -224,7 +224,7 @@ class StockController extends Controller
         return response()->json([
             'status' => 1,
             'row'    => $row,
-            'items'  => StockinHistory::select('id', 'product_id', 'quantity', 'price')
+            'items'  => StockinHistory::select('id', 'product_id', 'quantity', 'price','expiration_date')
                                         ->where('stockin_id', $row->id)
                                         ->with('product')->get()
         ]);
