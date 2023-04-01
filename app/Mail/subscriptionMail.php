@@ -28,7 +28,7 @@ class subscriptionMail extends Mailable
      */
     public function build()
     {
-        return $this->view('subscription_email_template.blade', [
+        return $this->view('subscription_email_template', [
             'name' => 'Serugo Janvier',
             'subject' => 'Welcome to our service!',
             'title' => 'CODEBLOCK LTD',
