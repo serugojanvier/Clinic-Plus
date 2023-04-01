@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Subscription;
 use Illuminate\Http\Request;
+use App\Mail\subscriptionMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class SubscriptionController extends Controller
@@ -60,6 +62,16 @@ class SubscriptionController extends Controller
                 'errors'=>$validator->errors()
             ]);
         }
+
+        $organization = $request->input('organization');
+        $phone = $request->input('phone');
+        $email = $request->input('email');
+
+        Mail::to($email)->send(new subscriptionMail([
+            'name' => $phone,
+            'subject' => 'Welcome to our service!',
+            'title' => $organization,
+        ]));
         
         $Subscription->fill($request->input());
         $Subscription->save();
