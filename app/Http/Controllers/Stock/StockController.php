@@ -451,4 +451,14 @@ class StockController extends Controller
                                         ->with('product')->get()
         ]);
     }
+    
+    /**
+     * Get Expired Items
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getExpiredProducts(Request $request)
+    {
+        
+    }
 }
