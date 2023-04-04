@@ -17,7 +17,11 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        //
+        Mail::to('serugojanvier@gmail.com')->send(new subscriptionMail([
+            'name' => 'Test',
+            'subject' => 'Welcome to our service!',
+            'title' => 'Your Subscription to ITEMEZEPRO App send Successfuly!',
+        ]));
     }
 
     /**
