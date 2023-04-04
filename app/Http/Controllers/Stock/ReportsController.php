@@ -155,7 +155,7 @@ class ReportsController extends Controller
 
     public function trackProductsStock(Request $request)
     {
-        $result = ProductTracker::select('id','name','unit_id','quantity as currentQty')
+        $result = ProductTracker::select('id','name','unit_id','quantity as currentQty', 'company_id')
                                     ->where('company_id', auth()->user()->company_id);
         if (!empty($product = $request->get('product'))) {
             $result->where('id', $product)

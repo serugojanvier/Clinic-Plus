@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Stock\Product;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Stock\StockinHistory;
 use App\Models\Stock\ProductCategory;
 
 class ProductsController extends Controller
@@ -58,6 +59,23 @@ class ProductsController extends Controller
         return response()->json([
             'status' => 1,
             'row'    => Product::where('id', $product->id)->with('creator', 'company', 'category', 'unit')->first()
+        ]);
+     }
+
+    /**
+     * Show Expired Products.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+     public function expired(){
+        $expired = 'EXPIRED';
+        $expiredData = StockinHistory::where('status', $expired)
+                                    ->with('product')->paginate(\request()->query('per_page') ?? 45);
+        return response()->json([
+            'status' => 1,
+            'rows'  => $expiredData
         ]);
      }
 
