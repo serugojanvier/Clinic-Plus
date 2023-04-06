@@ -2,23 +2,25 @@
 
 namespace App\Mail;
 
+use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class subscriptionMail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    
+    public $request;
     /**
      * Create a new message instance.
-     *
+     *@param Request $request
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        //
+        $this->request = $request;
     }
 
     /**
@@ -28,10 +30,13 @@ class subscriptionMail extends Mailable
      */
     public function build()
     {
-        return $this->view('subscription_email_template', [
-            'name' => 'Serugo Janvier',
-            'subject' => 'Welcome to our service!',
-            'title' => 'CODEBLOCK LTD',
-        ]);
+        return $this->view('subscription_email_template')
+                    ->with([
+                        'organization' => $this->request->input('organization'),
+                        'phone' => $this->request->input('phone'),
+                        'email' => $this->request->input('email'),
+                        'subject' => 'Welcome to our service!',
+                        'title' => 'ITEMeZE App From CODEBLOCK LTD',
+                    ]);
     }
 }

@@ -71,11 +71,7 @@ class SubscriptionController extends Controller
         $phone = $request->input('phone');
         $email = $request->input('email');
 
-        Mail::to($email)->send(new subscriptionMail([
-            'name' => $organization.' ['.$phone.']',
-            'subject' => 'Welcome to our service!',
-            'title' => 'Your Subscription to ITEMEZEPRO App send Successfuly!',
-        ]));
+        Mail::to($email)->send(new subscriptionMail($request));
         
         $Subscription->fill($request->input());
         $Subscription->save();
