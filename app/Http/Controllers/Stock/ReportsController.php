@@ -67,6 +67,26 @@ class ReportsController extends Controller
     }
 
     /**
+     * Show a receive and its items
+     * @param string reference
+     * @return JsonResponse
+     */
+    public function downloadRecieveReport($reference){
+        $row = StockReceive::where('reference', $reference)->first();
+        if (!$row) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'File not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'File Downloaded Successfuly!',
+        ]);
+    }
+
+    /**
      * Get all stock receives wih filters
     * @param Request $request
     * @return JsonResponse
@@ -123,6 +143,8 @@ class ReportsController extends Controller
                 $join->on(DB::raw("date(stock_transfer_items.created_ats)"), "<=", DB::raw($this->to));
             });
         }
+
+        Log::info($result);
 
         return response()->json([
             'status' => 1,

@@ -82,6 +82,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
 
   Route::group(['prefix' => 'reports'], function(){
     Route::get('receives', 'ReportsController@getReceivesReport');
+    Route::get('receives/download/{reference}', 'ReportsController@downloadRecieveReport');
     Route::get('transfers', 'ReportsController@getTransfersReport');  
     Route::get('requisitions/{reference?}', 'RequisitionsController@index');  
     Route::get('adjustments', 'AdjustmentsController@index');  
