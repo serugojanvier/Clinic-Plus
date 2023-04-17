@@ -28,7 +28,7 @@ class SharedController extends Controller
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         $writer = new XLSXWriter();
-        $writer->setAuthor('Clinic Plus');
+        $writer->setAuthor('ITEMIZE PRO App');
         $writer->writeSheetHeader('Sheet1', $headings );
         foreach($data as $row) {
             $writer->writeSheetRow('Sheet1', (array)$row );
