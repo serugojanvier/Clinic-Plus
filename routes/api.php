@@ -104,6 +104,16 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::post('store', 'AdjustmentsController@store');
     Route::get('destroy/{id}', 'AdjustmentsController@destroy');
   });
+
+  Route::group(['prefix' => 'pos'], function(){
+    Route::get('sales', 'POSController@index');
+    Route::get('items', 'POSController@salesItems');
+    Route::get('payments-modes', 'POSController@getPaymentMethod');
+    Route::post('sales/store', 'POSController@store');
+    Route::get('sales/destroy/{id}', 'POSController@handleDestroy');
+    Route::get('sales/items/{id}', 'POSController@getSaleItems');
+    Route::get('sales/details/{reference}', 'POSController@getSaleData');
+  });
 });
 
 // Shared API'S
