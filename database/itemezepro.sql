@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 22, 2023 at 11:59 AM
+-- Generation Time: Apr 25, 2023 at 09:37 AM
 -- Server version: 5.7.36
 -- PHP Version: 5.6.40
 
@@ -218,14 +218,15 @@ CREATE TABLE IF NOT EXISTS `payments` (
   PRIMARY KEY (`id`),
   KEY `PAID_SALE` (`transaction_id`),
   KEY `PAYMENT_MODE` (`payment_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `payments`
 --
 
 INSERT INTO `payments` (`id`, `committed_date`, `transaction_id`, `reference`, `amount_paid`, `payment_type`, `comment`, `create_user`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(143, '2023-04-21', 82, 'null', 13300.000, 2, NULL, 3, '2023-04-21 17:13:04', '2023-04-21 17:13:04', NULL);
+(143, '2023-04-21', 82, 'null', 13300.000, 2, NULL, 3, '2023-04-21 17:13:04', '2023-04-21 17:13:04', NULL),
+(144, '2023-04-25', 83, 'null', 2720.000, 2, NULL, 3, '2023-04-25 08:23:31', '2023-04-25 08:23:31', NULL);
 
 -- --------------------------------------------------------
 
@@ -291,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `products` (
 INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_id`, `cost_price`, `rhia_price`, `private_price`, `inter_price`, `category_id`, `quantity`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 2, '1I3H30NP', 'AFCC41454F38A3570473', 'Ampicilline 500mg', 2, 100, 0, 0, 0.00, 2, 0, 1, 3, '2023-03-14 14:48:40', '2023-04-21 16:31:35', NULL),
 (2, 2, '18DNQTOR', '2DCD61D5423EB64E8559', 'Artesinate 60mg', 2, 0, 0, 0, 0.00, 2, 54, 1, 3, '2023-03-14 14:48:40', '2023-04-21 16:31:35', NULL),
-(3, 2, '9SF33WJ7', '7635AACF4DD386A78AED', 'Adrenaline injectable 1ml', 4, 880, 0, 0, 0.00, 2, 2, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
+(3, 2, '9SF33WJ7', '7635AACF4DD386A78AED', 'Adrenaline injectable 1ml', 4, 880, 0, 0, 0.00, 2, 0, 1, 3, '2023-03-14 14:48:40', '2023-04-25 08:23:31', NULL),
 (4, 2, '1N5FZPD3', 'D03D90A04E838120D95C', 'Cefotaxime 1gr', 1, 0, 0, 0, 0.00, 2, 49, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
 (5, 2, '15BUHK8S', 'A7DC58F94ECE83D31195', 'Cloxacilline 500mg', 4, 0, 0, 0, 0.00, 2, 50, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
 (6, 2, '28L1W8UL', '2139273F4B72896C633C', 'Condoms', 9, 0, 0, 0, 0.00, 2, 39, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
@@ -320,9 +321,9 @@ INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_i
 (29, 2, '1CU6AAWG', '3C4679CD49B4928232AA', 'Salbutamol 2.5ml', 4, 0, 0, 0, 0.00, 2, 200, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
 (30, 2, 'NMIRKZT0', '33CFE3B24AACA807901D', 'Sterile', 23, 0, 0, 0, 0.00, 2, 30, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
 (31, 2, 'G0A5VZGM', '8EC49FC5466B9D9B6F3A', 'Tramadol 2ml', 4, 0, 0, 0, 0.00, 2, 15, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(32, 2, '4VGUC0W9', '21BFFF43458FB5A1591D', 'Aiguille G 21', 9, 0, 0, 0, 0.00, 1, 659, 1, 3, '2023-03-14 14:48:40', '2023-04-21 16:31:35', NULL),
+(32, 2, '4VGUC0W9', '21BFFF43458FB5A1591D', 'Aiguille G 21', 9, 0, 0, 0, 0.00, 1, 656, 1, 3, '2023-03-14 14:48:40', '2023-04-25 08:23:32', NULL),
 (33, 2, 'B4K8FWH6', 'E7AF8436446E814BE7BD', 'Aiguille G 23', 9, 0, 0, 0, 0.00, 1, 1089, 1, 3, '2023-03-14 14:48:40', '2023-04-21 16:31:35', NULL),
-(34, 2, '5HLMEI11', 'B0D7DFCF40ECA2209C27', 'Abaisse langue', 9, 2000, 0, 0, 0.00, 1, 272, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
+(34, 2, '5HLMEI11', 'B0D7DFCF40ECA2209C27', 'Abaisse langue', 9, 2000, 0, 0, 0.00, 1, 269, 1, 3, '2023-03-14 14:48:40', '2023-04-25 08:23:31', NULL),
 (35, 2, '3E6ORU6S', 'EE5F1A8040C7B0D7CB11', 'Bistouri', 9, 0, 0, 0, 0.00, 1, 99, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
 (36, 2, '1ANZI6CZ', '0C48CD3F414FA8061571', 'Blood glucose test strips', 9, 0, 0, 0, 0.00, 1, 149, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:05', NULL),
 (37, 2, '39BPSO6L', '6772A6A6435F82CEE4D9', 'Cover glass', 9, 0, 0, 0, 0.00, 1, 2000, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
@@ -495,7 +496,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `description` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `roles`
@@ -503,7 +504,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 
 INSERT INTO `roles` (`id`, `name`, `permissions`, `company_id`, `status`, `description`) VALUES
 (7, 'Admin', '{\"dashboard\":{\"accessible\":true},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":true,\"users\":[\"C\",\"R\",\"U\",\"D\"],\"suppliers\":[\"C\",\"R\",\"U\",\"D\"]},\"inventory\":{\"accessible\":true,\"categories\":[\"C\",\"R\",\"U\",\"D\"],\"products\":[\"C\",\"R\",\"U\",\"D\"],\"receive_items\":[\"C\",\"R\",\"U\",\"D\"],\"transfer_items\":[\"C\",\"R\",\"U\",\"D\"],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[\"C\",\"R\",\"U\",\"D\"]},\"reports\":{\"accessible\":true,\"receiving_report\":[\"C\",\"R\",\"U\",\"D\"],\"transfers_report\":[\"C\",\"R\",\"U\",\"D\"],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments_report\":[\"C\",\"R\",\"U\",\"D\"],\"exipired_products\":[\"C\",\"R\",\"U\",\"D\"]},\"settings\":{\"accessible\":true,\"users_roles\":[\"C\",\"R\",\"U\",\"D\"],\"items_units\":[\"C\",\"R\",\"U\",\"D\"],\"insurances\":[\"C\",\"R\",\"U\",\"D\"],\"departments\":[\"C\",\"R\",\"U\",\"D\"]}}', NULL, 1, 'Admin authrization'),
-(8, 'Pharmacy Admin', '{\"dashboard\":{\"accessible\":true},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":true,\"users\":[\"C\",\"R\",\"U\",\"D\"],\"suppliers\":[\"C\",\"R\",\"U\",\"D\"]},\"inventory\":{\"accessible\":true,\"categories\":[\"C\",\"R\",\"U\",\"D\"],\"products\":[\"C\",\"R\",\"U\",\"D\"],\"receive_items\":[\"C\",\"R\",\"U\",\"D\"],\"transfer_items\":[\"C\",\"R\",\"U\",\"D\"],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[\"C\",\"R\",\"U\",\"D\"]},\"reports\":{\"accessible\":true,\"receiving_report\":[\"C\",\"R\",\"U\",\"D\"],\"transfers_report\":[\"C\",\"R\",\"U\",\"D\"],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments_report\":[\"C\",\"R\",\"U\",\"D\"],\"exipired_products\":[\"C\",\"R\",\"U\",\"D\"]},\"settings\":{\"accessible\":true,\"users_roles\":[\"C\",\"R\",\"U\",\"D\"],\"items_units\":[\"C\",\"R\",\"U\",\"D\"],\"insurances\":[\"C\",\"R\",\"U\",\"D\"],\"departments\":[\"C\",\"R\",\"U\",\"D\"]},\"POS\":{\"accessible\":true}}', NULL, 1, 'Pharmasist'),
+(8, 'Stock Admin', '{\"dashboard\":{\"accessible\":true},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":true,\"users\":[],\"suppliers\":[\"C\",\"R\",\"U\",\"D\"]},\"inventory\":{\"accessible\":true,\"categories\":[\"C\",\"R\",\"U\",\"D\"],\"products\":[\"C\",\"R\",\"U\",\"D\"],\"receive_items\":[\"C\",\"R\",\"U\",\"D\"],\"transfer_items\":[\"C\",\"R\",\"U\",\"D\"],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[\"C\",\"R\",\"U\",\"D\"]},\"reports\":{\"accessible\":true,\"receiving_report\":[\"C\",\"R\",\"U\",\"D\"],\"transfers_report\":[\"C\",\"R\",\"U\",\"D\"],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments_report\":[\"C\",\"R\",\"U\",\"D\"],\"exipired_products\":[\"C\",\"R\",\"U\",\"D\"],\"sales_report\":[\"C\",\"R\",\"U\",\"D\"]},\"settings\":{\"accessible\":true,\"users_roles\":[],\"items_units\":[\"C\",\"R\",\"U\",\"D\"],\"insurances\":[],\"departments\":[\"C\",\"R\",\"U\",\"D\"]},\"POS\":{\"accessible\":true}}', NULL, 1, NULL),
 (9, 'Requisition', '{\"dashboard\":{\"accessible\":false},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":false,\"users\":[],\"suppliers\":[]},\"inventory\":{\"accessible\":true,\"categories\":[],\"products\":[],\"receive_items\":[],\"transfer_items\":[],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[]},\"reports\":{\"accessible\":true,\"receiving_report\":[],\"transfers_report\":[],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[],\"adjustments_report\":[],\"exipired_products\":[]},\"settings\":{\"accessible\":false,\"users_roles\":[],\"items_units\":[],\"insurances\":[],\"departments\":[]}}', 2, 1, NULL),
 (12, 'REQUISITIONER', '{\"dashboard\":{\"accessible\":false},\"companies\":{\"accessible\":true},\"leads\":{\"accessible\":false,\"users\":[],\"suppliers\":[]},\"inventory\":{\"accessible\":true,\"categories\":[],\"products\":[],\"receive_items\":[],\"transfer_items\":[],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[]},\"reports\":{\"accessible\":true,\"receiving_report\":[],\"transfers_report\":[],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[],\"adjustments_report\":[],\"exipired_products\":[]},\"settings\":{\"accessible\":false,\"users_roles\":[],\"items_units\":[],\"insurances\":[],\"departments\":[]}}', 9, 1, NULL);
 
@@ -536,14 +537,15 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `SALES_CLIENT` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sales`
 --
 
 INSERT INTO `sales` (`id`, `type`, `reference`, `committed_date`, `total_amount`, `discounted_total`, `create_user`, `comment`, `amount_paid`, `amount_remain`, `discount_perc`, `discount_amount`, `payment_date`, `client_id`, `paid`, `branch_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(82, 'POS_SALE', 'KPUD987H', '2023-04-21', 13300.000, 13300.000, 3, NULL, 13300.000, 0.000, 0, 0.000, '2023-04-21', NULL, 1, NULL, '2023-04-21 17:13:04', '2023-04-21 17:13:04', NULL);
+(82, 'POS_SALE', 'KPUD987H', '2023-04-21', 13300.000, 13300.000, 3, NULL, 13300.000, 0.000, 0, 0.000, '2023-04-21', NULL, 1, NULL, '2023-04-21 17:13:04', '2023-04-21 17:13:04', NULL),
+(83, 'POS_SALE', 'K8HZ3JN3', '2023-04-25', 2720.000, 2720.000, 3, NULL, 2720.000, 0.000, 0, 0.000, '2023-04-25', NULL, 1, NULL, '2023-04-25 08:23:31', '2023-04-25 08:23:31', NULL);
 
 -- --------------------------------------------------------
 
@@ -566,7 +568,7 @@ CREATE TABLE IF NOT EXISTS `sale_items` (
   PRIMARY KEY (`id`),
   KEY `SALE_ITEM_PRODUCT` (`item_id`),
   KEY `SALE_ITEM` (`sale_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=491 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=494 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sale_items`
@@ -581,7 +583,10 @@ INSERT INTO `sale_items` (`id`, `sale_id`, `item_id`, `quantity`, `price`, `amou
 (487, 82, 39, 1, 400.00, 400.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
 (488, 82, 4, 1, 500.00, 500.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
 (489, 82, 7, 1, 1000.00, 1000.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(490, 82, 36, 1, 4000.00, 4000.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04');
+(490, 82, 36, 1, 4000.00, 4000.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
+(491, 83, 34, 3, 200.00, 600.000, NULL, '2023-04-25 08:23:31', NULL, '2023-04-25 08:23:31'),
+(492, 83, 3, 2, 520.00, 1040.000, NULL, '2023-04-25 08:23:31', NULL, '2023-04-25 08:23:31'),
+(493, 83, 32, 3, 360.00, 1080.000, NULL, '2023-04-25 08:23:31', NULL, '2023-04-25 08:23:31');
 
 -- --------------------------------------------------------
 
@@ -6100,8 +6105,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `company_id`, `department_id`, `first_name`, `last_name`, `name`, `email`, `password`, `phone`, `remember_token`, `email_verified_at`, `role_id`, `last_login`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, NULL, NULL, 'Webmaster', 'Admin', 'Webmaster Admin', 'webmaster@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', NULL, NULL, NULL, NULL, '2023-04-21 20:07:19', 1, NULL, NULL, '2023-04-21 18:07:19', NULL),
-(3, 2, NULL, 'Vah', 'Kwizera', 'Vah Kwizera', 'vah@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', '788254478', NULL, NULL, 8, '2023-04-21 20:06:56', 1, 1, '2023-01-18 16:15:50', '2023-04-21 18:06:56', NULL),
+(1, NULL, NULL, 'Webmaster', 'Admin', 'Webmaster Admin', 'webmaster@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', NULL, NULL, NULL, NULL, '2023-04-25 10:20:39', 1, NULL, NULL, '2023-04-25 08:20:39', NULL),
+(3, 2, NULL, 'Vah', 'Kwizera', 'Vah Kwizera', 'vah@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', '788254478', NULL, NULL, 8, '2023-04-25 10:22:12', 1, 1, '2023-01-18 16:15:50', '2023-04-25 08:22:12', NULL),
 (6, 2, 17, 'UWAMAHORO', 'Sophie', 'UWAMAHORO Sophie', 'sophie@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', '785485782', NULL, NULL, 9, '2023-04-21 14:23:42', 1, 3, '2023-03-14 17:15:00', '2023-04-21 12:23:42', NULL),
 (7, 9, NULL, 'NZIZA', 'Prince', 'NZIZA Prince', 'nziza@gmail.com', '$2y$10$SBY2X0nbWgpv/zMXnF2bQunWkKAr7nVu.Y4BnzS/xXBC7ELs4us4C', '781418920', NULL, NULL, 7, '2023-03-30 10:20:16', 1, 1, '2023-03-30 06:31:50', '2023-03-30 08:20:16', NULL);
 
