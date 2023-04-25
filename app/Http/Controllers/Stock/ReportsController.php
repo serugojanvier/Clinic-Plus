@@ -80,10 +80,19 @@ class ReportsController extends Controller
             ], 404);
         }
 
-        return response()->json([
-            'status' => 1,
-            'message' => 'File Downloaded Successfuly!',
-        ]);
+        $pathToFile = storage_path('app/public/' . $row->file_url);
+        if (!file_exists($pathToFile)) {
+            return response()->json([
+                'status' => 0,
+                'error'  => 'File not found'
+            ], 404);
+        }
+
+         return response()->streamDownload(function () use ($pathToFile) {
+                $fileStream = fopen($pathToFile, 'rb');
+                fpassthru($fileStream);
+                fclose($fileStream);
+            }, $filename);
     }
 
     /**
@@ -144,7 +153,7 @@ class ReportsController extends Controller
             });
         }
 
-        Log::info($result);
+        // Log::info($result);
 
         return response()->json([
             'status' => 1,
