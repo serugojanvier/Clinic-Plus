@@ -65,7 +65,7 @@ class POSController extends Controller
        
         return response()->json([
             'status' => 1,
-            'rows'   => $result->with('client')
+            'rows'   => $result->with('client', 'creator')
                                ->orderBy('id', 'DESC')
                                ->paginate(45)
         ]);
@@ -137,7 +137,9 @@ class POSController extends Controller
         
         return response()->json([
             'status'  => 1,
-            'success' => 'Sale created successfully'
+            'message' => 'Save sucessfully',
+            'order'   => Sale::selectRaw('id, reference, committed_date, discounted_total, amount_paid, amount_remain, client_id, paid, branch_id, create_user, comment, payment_date')
+                                 ->where('sales.id', $order->id)->with('client', 'creator', 'items')->first()
         ]);
     }
 

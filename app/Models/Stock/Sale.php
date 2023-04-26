@@ -66,4 +66,14 @@ class Sale extends Model
      {
         return Payment::where('transaction_id', $this->id)->select('id', 'account_id', 'payment_type')->get();
      }
+
+     /**
+     * @return BelongsTo
+     */
+    public function items()
+    {
+        return $this->hasMany(SaleItem::class, "sale_id", "id")
+                    ->select('sale_items.*', 'products.name')
+                    ->join('products', 'sale_items.item_id', '=', 'products.id');
+    }
 }
