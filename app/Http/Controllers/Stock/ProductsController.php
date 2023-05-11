@@ -87,13 +87,6 @@ class ProductsController extends Controller
         $product->save();
         $id = $product->id;
 
-        if (!empty($file = $request->file('file'))) {
-            $result = $this->storeFile($request);
-            $row = Product::find($id);
-            $row->image_path = $result;
-            $row->save();
-        }
-
         return response()->json([
             'status' => 1,
             'row'    => Product::where('id', $product->id)->with('creator', 'company', 'category', 'unit')->first()
