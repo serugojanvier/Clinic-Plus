@@ -59,6 +59,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('search', 'ProductsController@search');
     Route::get('show/{id}', 'ProductsController@show');
     Route::post('store', 'ProductsController@store');
+    Route::post('store/file', 'ProductsController@storeFile');
     Route::get('expired', 'ProductsController@expired');
     Route::get('destroy/{id}', 'ProductsController@destroy');
     Route::get('bulk-destroy/{ids}', 'ProductsController@bulkDelete');

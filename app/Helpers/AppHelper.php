@@ -4,6 +4,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Stock\StockinHistory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 define( 'MINUTE_IN_SECONDS', 60 );
 define( 'HOUR_IN_SECONDS', 60 * MINUTE_IN_SECONDS );
@@ -126,5 +127,12 @@ function handleConsumedItems(int $itemId, int $quantity)
             $list[] = date('Y-m-d', $i);
         }
         return $list;
+    }
+
+    function unlinkFile($file_path){
+        $storage = Storage::disk('uploads');
+        if($storage->exists($file_path)){
+            $storage->delete($file_path);
+        }
     }
 }

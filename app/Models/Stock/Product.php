@@ -23,6 +23,7 @@ class Product extends Model
         'code',
         'reference',	
         'name',	
+        'image',
         'unit_id',	
         'cost_price',	
         'rhia_price',	

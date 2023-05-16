@@ -30,10 +30,10 @@ class ProductsController extends Controller
      }
 
 
-          /**
+     /**
       * Upload file
       */
-      private function storeFile($request)
+      public function storeFile(Request $request)
       {
           $file = $request->file('file');
           $folder = 'product_images/';
@@ -53,7 +53,17 @@ class ProductsController extends Controller
           } while (Storage::disk('public')->exists($testPath));
   
           $check = $file->storeAs( $folder, $newFileName2 . '.' . $file->getClientOriginalExtension(),'public');
-          return $check;
+          $product = Product::find($request->input('product_id'));
+          if(!empty($product->image)) {
+            unlinkFile($product->image); 
+          }
+          $product->image = $check;
+          $product->save();
+          return response()->json([
+            'status'  => 1,
+            'path'    => $check,
+            'message' => 'Saved sucessfully'
+          ]);
       }
 
       /**
@@ -220,5 +230,4 @@ class ProductsController extends Controller
             'message' => 'Products deleted Successfuly!'
         ]);
     }
-
 }
