@@ -64,7 +64,7 @@ class Sale extends Model
      */
      public function getPaymentsAttribute()
      {
-        return Payment::where('transaction_id', $this->id)->select('id', 'account_id', 'payment_type')->get();
+        return Payment::where('transaction_id', $this->id)->select('id', 'payment_type')->get();
      }
 
      /**
