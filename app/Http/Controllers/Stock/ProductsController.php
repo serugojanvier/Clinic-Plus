@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Stock\StockinHistory;
 use App\Models\Stock\ProductCategory;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProductsController extends Controller
 {
@@ -25,6 +28,33 @@ class ProductsController extends Controller
             'rows'  => Product::orderByDesc('id')->with('category', 'unit')->paginate(\request()->query('per_page') ?? 45)
         ]);
      }
+
+
+          /**
+      * Upload file
+      */
+      private function storeFile($request)
+      {
+          $file = $request->file('file');
+          $folder = 'product_images/';
+          $id = Auth::id();
+          if ($id) {
+              $folder .= sprintf('%04d', (int)$id / 1000) . '/' . $id . '/';
+          }
+          $folder = $folder . date('Y/m/d');
+          $newFileName = Str::slug(substr($file->getClientOriginalName(), 0, strrpos($file->getClientOriginalName(), '.')));
+          if(empty($newFileName)) $newFileName = md5($file->getClientOriginalName());
+  
+          $i = 0;
+          do {
+              $newFileName2 = $newFileName . ($i ? $i : '');
+              $testPath = $folder . '/' . $newFileName2 . '.' . $file->getClientOriginalExtension();
+              $i++;
+          } while (Storage::disk('public')->exists($testPath));
+  
+          $check = $file->storeAs( $folder, $newFileName2 . '.' . $file->getClientOriginalExtension(),'public');
+          return $check;
+      }
 
       /**
      * Store a newly created resource in storage.
@@ -55,6 +85,7 @@ class ProductsController extends Controller
         $product->private_price = $request->input('private_price');
         $product->inter_price = $request->input('inter_price');
         $product->save();
+        $id = $product->id;
 
         return response()->json([
             'status' => 1,
