@@ -15,6 +15,39 @@ use App\Http\Controllers\Controller;
 class POSController extends Controller
 {
      /**
+     * Public function get Dashboard
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getDashboardData(Request $request)
+    {
+        $yearMonth = date('Y-m');
+        $year = date('Y');
+        if(!empty($from = $request->get('yearMonth'))){
+            $yearMonth = date('Y-m', strtotime($from));
+            $year = date('Y', strtotime($from));
+        }
+
+        $pendingChart = $paidChart = $labels = [];
+        $days = getMonthDays(date('m', strtotime($yearMonth)), $year);
+        for ($i = 1; $i <= count($days); $i++) {
+            $labels[] = sprintf("%02d", $i);
+            $pendingChart[] = Sale::where("committed_date", $days[$i - 1])->where('paid', 0)->sum('discounted_total');   
+            $paidChart[]    = Sale::where("committed_date", $days[$i - 1])->where('paid', 1)->sum('discounted_total');   
+        }
+
+        return response()->json([
+            'sales_count'    => Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->count(),
+            'total_sales'    => Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->sum('discounted_total'),
+            'total_paid'     => Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->where('paid', 1)->sum('discounted_total'),
+            'total_pending'  => Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->where('paid', 0)->sum('discounted_total'),
+            'labels'         => $labels,
+            'pending_chart'  => $pendingChart,
+            'paid_chart'  => $paidChart
+        ]);
+    }
+
+     /**
      * Get All sales Items 
      * 
      * @param \Illuminate\Http\Request $request
@@ -166,8 +199,7 @@ class POSController extends Controller
 
     /**
      * Delete made payments for a particular sale
-     * Delete sale Items
-     * Delete consumed Ingredients
+     * Delete sale Item
      * @param Modules\Api\Models\Sale $saleId
      * @return void
      */
@@ -181,13 +213,12 @@ class POSController extends Controller
             if ($action == 'edit') {
                 DB::table('sale_items')->where('id', $row->id)->delete();
             } else {
-                $ingredient->delete();
+                $row->delete();
             }
         }
         /** Delete all payments */
         $payments = Payment::where('transaction_id', $sale->id)->get();
         foreach ($payments as $payment) {
-            handleAccountBalance($payment->account_id, -$payment->amount_paid);
             if ($action == 'edit') {
                 //$payment->forceDelete();
                 DB::table('payments')->where('id', $payment->id)->delete();
@@ -213,53 +244,6 @@ class POSController extends Controller
         return response()->json([
             'status'  => 1,
             'items'   => $items
-        ]);
-    }
-
-    /**
-     * Public function get Dashboard
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getDashboardData(Request $request)
-    {
-        $yearMonth = date('Y-m');
-        $year = date('Y');
-        if(!empty($from = $request->get('yearMonth'))){
-            $yearMonth = date('Y-m', strtotime($from));
-            $year = date('Y', strtotime($from));
-        }
-
-        $pendingChart = $paidChart = $labels = [];
-        $days = getMonthDays(date('m', strtotime($yearMonth)), $year);
-        for ($i = 1; $i <= count($days); $i++) {
-            $labels[] = sprintf("%02d", $i);
-            $pendingChart[] = Sale::where('type', 'POS_SALE')->where("committed_date", $days[$i - 1])->where('paid', 0)->sum('discounted_total');   
-            $paidChart[]    = Sale::where('type', 'POS_SALE')->where("committed_date", $days[$i - 1])->where('paid', 1)->sum('discounted_total');   
-        }
-
-        $mostSold =  DB::table('sale_items')->selectRaw('products.name, SUM(sale_items.quantity) as freq')
-                        ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
-                        ->join('products', 'sale_items.item_id', '=', 'products.id')
-                        ->where('sales.committed_date', 'LIKE', "%{$yearMonth}%")
-                        ->whereNull('sales.deleted_at');
-        $branch = auth()->user()->branch_id;
-        if (!$branch) {
-            $branch = \request()->get('current_branch');
-        }
-        if (!empty($branch)) {
-            $mostSold->where('sales.branch_id', $branch);
-        }
-
-        return response()->json([
-            'sales_count'    => Sale::where('type', 'POS_SALE')->where('committed_date', 'LIKE', "%{$yearMonth}%")->count(),
-            'total_sales'    => Sale::where('type', 'POS_SALE')->where('committed_date', 'LIKE', "%{$yearMonth}%")->sum('discounted_total'),
-            'total_paid'     => Sale::where('type', 'POS_SALE')->where('committed_date', 'LIKE', "%{$yearMonth}%")->where('paid', 1)->sum('discounted_total'),
-            'total_pending'  => Sale::where('type', 'POS_SALE')->where('committed_date', 'LIKE', "%{$yearMonth}%")->where('paid', 0)->sum('discounted_total'),
-            'labels'         => $labels,
-            'pending_chart'  => $pendingChart,
-            'paid_chart'  => $paidChart,
-            'most_sold'   => $mostSold->groupBy('sale_items.item_id')->orderBy('freq', 'DESC')->limit(10)->get()->pluck('freq', 'name')
         ]);
     }
   
@@ -299,4 +283,31 @@ class POSController extends Controller
             'rows'   => PaymentMethod::get()
         ]);
       }
+
+      /**
+       * Handle Partial Payment
+       */
+    public function handlePartialPayment(Request $request)
+    {
+        $row = Sale::findOrFail($request->input('record_id'));
+        if(!empty($row)){
+            $row->amount_paid += $request->input('amount_paid');
+            $row->amount_remain -= $request->input('amount_paid');
+            $row->paid = $request->input('amount_remain') <= 0;
+            $row->save();
+            Payment::create([
+                'committed_date' => $request->input('committed_date') ?? $request->input('payment_date'),	
+                'transaction_id' => $row->id,	
+                'payment_type'   => $request->input('payment_method'),
+                'amount_paid'    => $request->input('amount_paid') ?? 0,	
+                'comment'        => $request->input('comment'),
+                'reference'      => $request->input('payment_ref'),
+                'create_user'    => auth()->id()
+            ]);
+        }
+        return response()->json([
+            'status'  => 1,
+            'message' => 'Record saved successfully'
+        ]);
+    }
 }
