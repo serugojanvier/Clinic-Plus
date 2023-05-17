@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Stock;
 
 use App\Models\Stock\Unit;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Stock\Product;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Stock\StockinHistory;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Stock\ProductCategory;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class ProductsController extends Controller
 {
@@ -54,9 +54,13 @@ class ProductsController extends Controller
   
           $check = $file->storeAs( $folder, $newFileName2 . '.' . $file->getClientOriginalExtension(),'public');
           $product = Product::find($request->input('product_id'));
+          
+          $fullPath = Storage::path('public/'.$product->image);
+          $pathToUnlink = str_replace('/','\\',$fullPath);
           if(!empty($product->image)) {
-            unlinkFile($product->image); 
+            unlink($pathToUnlink); 
           }
+          
           $product->image = $check;
           $product->save();
           return response()->json([
