@@ -36,6 +36,14 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::post('store', 'UnitsController@store');
     Route::get('destroy/{id}', 'UnitsController@destroy');
   });
+
+  Route::group(['prefix'=> 'clients'], function(){
+    Route::get('','ClientsController@index');
+    Route::get('search', 'ClientsController@search');
+    Route::get('show/{id}', 'ClientsController@show');
+    Route::post('store', 'ClientsController@store');
+    Route::get('destroy/{id}', 'ClientsController@destroy');
+  });
   
   Route::group(['prefix' =>'categories'], function(){
     Route::get('', 'CategoriesController@index');
