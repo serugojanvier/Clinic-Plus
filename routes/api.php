@@ -98,6 +98,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('tracker', 'ReportsController@getTrackerReport');  
     Route::get('store-status', 'ReportsController@trackProductsStock');  
     Route::get('dashboard', 'ReportsController@getDashboard');  
+    Route::get('dashboard/cards-filter', 'ReportsController@filterDashboardCards');  
   });
 
   Route::group(['prefix' => 'requisitions'], function(){
@@ -117,6 +118,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
   Route::group(['prefix' => 'pos'], function(){
     Route::get('sales', 'POSController@index');
     Route::get('dashboard', 'POSController@getDashboardData');
+    Route::get('dashboard/cards-filter', 'POSController@filterDashboardCards');
     Route::get('items', 'POSController@salesItems');
     Route::get('payments-modes', 'POSController@getPaymentMethod');
     Route::post('sales/store', 'POSController@store');

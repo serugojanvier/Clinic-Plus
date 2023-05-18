@@ -47,6 +47,23 @@ class POSController extends Controller
         ]);
     }
 
+    /**
+     * Filter dashboard cards
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function filterDashboardCards(Request $request)
+    {
+        $from = date('Y-m-d', strtotime($request->get('from')));
+        $to   = date('Y-m-d', strtotime($request->get('to')));
+        return response()->json([
+            'sales_count'    => Sale::where('committed_date', '>=', $from)->where('committed_date', '<=', $to)->count(),
+            'total_sales'    => Sale::where('committed_date', '>=', $from)->where('committed_date', '<=', $to)->sum('discounted_total'),
+            'total_paid'     => Sale::where('committed_date', '>=', $from)->where('committed_date', '<=', $to)->where('paid', 1)->sum('discounted_total'),
+            'total_pending'  => Sale::where('committed_date', '>=', $from)->where('committed_date', '<=', $to)->where('paid', 0)->sum('discounted_total'),
+        ]);
+    }
+
      /**
      * Get All sales Items 
      * 

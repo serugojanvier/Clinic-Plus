@@ -218,11 +218,12 @@ class ReportsController extends Controller
                                     ->leftJoin('products', 'stock.product_id', '=', 'products.id')
                                     ->first()
                                     ->branch_stock,
-            'receives_amount' => $receiveData['amount'],      
-            'receives_chart'  => $receiveData['chart'], 
+            'receives_amount'  => $receiveData['amount'],      
+            'receives_chart'   => $receiveData['chart'], 
             'transfers_amount' => $transferData['amount'],      
             'transfers_chart'  => $transferData['chart'],
-            'total_products'   => Product::count()   
+            'total_products'   => Product::count(),
+            'current_month'    => [date('Y-m-d', strtotime("first day of this month")), date('Y-m-d', strtotime("last day of this month"))]   
         ]);
     }
 
@@ -278,5 +279,20 @@ class ReportsController extends Controller
             'amount' => $amount,
             'chart'  => $monthsData
         ];
+    }
+
+    /**
+     * Filter dashboard cards
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function filterDashboardCards(Request $request)
+    {
+        $from = date('Y-m-d', strtotime($request->get('from')));
+        $to   = date('Y-m-d', strtotime($request->get('to')));
+        return response()->json([
+            'receives_amount'  => StockReceive::whereBetween('date_received', [$from, $to])->sum('amount'), 
+            'transfers_amount' => StockTransfer::whereBetween('date_transfered', [$from, $to])->sum('amount')
+        ]);
     }
 }
