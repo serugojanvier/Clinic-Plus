@@ -109,8 +109,8 @@ class POSController extends Controller
         if (!empty($client = $request->get('client_id'))) {
             $result->where('client_id', $client);
         }
-        if (!empty($waiter = $request->get('waiter_id'))) {
-            $result->where('create_user', $waiter);
+        if (empty($isAdmin = $request->get('is_admin'))) {
+            $result->where('create_user', auth()->id());
         }
        
         return response()->json([
