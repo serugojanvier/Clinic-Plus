@@ -301,6 +301,41 @@ class POSController extends Controller
         ]);
       }
 
+      
+     /**
+      * Get Payment methods
+      * @return Jsonresponse
+      */
+
+      public function getPaymentHistory(Request $request)
+      {
+        $result = Payment::select('*');
+
+        $from = date('Y-m-d');
+        if(!empty($fromd = $request->get('from'))){
+            $from = $fromd;
+        }
+
+        $to = $request->get('to');
+        if (empty($to)){
+            $result->where('created_at', 'like', '%' . $from . '%');
+        } else {
+            $result->where('created_at', '>=', $from)
+                    ->where('created_at', '<=', $to);
+        }
+
+        if (!empty($payment_type = $request->get('payment_type'))) {
+            $result->where('payment_type', $payment_type);
+        }
+        
+        return response()->json([
+            'status' => 1,
+            'rows'   => $result->with('transaction', 'creator')
+                               ->orderBy('id', 'DESC')
+                               ->paginate(45),
+        ]);
+      }
+
       /**
        * Handle Partial Payment
        */

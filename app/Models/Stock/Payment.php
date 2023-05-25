@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\Stock;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -23,6 +24,16 @@ class Payment extends Model
     ];
 
     protected $appends = [ 'payment_mode' ];
+
+        /**
+     * @return BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'create_user', 'id')
+                    ->select('id', 'name')
+                    ->withTrashed();
+    }
 
     public function transaction()
     {

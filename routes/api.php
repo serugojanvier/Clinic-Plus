@@ -121,6 +121,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('dashboard/cards-filter', 'POSController@filterDashboardCards');
     Route::get('items', 'POSController@salesItems');
     Route::get('payments-modes', 'POSController@getPaymentMethod');
+    Route::get('payment-history', 'POSController@getPaymentHistory');
     Route::post('sales/store', 'POSController@store');
     Route::post('sales/partial-payment', 'POSController@handlePartialPayment');
     Route::get('sales/destroy/{id}', 'POSController@handleDestroy');
