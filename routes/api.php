@@ -37,6 +37,20 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('destroy/{id}', 'UnitsController@destroy');
   });
 
+  Route::group(['prefix' => 'expensesCategory'], function(){
+    Route::get('', 'ExpenseCategoryController@index');
+    Route::get('show/{id}', 'ExpenseCategoryController@show');
+    Route::post('store', 'ExpenseCategoryController@store');
+    Route::get('destroy/{id}', 'ExpenseCategoryController@destroy');
+  });
+
+  Route::group(['prefix' => 'expenses'], function(){
+    Route::get('', 'ExpenseController@index');
+    Route::get('show/{id}', 'ExpenseController@show');
+    Route::post('store', 'ExpenseController@store');
+    Route::get('destroy/{id}', 'ExpenseController@destroy');
+  });
+
   Route::group(['prefix'=> 'clients'], function(){
     Route::get('','ClientsController@index');
     Route::get('search', 'ClientsController@search');
