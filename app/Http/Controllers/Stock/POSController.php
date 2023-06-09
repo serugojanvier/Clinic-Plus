@@ -74,8 +74,9 @@ class POSController extends Controller
     {
         return response()->json([
             'status' => 1,
-            'rows'   => Product::select('id', 'name', 'image', 'reference', 'private_price as price', 'quantity as qty', 'category_id')
+            'rows'   => Product::select('id', 'name', 'image', 'reference', 'private_price as price', 'quantity as qty', 'category_id', 'unit_id')
                                 ->orderBy('products.name', 'ASC')
+                                ->with('unit','category')
                                 ->get()
         ]);
     }
