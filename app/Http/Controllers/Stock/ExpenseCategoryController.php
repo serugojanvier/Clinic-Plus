@@ -19,7 +19,7 @@ class ExpenseCategoryController extends Controller
 
         return response()->json([
             'status'    => 1,
-            'row'       => ExpenseCategory::orderByDesc('id')->paginate(\request()->query('per_page') ?? 45)
+            'rows'       => ExpenseCategory::orderByDesc('id')->get()
         ]);
     }
 

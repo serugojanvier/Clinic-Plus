@@ -39,6 +39,8 @@ class ExpenseController extends Controller
         }
 
         $expense->fill($request->input());
+        $expense->committed_date = date('Y-m-d');
+        $expense->created_by = auth()->id();
         $expense->save();
         $id = $expense->id;
         
