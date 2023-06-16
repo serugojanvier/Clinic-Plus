@@ -135,7 +135,7 @@ CREATE TABLE `payment_methods` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `payments`;
 CREATE TABLE `payments` (
@@ -155,7 +155,7 @@ CREATE TABLE `payments` (
   KEY `PAYMENT_MODE` (`payment_type`),
   CONSTRAINT `PAID_SALE` FOREIGN KEY (`transaction_id`) REFERENCES `sales` (`id`),
   CONSTRAINT `PAYMENT_MODE` FOREIGN KEY (`payment_type`) REFERENCES `payment_methods` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `product_categories`;
 CREATE TABLE `product_categories` (
@@ -250,7 +250,7 @@ CREATE TABLE `sale_items` (
   PRIMARY KEY (`id`),
   KEY `SALE_ITEM_PRODUCT` (`item_id`),
   KEY `SALE_ITEM` (`sale_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=545 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=545 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `sales`;
 CREATE TABLE `sales` (
@@ -275,7 +275,7 @@ CREATE TABLE `sales` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `SALES_CLIENT` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `stock`;
 CREATE TABLE `stock` (

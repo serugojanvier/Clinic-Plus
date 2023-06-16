@@ -23,6 +23,21 @@ class ExpenseCategoryController extends Controller
         ]);
     }
 
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ExpensesCategories()
+    {
+        // Show all data in Model
+
+        return response()->json([
+            'status'    => 1,
+            'rows'   => ExpenseCategory::orderByDesc('id')->with('creator')->paginate(\request()->query('per_page') ?? 45)
+        ]);
+    }
+
 
     /**
      * Store a newly created resource in storage.

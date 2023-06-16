@@ -2,6 +2,7 @@
 
 namespace App\Models\Stock;
 
+use App\Models\User;
 use App\Traits\CrudTrait;
 use App\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Model;
@@ -23,4 +24,14 @@ class ExpenseCategory extends Model
         'description',
         'created_by'
     ];
+
+        /**
+     * @return BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id')
+                    ->select('id', 'name')
+                    ->withTrashed();
+    }
 }

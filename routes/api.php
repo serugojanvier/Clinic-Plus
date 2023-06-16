@@ -39,6 +39,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
 
   Route::group(['prefix' => 'expensesCategory'], function(){
     Route::get('', 'ExpenseCategoryController@index');
+    Route::get('categories', 'ExpenseCategoryController@ExpensesCategories');
     Route::get('show/{id}', 'ExpenseCategoryController@show');
     Route::post('store', 'ExpenseCategoryController@store');
     Route::get('destroy/{id}', 'ExpenseCategoryController@destroy');
