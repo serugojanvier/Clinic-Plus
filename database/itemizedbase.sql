@@ -1,62 +1,46 @@
--- phpMyAdmin SQL Dump
--- version 4.9.7
--- https://www.phpmyadmin.net/
+-- -------------------------------------------------------------
+-- TablePlus 5.3.6(496)
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Apr 25, 2023 at 09:37 AM
--- Server version: 5.7.36
--- PHP Version: 5.6.40
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
+-- https://tableplus.com/
+--
+-- Database: clinic_plus
+-- Generation Time: 2023-06-16 14:22:50.5860
+-- -------------------------------------------------------------
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Database: `itemezepro`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `clients`
---
 
 DROP TABLE IF EXISTS `clients`;
-CREATE TABLE IF NOT EXISTS `clients` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `clients` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `phone` varchar(12) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `discount` float DEFAULT NULL,
+  `discount` double DEFAULT NULL,
   `address` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `companies`
---
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 
 DROP TABLE IF EXISTS `companies`;
-CREATE TABLE IF NOT EXISTS `companies` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `companies` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `tin_number` int(11) DEFAULT NULL,
+  `tin_number` int DEFAULT NULL,
   `address_line` varchar(100) NOT NULL,
-  `created_by` int(11) NOT NULL,
+  `created_by` int NOT NULL,
   `logo` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -66,177 +50,84 @@ CREATE TABLE IF NOT EXISTS `companies` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `companies`
---
-
-INSERT INTO `companies` (`id`, `name`, `phone`, `email`, `tin_number`, `address_line`, `created_by`, `logo`, `created_at`, `deleted_at`, `updated_at`, `reference`, `status`) VALUES
-(2, 'RAPHA MEDICAL CLINIC', '898786', 'raphamedicalclinic@gmail.com', 876879, 'Remera', 1, NULL, '2023-02-02 12:12:40', NULL, '2023-02-02 12:12:40', 'd4c59bf84871b0fa1845', 1),
-(9, 'NARADA MEDICAL CLINIC', '787849384', 'naradamedicalclinic@gmai.com', 123455, 'Kayonza', 1, NULL, '2023-02-02 12:11:53', NULL, '2023-02-02 12:11:53', 'a941130340fe8c934dba', 1),
-(11, 'BAHO INTERNATIONAL HOSPITAL', '903845', 'bahointernationalhospital@gmail.com', 879890, 'Nyarutarama', 1, 'null', '2023-02-02 12:13:20', NULL, '2023-03-30 06:26:29', '871319bb41c3b8d0520b', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `departments`
---
-
 DROP TABLE IF EXISTS `departments`;
-CREATE TABLE IF NOT EXISTS `departments` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE `departments` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int unsigned NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `leader_id` int(10) UNSIGNED DEFAULT NULL,
+  `leader_id` int unsigned DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
-  `created_by` int(10) UNSIGNED DEFAULT NULL,
+  `created_by` int unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `departments`
---
+DROP TABLE IF EXISTS `expense_categories`;
+CREATE TABLE `expense_categories` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` bigint NOT NULL,
+  `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `created_by` bigint NOT NULL,
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `departments` (`id`, `company_id`, `name`, `description`, `leader_id`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 2, 'Pediatric', 'Test', 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(2, 2, 'Anesthesiology & Critical Care', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(3, 2, 'Cardiology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(4, 2, 'Cardiovascular Sciences', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(5, 2, 'Cardiovascular Surgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(6, 2, 'Medicine', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(7, 2, 'Nanomedicine', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(8, 2, 'Neurology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(9, 2, 'Neurosurgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(11, 2, 'Obstetrics and Gynecology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(12, 2, 'Ophthalmology - Blanton Eye Institute', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(13, 2, 'Oral & Maxillofacial Surgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(14, 2, 'Orthopedic Surgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(15, 2, 'Otolaryngology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(16, 2, 'Pathology & Genomic Medicine', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(17, 2, 'Pharmacy', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(18, 2, 'Radiation Oncology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(19, 2, 'Radiology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(20, 2, 'Surgery', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(21, 2, 'Urology', NULL, 2, 1, 3, '2023-01-25 09:29:16', '2023-01-25 16:59:44', NULL),
-(22, 2, 'NURSING', NULL, 3, 1, 3, '2023-02-04 21:02:34', '2023-02-04 21:02:34', NULL),
-(23, 2, 'Laboratory', NULL, 6, 1, 6, '2023-03-14 17:18:14', '2023-03-14 17:18:14', NULL),
-(24, 9, 'NURSING', NULL, 7, 1, 7, '2023-03-30 07:37:50', '2023-03-30 07:37:50', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `insurances`
---
+DROP TABLE IF EXISTS `expenses`;
+CREATE TABLE `expenses` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` bigint NOT NULL,
+  `category_id` bigint NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `amount` bigint NOT NULL,
+  `payment_method` bigint NOT NULL,
+  `created_by` bigint NOT NULL,
+  `committed_date` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `insurances`;
-CREATE TABLE IF NOT EXISTS `insurances` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `insurances` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `group_ref` enum('RHIA','PRIVATE','INTERNATIONAL','OTHER') NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `discount` double UNSIGNED DEFAULT NULL,
+  `discount` double unsigned DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `insurances`
---
-
-INSERT INTO `insurances` (`id`, `group_ref`, `name`, `description`, `discount`, `status`) VALUES
-(1, 'RHIA', 'RSSB', 'Test', 12, 1),
-(2, 'RHIA', 'UAP', NULL, NULL, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `migrations`
---
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `migrations`;
-CREATE TABLE IF NOT EXISTS `migrations` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL,
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `migrations`
---
-
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2023_03_31_110950_create_subscriptions_table', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `notifications`
---
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `notifications`;
-CREATE TABLE IF NOT EXISTS `notifications` (
-  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notifiable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notifiable_id` bigint(20) UNSIGNED NOT NULL,
-  `data` text COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `notifications` (
+  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notifiable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notifiable_id` bigint unsigned NOT NULL,
+  `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `read_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `notifications`
---
-
-INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
-('fe44dd2e-1d6c-4267-a8d7-13b463690d3e', 'App\\Notifications\\ChannelServices', 'App\\Models\\User', 3, '{\"id\":\"fe44dd2e-1d6c-4267-a8d7-13b463690d3e\",\"notification\":{\"id\":30,\"slug\":\"KT8RZ9L5BXSOG4C8S\",\"type\":\"Requisition\",\"message\":\"New Requisition from <b>Pharmacy<\\/b> of <b>2<\\/b> items created by <b>UWAMAHORO Sophie<\\/b>\"}}', '2023-03-28 10:14:08', '2023-03-28 10:13:55', '2023-03-28 10:14:08');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payments`
---
-
-DROP TABLE IF EXISTS `payments`;
-CREATE TABLE IF NOT EXISTS `payments` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `committed_date` date NOT NULL,
-  `transaction_id` bigint(20) DEFAULT NULL,
-  `reference` varchar(100) DEFAULT NULL,
-  `amount_paid` double(18,3) UNSIGNED NOT NULL,
-  `payment_type` int(11) DEFAULT NULL,
-  `comment` varchar(255) DEFAULT NULL,
-  `create_user` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `PAID_SALE` (`transaction_id`),
-  KEY `PAYMENT_MODE` (`payment_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `payments`
---
-
-INSERT INTO `payments` (`id`, `committed_date`, `transaction_id`, `reference`, `amount_paid`, `payment_type`, `comment`, `create_user`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(143, '2023-04-21', 82, 'null', 13300.000, 2, NULL, 3, '2023-04-21 17:13:04', '2023-04-21 17:13:04', NULL),
-(144, '2023-04-25', 83, 'null', 2720.000, 2, NULL, 3, '2023-04-25 08:23:31', '2023-04-25 08:23:31', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payment_methods`
---
-
 DROP TABLE IF EXISTS `payment_methods`;
-CREATE TABLE IF NOT EXISTS `payment_methods` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `payment_methods` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `currency` varchar(10) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -244,323 +135,114 @@ CREATE TABLE IF NOT EXISTS `payment_methods` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `payment_methods`
---
-
-INSERT INTO `payment_methods` (`id`, `name`, `currency`, `description`, `created_at`, `deleted_at`, `updated_at`) VALUES
-(1, 'CASH', NULL, 'Payment with Cash', '2023-03-05 10:31:25', NULL, NULL),
-(2, 'MOMO', NULL, 'Payment with MTN Mobile Money', '2023-03-05 10:31:25', NULL, NULL),
-(3, 'CREDIT CARD', NULL, 'Payment with all credit cards', '2023-03-05 10:31:25', NULL, NULL),
-(4, 'CHEQUE', NULL, 'Payment with Cheque.', '2023-03-05 10:31:25', NULL, NULL),
-(5, 'BANK TRANSFER', NULL, 'Pay by transferring money amount banks ', '2023-03-05 10:31:25', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `products`
---
-
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE IF NOT EXISTS `products` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) UNSIGNED DEFAULT NULL,
-  `code` varchar(100) DEFAULT NULL,
-  `reference` varchar(20) DEFAULT NULL,
-  `name` varchar(100) NOT NULL,
-  `unit_id` int(10) UNSIGNED DEFAULT NULL,
-  `cost_price` double UNSIGNED DEFAULT '0',
-  `rhia_price` double UNSIGNED DEFAULT '0',
-  `private_price` double UNSIGNED DEFAULT '0',
-  `inter_price` double(18,2) UNSIGNED DEFAULT '0.00',
-  `category_id` int(10) UNSIGNED DEFAULT NULL,
-  `quantity` double UNSIGNED NOT NULL DEFAULT '0',
-  `status` tinyint(1) DEFAULT '1',
-  `created_by` int(10) UNSIGNED DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=98 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `products`
---
-
-INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_id`, `cost_price`, `rhia_price`, `private_price`, `inter_price`, `category_id`, `quantity`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 2, '1I3H30NP', 'AFCC41454F38A3570473', 'Ampicilline 500mg', 2, 100, 0, 0, 0.00, 2, 0, 1, 3, '2023-03-14 14:48:40', '2023-04-21 16:31:35', NULL),
-(2, 2, '18DNQTOR', '2DCD61D5423EB64E8559', 'Artesinate 60mg', 2, 0, 0, 0, 0.00, 2, 54, 1, 3, '2023-03-14 14:48:40', '2023-04-21 16:31:35', NULL),
-(3, 2, '9SF33WJ7', '7635AACF4DD386A78AED', 'Adrenaline injectable 1ml', 4, 880, 0, 0, 0.00, 2, 0, 1, 3, '2023-03-14 14:48:40', '2023-04-25 08:23:31', NULL),
-(4, 2, '1N5FZPD3', 'D03D90A04E838120D95C', 'Cefotaxime 1gr', 1, 0, 0, 0, 0.00, 2, 49, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
-(5, 2, '15BUHK8S', 'A7DC58F94ECE83D31195', 'Cloxacilline 500mg', 4, 0, 0, 0, 0.00, 2, 50, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(6, 2, '28L1W8UL', '2139273F4B72896C633C', 'Condoms', 9, 0, 0, 0, 0.00, 2, 39, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
-(7, 2, '1LACGQFI', '7A8F72B1428184075284', 'Ceftriaxone 1gr', 1, 0, 0, 0, 0.00, 2, 39, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
-(8, 2, '12W3AOPQ', 'AF5B55134701B23164B2', 'Ciprofloxacin 200mg', 4, 0, 0, 0, 0.00, 2, 20, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(9, 2, '3UGWN5CI', 'FD84687044D0B3EB5740', 'Catapressan 150mg', 4, 0, 0, 0, 0.00, 2, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(10, 2, 'JHV50955', '9C48CA2A47F493DFD2D6', 'Cimetidine 200mg', 4, 0, 0, 0, 0.00, 2, 80, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(11, 2, '6ADZ4X3M', '35D511364BD1BEFBA870', 'Dexamethasone 4mg', 4, 0, 0, 0, 0.00, 2, 10, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(12, 2, '15TJ9ULE', 'D358CA744FE89BB7961C', 'Depo 1ml', 4, 0, 0, 0, 0.00, 2, 8, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(13, 2, '1N8UHIDC', 'C1B6653349BE8E2F1F01', 'Diazepan 10mg', 4, 0, 0, 0, 0.00, 2, 20, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(14, 2, '15HBEOYN', 'D279C86944BCA0C60B32', 'Dicynone 250mg', 4, 0, 0, 0, 0.00, 2, 30, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(15, 2, '1PKMBNDE', '917907A44974ACBEFA94', 'Dicclofenac 75mg', 4, 0, 0, 0, 0.00, 2, 90, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(16, 2, '3JNJ7T10', '5032AED34F48B15C19A6', 'Gentamycine 80ml', 4, 0, 0, 0, 0.00, 2, 70, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(17, 2, 'IACL80I9', '2250B96D4EDA885BD51C', 'Glucose 50% 100ml', 4, 0, 0, 0, 0.00, 2, 40, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(18, 2, '1GHFC1KH', '95DD9BFA41AAA98EE23B', 'Glucose 5% 500ml', 4, 0, 0, 0, 0.00, 2, 35, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(19, 2, '16PEDG0Z', 'AA7931EE4EE5BB717384', 'Hyocine 20mg', 2, 0, 0, 0, 0.00, 2, 70, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(20, 2, '1ADX45CE', '928299664FC08895CA7F', 'Microlut', 9, 0, 0, 0, 0.00, 2, 140, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(21, 2, '1PGGZPJH', '08C6DCEE4282B34A9114', 'Metoclopramide 10mg', 2, 0, 0, 0, 0.00, 2, 80, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(22, 2, '1NJPPSIR', 'CC157A4E41B4B8CF064C', 'Microgynon 3', 3, 0, 0, 0, 0.00, 2, 1, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(23, 2, 'JI7FTSGL', 'DA5BED7042319CC892EE', 'Metronidazol 500mg', 2, 0, 0, 0, 0.00, 2, 22, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(24, 2, '12OUPBBY', '8DD769FC4BB18056243A', 'NS 500ml', 4, 0, 0, 0, 0.00, 2, 90, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(25, 2, '26WBAG14', 'A322E17F4FB0B055DCFD', 'paracetamol IV 100ml', 4, 0, 0, 0, 0.00, 2, 90, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(26, 2, '14593I1G', '291A35E749B9860E3F9A', 'paracetamol suppo 125mg', 2, 0, 0, 0, 0.00, 2, 90, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(27, 2, '1FZQWDL1', '2145E67F4CC88391995D', 'paracetamol suppo 250mg', 2, 0, 0, 0, 0.00, 2, 20, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(28, 2, '1OX9P8QB', '53DAEE9E44C0986C4D23', 'RL 500ml', 4, 0, 0, 0, 0.00, 2, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(29, 2, '1CU6AAWG', '3C4679CD49B4928232AA', 'Salbutamol 2.5ml', 4, 0, 0, 0, 0.00, 2, 200, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(30, 2, 'NMIRKZT0', '33CFE3B24AACA807901D', 'Sterile', 23, 0, 0, 0, 0.00, 2, 30, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(31, 2, 'G0A5VZGM', '8EC49FC5466B9D9B6F3A', 'Tramadol 2ml', 4, 0, 0, 0, 0.00, 2, 15, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(32, 2, '4VGUC0W9', '21BFFF43458FB5A1591D', 'Aiguille G 21', 9, 0, 0, 0, 0.00, 1, 656, 1, 3, '2023-03-14 14:48:40', '2023-04-25 08:23:32', NULL),
-(33, 2, 'B4K8FWH6', 'E7AF8436446E814BE7BD', 'Aiguille G 23', 9, 0, 0, 0, 0.00, 1, 1089, 1, 3, '2023-03-14 14:48:40', '2023-04-21 16:31:35', NULL),
-(34, 2, '5HLMEI11', 'B0D7DFCF40ECA2209C27', 'Abaisse langue', 9, 2000, 0, 0, 0.00, 1, 269, 1, 3, '2023-03-14 14:48:40', '2023-04-25 08:23:31', NULL),
-(35, 2, '3E6ORU6S', 'EE5F1A8040C7B0D7CB11', 'Bistouri', 9, 0, 0, 0, 0.00, 1, 99, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
-(36, 2, '1ANZI6CZ', '0C48CD3F414FA8061571', 'Blood glucose test strips', 9, 0, 0, 0, 0.00, 1, 149, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:05', NULL),
-(37, 2, '39BPSO6L', '6772A6A6435F82CEE4D9', 'Cover glass', 9, 0, 0, 0, 0.00, 1, 2000, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(38, 2, '1AYX40P1', '91E601B541E0AD6C4DAA', 'Cat gut 3-0', 9, 0, 0, 0, 0.00, 1, 59, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
-(39, 2, '15J00I8J', '9968E1BF4543AFCCAB6F', 'Cotton wool 500mg', 4, 0, 0, 0, 0.00, 1, 1, 1, 3, '2023-03-14 14:48:40', '2023-04-21 17:13:04', NULL),
-(40, 2, '1MV3W26I', 'E0FF37AA441390304F27', 'Detergent 20l', 3, 0, 0, 0, 0.00, 1, 2, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(41, 2, '2IEQLGBO', 'F1678E724DDEAE9B4ECC', 'Diluent', 9, 0, 0, 0, 0.00, 1, 2, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(42, 2, '13Y7HLE4', '65A51FFA4D04970644BC', 'Dawadine 200ml', 2, 0, 0, 0, 0.00, 1, 7, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(43, 2, 'HD4T81WU', 'D22F2300427C942B8425', 'Eau distulee 10ml', 4, 0, 0, 0, 0.00, 1, 480, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(44, 2, 'MJ5BVRJG', 'EF2DD4AC4C279C76DE17', 'Gauze 90cm', 8, 0, 0, 0, 0.00, 1, 1, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(45, 2, '1I3AUQR4', '15F835E94B6EA6948F31', 'Gant sterile', 9, 0, 0, 0, 0.00, 1, 50, 1, 3, '2023-03-14 14:48:40', '2023-03-14 15:08:09', NULL),
-(46, 2, '1DO328S9', '994F647F47F3AB171053', 'G20', NULL, 0, 0, 0, 0.00, 1, 200, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(47, 2, '1MY9GF7F', '49FF00C6420A814338BF', 'G22', NULL, 0, 0, 0, 0.00, 1, 100, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(48, 2, '1NHEL7HX', 'A3807381402D928EBFD4', 'G24', NULL, 0, 0, 0, 0.00, 1, 400, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(49, 2, 'AZYCDFZA', 'A80D4F58473683A8DD05', 'Gant propre', NULL, 0, 0, 0, 0.00, 1, 3700, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(50, 2, 'M887T5BS', '47F7B8BC4D4EA131F056', 'Gel gynecologique', NULL, 0, 0, 0, 0.00, 1, 2, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(51, 2, '1G1DVTJK', '5A47136D4DFAA738083E', 'Germicidial solution', NULL, 0, 0, 0, 0.00, 1, 2, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(52, 2, '1B06MIOQ', '97D6ECAA49EABED21121', 'HCV', NULL, 0, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(53, 2, '25YR5YV2', 'DCD0C46242B2A5B5D6A8', 'Hpylori Ag', NULL, 0, 0, 0, 0.00, 1, 50, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(54, 2, 'GRS0CPEF', '5BA379544C28A788F2DD', 'HCG', NULL, 0, 0, 0, 0.00, 1, 200, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(55, 2, '1I8YKH2O', 'B75E1EB84B0DA66F2E8F', 'HBS', NULL, 0, 0, 0, 0.00, 1, 150, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(56, 2, '1MSTLZIJ', '1B06F230496CB0139C19', 'Lidocaine 0.02', NULL, 0, 0, 0, 0.00, 1, 8, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(57, 2, '3IZVSDQS', '7DEA64054D3D9E804BDA', 'Lyse', NULL, 0, 0, 0, 0.00, 1, 1, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(58, 2, '1G3QSQPD', '0CB50E974C6890E7DC96', 'Nasogastrique numero 5', 6, 0, 0, 0, 0.00, 1, 18, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(59, 2, '18W06ADT', '3E82EC6F431A92140D8E', 'Nasogastrique numero 6', 6, 0, 0, 0, 0.00, 1, 18, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(60, 2, '26W6U5A7', '0635A3AD4951A7344130', 'nylon 2-0', NULL, 0, 0, 0, 0.00, 1, 24, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(61, 2, '9R5KBPAB', 'C4C3B94E4B669A949BEE', 'plasters', NULL, 0, 0, 0, 0.00, 1, 900, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(62, 2, '1I2T2CN3', '3A80AD0045CA8F6CFEC4', 'pupete pasteur', NULL, 0, 0, 0, 0.00, 1, 500, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(63, 2, '25XBQKTP', '2DB8244B4DCAA0AF2385', 'Rapid test device', NULL, 0, 0, 0, 0.00, 1, 150, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(64, 2, '2Z29IUUI', '056C6E9C4CE5BED64CFF', 'Spradrap perfore', NULL, 0, 0, 0, 0.00, 1, 6, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(65, 2, 'AI4U6G7N', 'FD7DFD844B64865B4188', 'Slades', NULL, 0, 0, 0, 0.00, 1, 350, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(66, 2, '69RSEA2H', '1A1191C84C85AE3DE30F', 'Seringue 2ml', 4, 0, 0, 0, 0.00, 1, 70, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(67, 2, 'N6BXVC43', '4D8A7F734CE198ED3327', 'Seringue 5ml', 4, 0, 0, 0, 0.00, 1, 100, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(68, 2, '18D958R7', 'BBFABCC142ADB13D57AE', 'Seringue 10ml', 4, 0, 0, 0, 0.00, 1, 60, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(69, 2, '8KNHAOZ1', '219CF7B14D69A0128C3C', 'Sterile swab stick', NULL, 0, 0, 0, 0.00, 1, 2100, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(70, 2, '8IN42OD2', 'D18D1CDF4F4284C704C8', 'Sample cup 1ml', 4, 0, 0, 0, 0.00, 1, 250, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(71, 2, 'ADBFD85N', '262BF21B461E84179686', 'Tube rouge 4ml', 4, 0, 0, 0, 0.00, 1, 700, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(72, 2, '8KH35W44', 'A9B21A8A45DAB3B44637', 'Tube EDTA 4ml', 4, 0, 0, 0, 0.00, 1, 800, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(73, 2, 'F9S1E72D', '604053D542CAB0D63F56', 'Tube lithium heparine 4ml', 4, 0, 0, 0, 0.00, 1, 300, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(74, 2, '15IMZDHD', 'F53777354CDDB19B409E', 'Trousse de perfusion', NULL, 0, 0, 0, 0.00, 1, 125, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(75, 2, '13KMDZ40', '53BB76514A798BB88C04', 'TDR', NULL, 0, 0, 0, 0.00, 1, 90, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(76, 2, '288QTEGX', 'A69174C749DB93D88610', 'Aiguille vac', NULL, 9000, 0, 0, 0.00, 1, 998, 1, 3, '2023-03-14 14:48:40', '2023-04-21 16:51:57', NULL),
-(77, 2, '16BI0ZPP', '04B28AAE47EFB8C69F75', 'H pylori Ab', NULL, 0, 0, 0, 0.00, 1, 50, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(78, 2, 'KPW8DV9S', '832C433F422DA3BAE5E7', 'Plobe cleaner', NULL, 0, 0, 0, 0.00, 1, 1, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(79, 2, '2639EW36', '5A5A6236482B9ECEDB96', 'demineralised water 20l', 1, 0, 0, 0, 0.00, 1, 1, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(80, 2, '1CTKB9SK', '97184CA7445BB8951840', 'Orafil_G', NULL, 0, 0, 0, 0.00, 1, 1, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(81, 2, '1A6R6CVX', 'B1D8F5884E86B0D8BD3D', 'High strength', NULL, 0, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(82, 2, '1636SQA3', 'B2DFFB314395883AD195', 'Lidocaine Topical', NULL, 0, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(83, 2, '26A3UZM1', '72B197D64AA2AA2C9F07', 'Dental Film batch', NULL, 0, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(84, 2, 'B50PZICN', 'A50C75F94C90BA8E6A5E', 'Dental needles g27', NULL, 0, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(85, 2, 'MXWIN8V1', '69FB69EF4EE38547B2B1', 'safish bleach 750ml', 4, 0, 0, 0, 0.00, 1, 1, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(86, 2, 'EY0R0G0J', '8AF7A0EE4C45BB37F6CF', 'suction tip', NULL, 0, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(87, 2, 'FK79J2HR', '368A7A24421D9A1E36A5', 'Dental needles g30', NULL, 0, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(88, 2, '1IFWB1AR', '718D7B5B45DF9E18AADC', 'Disposable dental needles', NULL, 0, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(89, 2, '1FKWFXJX', '6712125A4EBF836F31AC', 'Dycal', NULL, 0, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', NULL, NULL),
-(90, 2, '1MI89HHR', '63C958194DEDA685E4BC', 'Aniosyme', NULL, 200, 0, 0, 0.00, 1, 0, 1, 3, '2023-03-14 14:48:40', '2023-04-21 16:31:35', NULL),
-(91, 2, '195JCBRC', '2FFE40EB43F795A8EB28', 'Syphilis rapid test', 9, 0, 0, 0, 0.00, 1, 1, 1, 6, '2023-03-14 14:48:40', '2023-03-15 08:15:53', NULL),
-(92, 9, '1DOWFEHB', '2BDD2C554878A8B1493E', 'MICROGENU', 2, 800, 0, 0, 0.00, 335, 19, 1, 7, '2023-03-30 07:40:43', '2023-03-30 08:26:32', NULL),
-(93, 2, '1LCPDRTE', '93AA3C394A228BA16FCA', 'sex', 5, 0, 0, 0, 0.00, 331, 0, 1, 3, '2023-03-30 10:52:05', '2023-04-04 16:43:32', '2023-04-04 16:43:32'),
-(94, 2, 'CYKHXO10', '302C3EB24AFBA0E21440', 'sex', 3, 0, 0, 0, 0.00, 2, 0, 1, 3, '2023-03-30 10:56:46', '2023-03-30 11:41:53', '2023-03-30 11:41:53'),
-(95, 2, '16ERNJFS', 'E1E242384DC786ACCDD9', 'sex', 3, 0, 0, 0, 0.00, 2, 0, 1, 3, '2023-03-30 10:58:56', '2023-03-30 11:41:50', '2023-03-30 11:41:50'),
-(96, 2, '13NFO0DX', 'F1CE6B0646C0992E2019', 'sex', 3, 0, 0, 0, 0.00, 2, 0, 1, 3, '2023-03-30 11:00:38', '2023-03-30 11:41:45', '2023-03-30 11:41:45'),
-(97, 2, 'KO844EGB', '78587E194B86974E8FE6', 'sex', 5, 0, 0, 0, 0.00, 3, 0, 1, 3, '2023-03-30 11:00:57', '2023-03-30 11:41:41', '2023-03-30 11:41:41');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_categories`
---
-
-DROP TABLE IF EXISTS `product_categories`;
-CREATE TABLE IF NOT EXISTS `product_categories` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) UNSIGNED NOT NULL,
-  `parent_id` int(11) DEFAULT NULL,
-  `name` varchar(50) NOT NULL,
-  `description` varchar(100) DEFAULT NULL,
-  `created_by` int(10) UNSIGNED DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=336 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `product_categories`
---
-
-INSERT INTO `product_categories` (`id`, `company_id`, `parent_id`, `name`, `description`, `created_by`, `created_at`, `deleted_at`, `updated_at`) VALUES
-(1, 2, NULL, 'CONSUMABLES', NULL, NULL, '2023-03-14 15:07:38', NULL, NULL),
-(2, 2, NULL, 'DRUGS', NULL, NULL, '2023-03-14 15:07:38', NULL, NULL),
-(3, 2, NULL, 'LABORATORY', NULL, NULL, '2023-03-14 15:07:38', NULL, NULL),
-(329, 2, 2, 'ANESTESIA', 'Anestesia Drugs', 3, '2023-03-25 06:23:52', NULL, '2023-03-25 06:25:23'),
-(330, 2, NULL, 'MATERIALS', 'other materials', 3, '2023-03-25 06:26:22', NULL, '2023-03-25 06:26:22'),
-(331, 2, 2, 'FAMILLY PLANNING', 'all family planning', 3, '2023-03-25 06:27:57', NULL, '2023-03-25 06:27:57'),
-(332, 9, NULL, 'DRUGS', NULL, 7, '2023-03-30 07:39:33', NULL, '2023-03-30 07:39:33'),
-(333, 9, NULL, 'CONSUMMABLES', NULL, 7, '2023-03-30 07:39:40', NULL, '2023-03-30 07:39:40'),
-(334, 9, NULL, 'MATERIALS', NULL, 7, '2023-03-30 07:39:51', NULL, '2023-03-30 07:39:51'),
-(335, 9, 332, 'FAMILLY PLANNING', NULL, 7, '2023-03-30 07:40:08', NULL, '2023-03-30 07:40:08');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `requisitions`
---
-
-DROP TABLE IF EXISTS `requisitions`;
-CREATE TABLE IF NOT EXISTS `requisitions` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `reference` varchar(30) DEFAULT NULL,
-  `company_id` int(10) UNSIGNED DEFAULT NULL,
-  `department_id` int(10) UNSIGNED NOT NULL,
-  `date_initiated` date NOT NULL,
-  `amount` double NOT NULL,
-  `status` enum('PENDING','CANCELLED','ACCEPTED') NOT NULL,
-  `created_by` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `payments`;
+CREATE TABLE `payments` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `committed_date` date NOT NULL,
+  `transaction_id` bigint DEFAULT NULL,
+  `reference` varchar(100) DEFAULT NULL,
+  `amount_paid` double(18,3) unsigned NOT NULL,
+  `payment_type` int DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `create_user` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `PAID_SALE` (`transaction_id`),
+  KEY `PAYMENT_MODE` (`payment_type`),
+  CONSTRAINT `PAID_SALE` FOREIGN KEY (`transaction_id`) REFERENCES `sales` (`id`),
+  CONSTRAINT `PAYMENT_MODE` FOREIGN KEY (`payment_type`) REFERENCES `payment_methods` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DROP TABLE IF EXISTS `product_categories`;
+CREATE TABLE `product_categories` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int unsigned NOT NULL,
+  `parent_id` int DEFAULT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `created_by` int unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=346 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `requisitions`
---
-
-INSERT INTO `requisitions` (`id`, `reference`, `company_id`, `department_id`, `date_initiated`, `amount`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(30, 'KT8RZ9L5BXSOG4C8S', 2, 17, '2023-03-28', 23000, 'ACCEPTED', 3, '2023-03-28 10:13:55', '2023-03-28 10:14:32', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `requisition_items`
---
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE `products` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int unsigned DEFAULT NULL,
+  `code` varchar(100) DEFAULT NULL,
+  `reference` varchar(20) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `unit_id` int unsigned DEFAULT NULL,
+  `cost_price` double unsigned DEFAULT '0',
+  `rhia_price` double unsigned DEFAULT '0',
+  `private_price` double unsigned DEFAULT '0',
+  `inter_price` double(18,2) unsigned DEFAULT '0.00',
+  `category_id` int unsigned DEFAULT NULL,
+  `quantity` double unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) DEFAULT '1',
+  `created_by` int unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=126 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `requisition_items`;
-CREATE TABLE IF NOT EXISTS `requisition_items` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `requisition_id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  `requested_qty` double UNSIGNED NOT NULL,
-  `price` double UNSIGNED NOT NULL,
-  `received_qty` double UNSIGNED DEFAULT NULL,
+CREATE TABLE `requisition_items` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `requisition_id` int unsigned NOT NULL,
+  `product_id` int unsigned NOT NULL,
+  `requested_qty` double unsigned NOT NULL,
+  `price` double unsigned NOT NULL,
+  `received_qty` double unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `requisition_items`
---
-
-INSERT INTO `requisition_items` (`id`, `requisition_id`, `product_id`, `requested_qty`, `price`, `received_qty`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(53, 30, 33, 10, 600, 0, '2023-03-28 10:13:55', '2023-03-28 10:13:55', NULL),
-(54, 30, 1, 17, 1000, 0, '2023-03-28 10:13:55', '2023-03-28 10:13:55', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `roles`
---
-
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `permissions` text,
-  `company_id` int(11) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `description` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `roles`
---
-
-INSERT INTO `roles` (`id`, `name`, `permissions`, `company_id`, `status`, `description`) VALUES
-(7, 'Admin', '{\"dashboard\":{\"accessible\":true},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":true,\"users\":[\"C\",\"R\",\"U\",\"D\"],\"suppliers\":[\"C\",\"R\",\"U\",\"D\"]},\"inventory\":{\"accessible\":true,\"categories\":[\"C\",\"R\",\"U\",\"D\"],\"products\":[\"C\",\"R\",\"U\",\"D\"],\"receive_items\":[\"C\",\"R\",\"U\",\"D\"],\"transfer_items\":[\"C\",\"R\",\"U\",\"D\"],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[\"C\",\"R\",\"U\",\"D\"]},\"reports\":{\"accessible\":true,\"receiving_report\":[\"C\",\"R\",\"U\",\"D\"],\"transfers_report\":[\"C\",\"R\",\"U\",\"D\"],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments_report\":[\"C\",\"R\",\"U\",\"D\"],\"exipired_products\":[\"C\",\"R\",\"U\",\"D\"]},\"settings\":{\"accessible\":true,\"users_roles\":[\"C\",\"R\",\"U\",\"D\"],\"items_units\":[\"C\",\"R\",\"U\",\"D\"],\"insurances\":[\"C\",\"R\",\"U\",\"D\"],\"departments\":[\"C\",\"R\",\"U\",\"D\"]}}', NULL, 1, 'Admin authrization'),
-(8, 'Stock Admin', '{\"dashboard\":{\"accessible\":true},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":true,\"users\":[],\"suppliers\":[\"C\",\"R\",\"U\",\"D\"]},\"inventory\":{\"accessible\":true,\"categories\":[\"C\",\"R\",\"U\",\"D\"],\"products\":[\"C\",\"R\",\"U\",\"D\"],\"receive_items\":[\"C\",\"R\",\"U\",\"D\"],\"transfer_items\":[\"C\",\"R\",\"U\",\"D\"],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[\"C\",\"R\",\"U\",\"D\"]},\"reports\":{\"accessible\":true,\"receiving_report\":[\"C\",\"R\",\"U\",\"D\"],\"transfers_report\":[\"C\",\"R\",\"U\",\"D\"],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments_report\":[\"C\",\"R\",\"U\",\"D\"],\"exipired_products\":[\"C\",\"R\",\"U\",\"D\"],\"sales_report\":[\"C\",\"R\",\"U\",\"D\"]},\"settings\":{\"accessible\":true,\"users_roles\":[],\"items_units\":[\"C\",\"R\",\"U\",\"D\"],\"insurances\":[],\"departments\":[\"C\",\"R\",\"U\",\"D\"]},\"POS\":{\"accessible\":true}}', NULL, 1, NULL),
-(9, 'Requisition', '{\"dashboard\":{\"accessible\":false},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":false,\"users\":[],\"suppliers\":[]},\"inventory\":{\"accessible\":true,\"categories\":[],\"products\":[],\"receive_items\":[],\"transfer_items\":[],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[]},\"reports\":{\"accessible\":true,\"receiving_report\":[],\"transfers_report\":[],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[],\"adjustments_report\":[],\"exipired_products\":[]},\"settings\":{\"accessible\":false,\"users_roles\":[],\"items_units\":[],\"insurances\":[],\"departments\":[]}}', 2, 1, NULL),
-(12, 'REQUISITIONER', '{\"dashboard\":{\"accessible\":false},\"companies\":{\"accessible\":true},\"leads\":{\"accessible\":false,\"users\":[],\"suppliers\":[]},\"inventory\":{\"accessible\":true,\"categories\":[],\"products\":[],\"receive_items\":[],\"transfer_items\":[],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[]},\"reports\":{\"accessible\":true,\"receiving_report\":[],\"transfers_report\":[],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[],\"adjustments_report\":[],\"exipired_products\":[]},\"settings\":{\"accessible\":false,\"users_roles\":[],\"items_units\":[],\"insurances\":[],\"departments\":[]}}', 9, 1, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sales`
---
-
-DROP TABLE IF EXISTS `sales`;
-CREATE TABLE IF NOT EXISTS `sales` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `type` varchar(20) NOT NULL,
-  `reference` varchar(20) NOT NULL,
-  `committed_date` date NOT NULL,
-  `total_amount` double(18,3) UNSIGNED NOT NULL,
-  `discounted_total` double(18,3) UNSIGNED DEFAULT NULL,
-  `create_user` int(11) NOT NULL,
-  `comment` varchar(255) DEFAULT NULL,
-  `amount_paid` double(18,3) UNSIGNED NOT NULL,
-  `amount_remain` double(18,3) UNSIGNED NOT NULL,
-  `discount_perc` float UNSIGNED DEFAULT NULL,
-  `discount_amount` double(18,3) UNSIGNED DEFAULT NULL,
-  `payment_date` date DEFAULT NULL,
-  `client_id` int(11) DEFAULT NULL,
-  `paid` tinyint(1) NOT NULL DEFAULT '0',
-  `branch_id` int(11) DEFAULT NULL,
+DROP TABLE IF EXISTS `requisitions`;
+CREATE TABLE `requisitions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `reference` varchar(30) DEFAULT NULL,
+  `company_id` int unsigned DEFAULT NULL,
+  `department_id` int unsigned NOT NULL,
+  `date_initiated` date NOT NULL,
+  `amount` double NOT NULL,
+  `status` enum('PENDING','CANCELLED','ACCEPTED') NOT NULL,
+  `created_by` int unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `SALES_CLIENT` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `sales`
---
-
-INSERT INTO `sales` (`id`, `type`, `reference`, `committed_date`, `total_amount`, `discounted_total`, `create_user`, `comment`, `amount_paid`, `amount_remain`, `discount_perc`, `discount_amount`, `payment_date`, `client_id`, `paid`, `branch_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(82, 'POS_SALE', 'KPUD987H', '2023-04-21', 13300.000, 13300.000, 3, NULL, 13300.000, 0.000, 0, 0.000, '2023-04-21', NULL, 1, NULL, '2023-04-21 17:13:04', '2023-04-21 17:13:04', NULL),
-(83, 'POS_SALE', 'K8HZ3JN3', '2023-04-25', 2720.000, 2720.000, 3, NULL, 2720.000, 0.000, 0, 0.000, '2023-04-25', NULL, 1, NULL, '2023-04-25 08:23:31', '2023-04-25 08:23:31', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sale_items`
---
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `permissions` text,
+  `company_id` int DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `description` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `sale_items`;
-CREATE TABLE IF NOT EXISTS `sale_items` (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `sale_id` bigint(20) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `quantity` float UNSIGNED NOT NULL,
-  `price` double(18,2) UNSIGNED NOT NULL,
-  `amount` double(18,3) UNSIGNED NOT NULL,
+CREATE TABLE `sale_items` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `sale_id` bigint NOT NULL,
+  `item_id` int NOT NULL,
+  `quantity` float unsigned NOT NULL,
+  `price` double(18,2) unsigned NOT NULL,
+  `amount` double(18,3) unsigned NOT NULL,
   `comment` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -568,241 +250,48 @@ CREATE TABLE IF NOT EXISTS `sale_items` (
   PRIMARY KEY (`id`),
   KEY `SALE_ITEM_PRODUCT` (`item_id`),
   KEY `SALE_ITEM` (`sale_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=494 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=545 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `sale_items`
---
-
-INSERT INTO `sale_items` (`id`, `sale_id`, `item_id`, `quantity`, `price`, `amount`, `comment`, `created_at`, `deleted_at`, `updated_at`) VALUES
-(482, 82, 34, 1, 500.00, 500.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(483, 82, 3, 1, 400.00, 400.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(484, 82, 35, 1, 5000.00, 5000.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(485, 82, 38, 1, 800.00, 800.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(486, 82, 6, 1, 700.00, 700.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(487, 82, 39, 1, 400.00, 400.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(488, 82, 4, 1, 500.00, 500.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(489, 82, 7, 1, 1000.00, 1000.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(490, 82, 36, 1, 4000.00, 4000.000, NULL, '2023-04-21 17:13:04', NULL, '2023-04-21 17:13:04'),
-(491, 83, 34, 3, 200.00, 600.000, NULL, '2023-04-25 08:23:31', NULL, '2023-04-25 08:23:31'),
-(492, 83, 3, 2, 520.00, 1040.000, NULL, '2023-04-25 08:23:31', NULL, '2023-04-25 08:23:31'),
-(493, 83, 32, 3, 360.00, 1080.000, NULL, '2023-04-25 08:23:31', NULL, '2023-04-25 08:23:31');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stock`
---
-
-DROP TABLE IF EXISTS `stock`;
-CREATE TABLE IF NOT EXISTS `stock` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) UNSIGNED DEFAULT NULL,
-  `department_id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  `quantity` double UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=86 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `stock`
---
-
-INSERT INTO `stock` (`id`, `company_id`, `department_id`, `product_id`, `quantity`) VALUES
-(79, 2, 6, 34, 10),
-(80, 2, 9, 32, 10),
-(81, 2, 17, 33, 10),
-(82, 2, 17, 1, 17),
-(84, 9, 24, 92, 1),
-(85, 2, 3, 34, 10);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stockin_histories`
---
-
-DROP TABLE IF EXISTS `stockin_histories`;
-CREATE TABLE IF NOT EXISTS `stockin_histories` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `stockin_id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  `quantity` double UNSIGNED NOT NULL,
-  `price` double UNSIGNED DEFAULT NULL,
-  `expiration_date` date DEFAULT NULL,
-  `consumed_qty` double DEFAULT '0',
-  `status` enum('IN_STOCK','EXPIRED','CONSUMED') DEFAULT 'IN_STOCK',
-  `barcode` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=103 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `stockin_histories`
---
-
-INSERT INTO `stockin_histories` (`id`, `stockin_id`, `product_id`, `quantity`, `price`, `expiration_date`, `consumed_qty`, `status`, `barcode`, `created_at`, `deleted_at`, `updated_at`) VALUES
-(1, 1, 1, 50, 0, '2023-03-27', 17, 'EXPIRED', '2205720', '2023-03-14 14:48:40', NULL, '2023-03-28 10:14:32'),
-(2, 1, 2, 55, 0, '2024-01-03', 0, 'IN_STOCK', 'LA210154', '2023-03-14 14:48:40', NULL, NULL),
-(3, 1, 3, 30, 0, '2025-05-01', 0, 'IN_STOCK', '1EB10233C', '2023-03-14 14:48:40', NULL, NULL),
-(4, 1, 4, 50, 0, '2025-05-01', 0, 'IN_STOCK', '2205722', '2023-03-14 14:48:40', NULL, NULL),
-(5, 1, 5, 50, 0, '2025-07-01', 0, 'IN_STOCK', '220704', '2023-03-14 14:48:40', NULL, NULL),
-(6, 1, 6, 40, 0, '2025-11-01', 0, 'IN_STOCK', 'TGL21003', '2023-03-14 14:48:40', NULL, NULL),
-(7, 1, 7, 40, 0, '2025-07-01', 0, 'IN_STOCK', '220706', '2023-03-14 14:48:40', NULL, NULL),
-(8, 1, 8, 20, 0, '2024-09-01', 0, 'IN_STOCK', 'UG211502', '2023-03-14 14:48:40', NULL, NULL),
-(9, 1, 9, 2, 0, '2023-03-24', 0, 'EXPIRED', 'C23802', '2023-03-14 14:48:40', NULL, NULL),
-(10, 1, 10, 80, 0, '2024-08-01', 0, 'IN_STOCK', '2109100', '2023-03-14 14:48:40', NULL, NULL),
-(11, 1, 11, 10, 0, '2024-11-01', 0, 'IN_STOCK', '211110', '2023-03-14 14:48:40', NULL, NULL),
-(12, 1, 12, 8, 0, '2025-07-01', 0, 'IN_STOCK', '832G21', '2023-03-14 14:48:40', NULL, NULL),
-(13, 1, 13, 20, 0, '2024-04-01', 0, 'IN_STOCK', 'EP452210', '2023-03-14 14:48:40', NULL, NULL),
-(14, 1, 14, 30, 0, '2025-11-01', 0, 'IN_STOCK', 'J1533', '2023-03-14 14:48:40', NULL, NULL),
-(15, 1, 15, 90, 0, '2025-08-01', 0, 'IN_STOCK', '220905', '2023-03-14 14:48:40', NULL, NULL),
-(16, 1, 16, 70, 0, '2023-10-01', 0, 'IN_STOCK', '201005', '2023-03-14 14:48:40', NULL, NULL),
-(17, 1, 17, 40, 0, '2025-07-01', 0, 'IN_STOCK', 'DH20281', '2023-03-14 14:48:40', NULL, NULL),
-(18, 1, 18, 35, 0, '2025-07-01', 0, 'IN_STOCK', '03H03622', '2023-03-14 14:48:40', NULL, NULL),
-(19, 1, 19, 70, 0, '2023-10-01', 0, 'IN_STOCK', '201101', '2023-03-14 14:48:40', NULL, NULL),
-(20, 1, 20, 140, 0, '2026-01-01', 0, 'IN_STOCK', 'KTOBAK1', '2023-03-14 14:48:40', NULL, NULL),
-(21, 1, 21, 80, 0, '2023-12-01', 0, 'IN_STOCK', '210117', '2023-03-14 14:48:40', NULL, NULL),
-(22, 1, 22, 1, 0, '2025-10-01', 0, 'IN_STOCK', 'KT091B0', '2023-03-14 14:48:40', NULL, NULL),
-(23, 1, 23, 22, 0, '2024-09-01', 0, 'IN_STOCK', 'UG 201501', '2023-03-14 14:48:40', NULL, NULL),
-(24, 1, 24, 90, 0, '2024-10-01', 0, 'IN_STOCK', 'AK11702', '2023-03-14 14:48:40', NULL, NULL),
-(25, 1, 25, 90, 0, '2024-09-01', 0, 'IN_STOCK', 'DJ20353', '2023-03-14 14:48:40', NULL, NULL),
-(26, 1, 26, 90, 0, '2024-06-01', 0, 'IN_STOCK', '210614', '2023-03-14 14:48:40', NULL, NULL),
-(27, 1, 27, 20, 0, '2024-10-01', 0, 'IN_STOCK', '211015', '2023-03-14 14:48:40', NULL, NULL),
-(28, 1, 28, 0, 0, '2025-08-01', 0, 'IN_STOCK', '2208021903', '2023-03-14 14:48:40', NULL, NULL),
-(29, 1, 29, 200, 0, '2025-04-01', 0, 'IN_STOCK', 'L820443S', '2023-03-14 14:48:40', NULL, NULL),
-(30, 1, 30, 30, 0, '2025-07-01', 0, 'IN_STOCK', 'FTE0031', '2023-03-14 14:48:40', NULL, NULL),
-(31, 1, 31, 15, 0, '2024-09-01', 0, 'IN_STOCK', 'CRJKK01', '2023-03-14 14:48:40', NULL, NULL),
-(32, 1, 32, 700, 0, '2024-04-01', 10, 'IN_STOCK', '220506', '2023-03-14 14:48:40', NULL, '2023-03-28 10:11:17'),
-(33, 1, 33, 1100, 0, '2024-04-01', 10, 'IN_STOCK', '190407', '2023-03-14 14:48:40', NULL, '2023-03-28 10:14:32'),
-(34, 1, 34, 400, 0, '2025-06-01', 98, 'IN_STOCK', '200629', '2023-03-14 14:48:40', NULL, '2023-04-04 15:58:27'),
-(35, 1, 35, 100, 0, '2026-08-01', 0, 'IN_STOCK', '210821', '2023-03-14 14:48:40', NULL, NULL),
-(36, 1, 36, 150, 0, '2023-10-12', 0, 'IN_STOCK', '100103', '2023-03-14 14:48:40', NULL, NULL),
-(37, 1, 37, 2000, 0, '2025-03-01', 0, 'IN_STOCK', '200420', '2023-03-14 14:48:40', NULL, NULL),
-(38, 1, 38, 60, 0, '2024-03-01', 0, 'IN_STOCK', '20190330', '2023-03-14 14:48:40', NULL, NULL),
-(39, 1, 39, 2, 0, '2026-05-01', 0, 'IN_STOCK', '8281', '2023-03-14 14:48:40', NULL, NULL),
-(40, 1, 40, 2, 0, '2023-10-01', 0, 'IN_STOCK', '20211019', '2023-03-14 14:48:40', NULL, NULL),
-(41, 1, 41, 2, 0, '2024-10-04', 0, 'IN_STOCK', NULL, '2023-03-14 14:48:40', NULL, NULL),
-(42, 1, 42, 7, 0, '2025-04-01', 0, 'IN_STOCK', NULL, '2023-03-14 14:48:40', NULL, NULL),
-(43, 1, 43, 480, 0, '2025-06-01', 0, 'IN_STOCK', 'FG20162', '2023-03-14 14:48:40', NULL, NULL),
-(44, 1, 44, 1, 0, '2026-05-01', 0, 'IN_STOCK', '210522', '2023-03-14 14:48:40', NULL, NULL),
-(45, 1, 45, 50, 0, '2026-11-10', 0, 'IN_STOCK', '20211110', '2023-03-14 14:48:40', NULL, NULL),
-(46, 1, 46, 200, 0, '2024-01-01', 0, 'IN_STOCK', '18897', '2023-03-14 14:48:40', NULL, NULL),
-(47, 1, 47, 100, 0, '2026-05-01', 0, 'IN_STOCK', '2106030', '2023-03-14 14:48:40', NULL, NULL),
-(48, 1, 48, 400, 0, '2027-02-01', 0, 'IN_STOCK', '3073822C', '2023-03-14 14:48:40', NULL, NULL),
-(49, 1, 49, 3700, 0, '2027-10-15', 0, 'IN_STOCK', '212015708LPZA', '2023-03-14 14:48:40', NULL, NULL),
-(50, 1, 50, 2, 0, '2024-05-01', 0, 'IN_STOCK', '220601', '2023-03-14 14:48:40', NULL, NULL),
-(51, 1, 51, 2, 0, '2024-02-01', 0, 'IN_STOCK', 'VM21002', '2023-03-14 14:48:40', NULL, NULL),
-(52, 1, 52, 0, 0, NULL, 0, 'IN_STOCK', 'F0616T39C00D', '2023-03-14 14:48:40', NULL, NULL),
-(53, 1, 53, 50, 0, '2024-12-01', 0, 'IN_STOCK', 'HPAG23010102', '2023-03-14 14:48:40', NULL, NULL),
-(54, 1, 54, 200, 0, '2024-06-01', 0, 'IN_STOCK', 'F2207024', '2023-03-14 14:48:40', NULL, NULL),
-(55, 1, 55, 150, 0, '2024-10-01', 0, 'IN_STOCK', '12211034', '2023-03-14 14:48:40', NULL, NULL),
-(56, 1, 56, 8, 0, '2025-04-01', 0, 'IN_STOCK', 'CM2018', '2023-03-14 14:48:40', NULL, NULL),
-(57, 1, 57, 1, 0, '2026-11-01', 0, 'IN_STOCK', '2014651122', '2023-03-14 14:48:40', NULL, NULL),
-(58, 1, 58, 18, 0, '2026-08-01', 0, 'IN_STOCK', '20210820', '2023-03-14 14:48:40', NULL, NULL),
-(59, 1, 59, 18, 0, '2026-08-01', 0, 'IN_STOCK', '20210820', '2023-03-14 14:48:40', NULL, NULL),
-(60, 1, 60, 24, 0, '2025-04-01', 0, 'IN_STOCK', '200415', '2023-03-14 14:48:40', NULL, NULL),
-(61, 1, 61, 900, 0, '2027-06-01', 0, 'IN_STOCK', '220630', '2023-03-14 14:48:40', NULL, NULL),
-(62, 1, 62, 500, 0, '2027-08-29', 0, 'IN_STOCK', '20220830', '2023-03-14 14:48:40', NULL, NULL),
-(63, 1, 63, 150, 0, '2024-03-01', 0, 'IN_STOCK', '41ADDH428', '2023-03-14 14:48:40', NULL, NULL),
-(64, 1, 64, 6, 0, '2026-08-25', 0, 'IN_STOCK', '20210825', '2023-03-14 14:48:40', NULL, NULL),
-(65, 1, 65, 350, 0, NULL, 0, 'IN_STOCK', '7105', '2023-03-14 14:48:40', NULL, NULL),
-(66, 1, 66, 70, 0, '2027-07-01', 0, 'IN_STOCK', '220705', '2023-03-14 14:48:40', NULL, NULL),
-(67, 1, 67, 100, 0, '2027-07-01', 0, 'IN_STOCK', '220705', '2023-03-14 14:48:40', NULL, NULL),
-(68, 1, 68, 60, 0, '2027-07-01', 0, 'IN_STOCK', '220705', '2023-03-14 14:48:40', NULL, NULL),
-(69, 1, 69, 2100, 0, '2026-05-09', 0, 'IN_STOCK', '20210510', '2023-03-14 14:48:40', NULL, NULL),
-(70, 1, 70, 250, 0, '2027-04-30', 0, 'IN_STOCK', '22107175', '2023-03-14 14:48:40', NULL, NULL),
-(71, 1, 71, 700, 0, '2025-04-02', 0, 'IN_STOCK', '20220403', '2023-03-14 14:48:40', NULL, NULL),
-(72, 1, 72, 800, 0, '2025-04-02', 0, 'IN_STOCK', '20220403', '2023-03-14 14:48:40', NULL, NULL),
-(73, 1, 73, 300, 0, '2024-07-01', 0, 'IN_STOCK', '12620006', '2023-03-14 14:48:40', NULL, NULL),
-(74, 1, 74, 125, 0, '2024-07-01', 0, 'IN_STOCK', '344', '2023-03-14 14:48:40', NULL, NULL),
-(75, 1, 75, 90, 0, '2025-11-01', 0, 'IN_STOCK', '05EDG0723', '2023-03-14 14:48:40', NULL, NULL),
-(76, 1, 76, 0, 0, '2026-11-11', 0, 'IN_STOCK', '20211111', '2023-03-14 14:48:40', NULL, NULL),
-(77, 1, 77, 50, 0, '2024-05-01', 0, 'IN_STOCK', '2205072', '2023-03-14 14:48:40', NULL, NULL),
-(78, 1, 78, 1, 0, '2024-10-30', 0, 'IN_STOCK', '21090955-2', '2023-03-14 14:48:40', NULL, NULL),
-(79, 1, 79, 1, 0, '2024-02-15', 0, 'IN_STOCK', '1312023', '2023-03-14 14:48:40', NULL, NULL),
-(80, 1, 80, 1, 0, '2023-10-01', 0, 'IN_STOCK', '1312023', '2023-03-14 14:48:40', NULL, NULL),
-(81, 1, 81, 0, 0, '2025-06-23', 0, 'IN_STOCK', '2206241', '2023-03-14 14:48:40', NULL, NULL),
-(82, 1, 82, 0, 0, '2025-03-01', 0, 'IN_STOCK', 'BM 22002', '2023-03-14 14:48:40', NULL, NULL),
-(83, 1, 83, 0, 0, '2024-01-01', 0, 'IN_STOCK', '2227', '2023-03-14 14:48:40', NULL, NULL),
-(84, 1, 84, 0, 0, '2026-12-13', 0, 'IN_STOCK', '2H211214', '2023-03-14 14:48:40', NULL, NULL),
-(85, 1, 85, 1, 0, '2023-06-24', 0, 'IN_STOCK', '3.24E+18', '2023-03-14 14:48:40', NULL, NULL),
-(86, 1, 86, 0, 0, NULL, 0, 'IN_STOCK', NULL, '2023-03-14 14:48:40', NULL, NULL),
-(87, 1, 87, 0, 0, '2026-12-15', 0, 'IN_STOCK', '8H2112116', '2023-03-14 14:48:40', NULL, NULL),
-(88, 1, 88, 0, 0, '2026-12-13', 0, 'IN_STOCK', '2H211214', '2023-03-14 14:48:40', NULL, NULL),
-(89, 1, 89, 0, 0, '2025-02-08', 0, 'IN_STOCK', '97349', '2023-03-14 14:48:40', NULL, NULL),
-(90, 1, 90, 0, 0, '2024-05-01', 0, 'IN_STOCK', 'E129065', '2023-03-14 14:48:40', NULL, NULL),
-(91, 1, 91, 1, 0, '2024-11-01', 0, 'IN_STOCK', '2212159', '2023-03-14 14:48:40', NULL, NULL),
-(92, 2, 34, 1, 2000, NULL, 0, 'IN_STOCK', NULL, '2023-03-23 08:13:00', NULL, '2023-03-23 08:13:00'),
-(93, 2, 3, 1, 880, NULL, 0, 'IN_STOCK', NULL, '2023-03-23 08:13:00', NULL, '2023-03-23 08:13:00'),
-(94, 3, 3, 899, 880, '2024-03-23', 0, 'IN_STOCK', NULL, '2023-03-24 11:47:18', NULL, '2023-03-24 11:47:18'),
-(95, 4, 76, 1000, 9000, NULL, 0, 'IN_STOCK', NULL, '2023-03-25 07:25:14', NULL, '2023-03-25 07:25:14'),
-(96, 5, 76, 1, 9000, NULL, 0, 'IN_STOCK', NULL, '2023-03-25 07:44:16', NULL, '2023-03-25 07:44:16'),
-(97, 6, 92, 20, 800, '2023-10-21', 1, 'IN_STOCK', NULL, '2023-03-30 07:41:19', NULL, '2023-03-30 08:26:32'),
-(98, 7, 34, 1, 2000, '2023-04-28', 0, 'IN_STOCK', NULL, '2023-04-05 11:30:13', NULL, '2023-04-05 11:30:13'),
-(99, 7, 3, 1, 880, '2023-04-28', 0, 'IN_STOCK', NULL, '2023-04-05 11:30:13', NULL, '2023-04-05 11:30:13'),
-(100, 7, 76, 1, 9000, '2023-05-06', 0, 'IN_STOCK', NULL, '2023-04-05 11:30:13', NULL, '2023-04-05 11:30:13'),
-(101, 7, 1, 1, 100, '2023-04-25', 0, 'IN_STOCK', NULL, '2023-04-05 11:30:13', NULL, '2023-04-05 11:30:13'),
-(102, 7, 90, 1, 200, '2023-05-06', 0, 'IN_STOCK', NULL, '2023-04-05 11:30:13', NULL, '2023-04-05 11:30:13');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stockout_items`
---
-
-DROP TABLE IF EXISTS `stockout_items`;
-CREATE TABLE IF NOT EXISTS `stockout_items` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `stockout_id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  `quantity` double UNSIGNED NOT NULL,
-  `price` double UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stock_adjustments`
---
-
-DROP TABLE IF EXISTS `stock_adjustments`;
-CREATE TABLE IF NOT EXISTS `stock_adjustments` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `reference` varchar(30) DEFAULT NULL,
-  `company_id` int(10) UNSIGNED NOT NULL,
-  `adjustment_date` date DEFAULT NULL,
-  `reason` varchar(100) DEFAULT NULL,
-  `department_id` int(10) UNSIGNED DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `created_by` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `sales`;
+CREATE TABLE `sales` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) NOT NULL,
+  `reference` varchar(20) NOT NULL,
+  `committed_date` date NOT NULL,
+  `total_amount` double(18,3) unsigned NOT NULL,
+  `discounted_total` double(18,3) unsigned DEFAULT NULL,
+  `create_user` int NOT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `amount_paid` double(18,3) unsigned NOT NULL,
+  `amount_remain` double(18,3) unsigned NOT NULL,
+  `discount_perc` float unsigned DEFAULT NULL,
+  `discount_amount` double(18,3) unsigned DEFAULT NULL,
+  `payment_date` date DEFAULT NULL,
+  `client_id` int DEFAULT NULL,
+  `paid` tinyint(1) NOT NULL DEFAULT '0',
+  `branch_id` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `SALES_CLIENT` (`client_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DROP TABLE IF EXISTS `stock`;
+CREATE TABLE `stock` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int unsigned DEFAULT NULL,
+  `department_id` int unsigned NOT NULL,
+  `product_id` int unsigned NOT NULL,
+  `quantity` double unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `stock_adjustments`
---
-
-INSERT INTO `stock_adjustments` (`id`, `reference`, `company_id`, `adjustment_date`, `reason`, `department_id`, `description`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(4, '7DD1EE194517B151CF42', 9, '2023-03-30', 'NNN', 24, 'KNKNN', 7, '2023-03-30 07:46:45', '2023-03-30 07:46:45', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stock_adjustment_items`
---
+) ENGINE=MyISAM AUTO_INCREMENT=86 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `stock_adjustment_items`;
-CREATE TABLE IF NOT EXISTS `stock_adjustment_items` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `adjustment_id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE `stock_adjustment_items` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adjustment_id` int unsigned NOT NULL,
+  `product_id` int unsigned NOT NULL,
   `quantity` double NOT NULL,
   `details` text,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -811,700 +300,804 @@ CREATE TABLE IF NOT EXISTS `stock_adjustment_items` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `stock_adjustment_items`
---
-
-INSERT INTO `stock_adjustment_items` (`id`, `adjustment_id`, `product_id`, `quantity`, `details`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(10, 4, 92, 5000, '{\"id\":92,\"name\":\"MICROGENU\",\"unit\":\"Mg\",\"quantity\":5000,\"adjusted\":5000,\"current_qty\":null}', '2023-03-30 07:46:45', '2023-03-30 07:46:45', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stock_out`
---
+DROP TABLE IF EXISTS `stock_adjustments`;
+CREATE TABLE `stock_adjustments` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `reference` varchar(30) DEFAULT NULL,
+  `company_id` int unsigned NOT NULL,
+  `adjustment_date` date DEFAULT NULL,
+  `reason` varchar(100) DEFAULT NULL,
+  `department_id` int unsigned DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_by` int unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `stock_out`;
-CREATE TABLE IF NOT EXISTS `stock_out` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE `stock_out` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int unsigned NOT NULL,
   `date_taken` date NOT NULL,
   `category` enum('SALES','PRESCRIPTIONS','EXPIRED','DAMAGED') NOT NULL,
-  `patient_id` int(11) NOT NULL,
-  `insurance_id` int(10) UNSIGNED NOT NULL,
-  `created_by` int(11) NOT NULL,
+  `patient_id` int NOT NULL,
+  `insurance_id` int unsigned NOT NULL,
+  `created_by` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`,`patient_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `stock_receives`
---
-
 DROP TABLE IF EXISTS `stock_receives`;
-CREATE TABLE IF NOT EXISTS `stock_receives` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `stock_receives` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `reference` varchar(30) DEFAULT NULL,
-  `company_id` int(10) UNSIGNED DEFAULT NULL,
+  `company_id` int unsigned DEFAULT NULL,
   `date_received` date NOT NULL,
-  `supplier_id` int(10) UNSIGNED NOT NULL,
-  `amount` double UNSIGNED NOT NULL,
+  `supplier_id` int unsigned NOT NULL,
+  `amount` double unsigned NOT NULL,
   `vat` enum('inclusive','exclusive') NOT NULL,
   `file_url` varchar(255) DEFAULT NULL,
-  `amount_paid` double UNSIGNED DEFAULT NULL,
+  `amount_paid` double unsigned DEFAULT NULL,
   `paid` tinyint(1) DEFAULT '0',
-  `created_by` int(11) DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `stock_receives`
---
-
-INSERT INTO `stock_receives` (`id`, `reference`, `company_id`, `date_received`, `supplier_id`, `amount`, `vat`, `file_url`, `amount_paid`, `paid`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(6, '4F5AA10940F59DBEDA00', 9, '2023-03-30', 2007, 16000, 'exclusive', NULL, NULL, 0, 7, '2023-03-30 07:41:19', '2023-03-30 08:16:38', NULL),
-(7, '7B16BDCE4694890567AD', 2, '2023-04-05', 2006, 12180, 'exclusive', NULL, NULL, 0, 3, '2023-04-05 11:30:13', '2023-04-05 11:30:13', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stock_transfers`
---
-
-DROP TABLE IF EXISTS `stock_transfers`;
-CREATE TABLE IF NOT EXISTS `stock_transfers` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) UNSIGNED DEFAULT NULL,
-  `department_id` int(10) UNSIGNED NOT NULL,
-  `reference` varchar(255) DEFAULT NULL,
-  `date_transfered` date NOT NULL,
-  `amount` double UNSIGNED NOT NULL,
-  `taken_by` int(10) UNSIGNED DEFAULT NULL,
-  `created_by` int(10) UNSIGNED NOT NULL,
-  `requisition_id` int(10) UNSIGNED DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `stock_transfers`
---
-
-INSERT INTO `stock_transfers` (`id`, `company_id`, `department_id`, `reference`, `date_transfered`, `amount`, `taken_by`, `created_by`, `requisition_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(42, 2, 6, '4173AA504606A43FDD9D', '2023-03-28', 20000, 6, 3, NULL, '2023-03-28 09:30:44', '2023-03-28 09:30:44', NULL),
-(43, 2, 9, '510BF93E4623B4BF31EB', '2023-03-28', 9000, 6, 3, NULL, '2023-03-28 10:11:17', '2023-03-28 10:11:17', NULL),
-(44, 2, 17, 'C0914BCE48F184A889CC', '2023-03-28', 23000, 6, 3, 30, '2023-03-28 10:14:32', '2023-03-28 10:14:32', NULL),
-(45, 9, 24, '8F4C24A34FBBBD3DEE7F', '2023-03-30', 800, 7, 7, NULL, '2023-03-30 08:26:32', '2023-03-30 08:26:32', NULL),
-(46, 2, 3, 'F096DB0E49DE9A1C4436', '2023-04-03', 20000, 6, 3, NULL, '2023-04-04 15:58:27', '2023-04-04 15:58:27', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stock_transfer_items`
---
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `stock_transfer_items`;
-CREATE TABLE IF NOT EXISTS `stock_transfer_items` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `transfer_id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  `quantity` double UNSIGNED NOT NULL,
-  `price` double UNSIGNED NOT NULL,
+CREATE TABLE `stock_transfer_items` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `transfer_id` int unsigned NOT NULL,
+  `product_id` int unsigned NOT NULL,
+  `quantity` double unsigned NOT NULL,
+  `price` double unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `stock_transfer_items`
---
+DROP TABLE IF EXISTS `stock_transfers`;
+CREATE TABLE `stock_transfers` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int unsigned DEFAULT NULL,
+  `department_id` int unsigned NOT NULL,
+  `reference` varchar(255) DEFAULT NULL,
+  `date_transfered` date NOT NULL,
+  `amount` double unsigned NOT NULL,
+  `taken_by` int unsigned DEFAULT NULL,
+  `created_by` int unsigned NOT NULL,
+  `requisition_id` int unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
 
-INSERT INTO `stock_transfer_items` (`id`, `transfer_id`, `product_id`, `quantity`, `price`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(51, 42, 34, 10, 2000, '2023-03-28 09:30:44', '2023-03-28 09:30:44', NULL),
-(52, 43, 32, 10, 900, '2023-03-28 10:11:17', '2023-03-28 10:11:17', NULL),
-(53, 44, 33, 10, 600, '2023-03-28 10:14:32', '2023-03-28 10:14:32', NULL),
-(54, 44, 1, 17, 1000, '2023-03-28 10:14:32', '2023-03-28 10:14:32', NULL),
-(55, 45, 92, 1, 800, '2023-03-30 08:26:32', '2023-03-30 08:26:32', NULL),
-(56, 46, 34, 10, 2000, '2023-04-03 15:58:27', '2023-04-04 15:58:27', NULL);
+DROP TABLE IF EXISTS `stockin_histories`;
+CREATE TABLE `stockin_histories` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `stockin_id` int unsigned NOT NULL,
+  `product_id` int unsigned NOT NULL,
+  `quantity` double unsigned NOT NULL,
+  `price` double unsigned DEFAULT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `consumed_qty` double DEFAULT '0',
+  `status` enum('IN_STOCK','EXPIRED','CONSUMED') DEFAULT 'IN_STOCK',
+  `barcode` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=130 DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `subscriptions`
---
+DROP TABLE IF EXISTS `stockout_items`;
+CREATE TABLE `stockout_items` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `stockout_id` int unsigned NOT NULL,
+  `product_id` int unsigned NOT NULL,
+  `quantity` double unsigned NOT NULL,
+  `price` double unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `subscriptions`;
-CREATE TABLE IF NOT EXISTS `subscriptions` (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `phone` bigint(20) NOT NULL,
-  `email` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `organization` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `subscriptions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `phone` bigint NOT NULL,
+  `email` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `organization` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `subscriptions`
---
-
-INSERT INTO `subscriptions` (`id`, `phone`, `email`, `organization`, `address`, `description`, `created_at`, `updated_at`) VALUES
-(1, 250781418920, 'serugojanvier@gmail.com', 'horebu', 'Gasabo', NULL, '2023-04-04 17:10:30', '2023-04-04 17:10:30'),
-(2, 250781418920, 'serugojanvier@gmail.com', 'Codeblock ltd', 'Gasabo', NULL, '2023-04-06 10:03:59', '2023-04-06 10:03:59'),
-(3, 250781418920, 'serugojanvier@gmail.com', 'Codeblock ltd', 'Gasabo', NULL, '2023-04-06 10:36:00', '2023-04-06 10:36:00'),
-(4, 250781418920, 'serugojanvier@gmail.com', 'Codeblock ltd', 'Gasabo', 'Testing', '2023-04-06 11:42:12', '2023-04-06 11:42:12'),
-(5, 250781418920, 'serugojanvier@gmail.com', 'Codeblock ltd', 'Gasabo', NULL, '2023-04-06 14:49:57', '2023-04-06 14:49:57'),
-(6, 781418920, 'serugojanvier@gmail.com', 'HOREBU MEDICAL CLINIC', 'Gasabo', NULL, '2023-04-06 15:09:02', '2023-04-06 15:09:02'),
-(7, 781418920, 'serugojanvier@gmail.com', 'HOREBU MEDICAL CLINIC', 'Gasabo', NULL, '2023-04-06 15:15:20', '2023-04-06 15:15:20'),
-(8, 781418920, 'serugojanvier@gmail.com', 'HOREBU MEDICAL CLINIC', 'Gasabo', NULL, '2023-04-06 15:18:47', '2023-04-06 15:18:47'),
-(9, 781418920, 'serugojanvier@gmail.com', 'HOREBU MEDICAL CLINIC', 'Gasabo', NULL, '2023-04-06 15:20:35', '2023-04-06 15:20:35'),
-(10, 781418920, 'serugojanvier@gmail.com', 'HOREBU MEDICAL CLINIC', 'Gasabo', NULL, '2023-04-06 15:21:27', '2023-04-06 15:21:27'),
-(11, 781418920, 'serugojanvier@gmail.com', 'HOREBU MEDICAL CLINIC', 'Gasabo', NULL, '2023-04-06 15:24:49', '2023-04-06 15:24:49'),
-(12, 781418920, 'serugojanvier@gmail.com', 'HOREBU MEDICAL CLINIC', 'Gasabo', NULL, '2023-04-06 15:27:19', '2023-04-06 15:27:19');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `suppliers`
---
-
 DROP TABLE IF EXISTS `suppliers`;
-CREATE TABLE IF NOT EXISTS `suppliers` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE `suppliers` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int unsigned NOT NULL,
   `name` varchar(100) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `tin_number` double DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL,
-  `created_by` int(10) UNSIGNED NOT NULL,
+  `created_by` int unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5008 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5011 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `suppliers`
---
+DROP TABLE IF EXISTS `units`;
+CREATE TABLE `units` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int unsigned DEFAULT NULL,
+  `department_id` int DEFAULT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `remember_token` varchar(50) DEFAULT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `role_id` int DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `created_by` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`,`phone`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+INSERT INTO `clients` (`id`, `name`, `phone`, `email`, `discount`, `address`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Serugo Janvier', '781418920', NULL, 0, NULL, '2023-05-18 10:31:17', '2023-05-18 10:31:17', NULL),
+(3, 'MUTANGANA Frank', '798765432', NULL, 0, 'Kigali-rwanda', '2023-05-18 10:37:54', '2023-05-18 10:37:54', NULL),
+(4, 'Habimana jeef', '98765438', NULL, 1, 'kigali', '2023-05-18 10:38:49', '2023-06-06 20:44:23', NULL),
+(5, 'Kwize Frederick', 'null', NULL, 1, NULL, '2023-05-18 10:45:57', '2023-05-18 10:58:08', NULL),
+(6, 'Mvuyekure Emmanuel', NULL, NULL, 0, NULL, '2023-05-18 11:13:47', '2023-05-18 11:13:47', NULL),
+(7, 'Umuhire Nadine', '783039211', NULL, 0, NULL, '2023-05-19 14:04:13', '2023-05-19 14:04:13', NULL),
+(8, 'Mugwaneza Jean Baptiste', '783456789', NULL, 0, NULL, '2023-05-25 19:37:11', '2023-05-25 19:37:11', NULL),
+(9, 'NGABO', '781418920', 'ngabo@gmail.com', 0, 'kigali-kabeza', '2023-06-12 12:08:20', '2023-06-12 12:08:20', NULL);
+
+INSERT INTO `companies` (`id`, `name`, `phone`, `email`, `tin_number`, `address_line`, `created_by`, `logo`, `created_at`, `deleted_at`, `updated_at`, `reference`, `status`) VALUES
+(2, 'RAPHA MEDICAL CLINIC', '898786', 'raphamedicalclinic@gmail.com', 876879, 'Remera', 1, NULL, '2023-02-02 14:12:40', NULL, '2023-02-02 14:12:40', 'd4c59bf84871b0fa1845', 1),
+(9, 'NARADA MEDICAL CLINIC', '787849384', 'naradamedicalclinic@gmai.com', 123455, 'Kayonza', 1, NULL, '2023-02-02 14:11:53', NULL, '2023-02-02 14:11:53', 'a941130340fe8c934dba', 1),
+(11, 'BAHO INTERNATIONAL HOSPITAL', '903845', 'bahointernationalhospital@gmail.com', 879890, 'Nyarutarama', 1, 'null', '2023-02-02 14:13:20', NULL, '2023-03-30 08:26:29', '871319bb41c3b8d0520b', 1);
+
+INSERT INTO `expense_categories` (`id`, `company_id`, `name`, `description`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 2, 'Transport', NULL, 2, '2023-05-19 13:52:44', '2023-05-19 13:52:44', NULL);
+
+INSERT INTO `expenses` (`id`, `company_id`, `category_id`, `description`, `amount`, `payment_method`, `created_by`, `committed_date`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 2, 1, 'Test', 4000, 3, 3, '2023-06-12', '2023-06-12 09:15:24', '2023-06-12 09:15:24', NULL),
+(2, 2, 1, 'Test', 3000, 2, 3, '2023-06-12', '2023-06-12 09:24:30', '2023-06-12 09:24:30', NULL),
+(3, 2, 1, 'test', 6788, 1, 3, '2023-06-12', '2023-06-12 09:25:00', '2023-06-12 09:25:00', NULL),
+(4, 2, 1, '6789', 789, 2, 3, '2023-06-12', '2023-06-12 09:27:01', '2023-06-12 09:27:01', NULL);
+
+INSERT INTO `insurances` (`id`, `group_ref`, `name`, `description`, `discount`, `status`) VALUES
+(1, 'RHIA', 'RSSB', 'Test', 12, 1),
+(2, 'RHIA', 'UAP', NULL, NULL, 1),
+(5, 'PRIVATE', 'PRIVATE', NULL, NULL, 1);
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2023_03_31_110950_create_subscriptions_table', 1),
+(2, '2023_06_09_110541_create_expenses_table', 2),
+(3, '2023_06_09_114257_create_expense_categories_table', 3);
+
+INSERT INTO `payment_methods` (`id`, `name`, `currency`, `description`, `created_at`, `deleted_at`, `updated_at`) VALUES
+(1, 'CASH', NULL, 'Payment with Cash', '2023-03-05 12:31:25', NULL, NULL),
+(2, 'MOMO', NULL, 'Payment with MTN Mobile Money', '2023-03-05 12:31:25', NULL, NULL),
+(3, 'CREDIT CARD', NULL, 'Payment with all credit cards', '2023-03-05 12:31:25', NULL, NULL),
+(4, 'CHEQUE', NULL, 'Payment with Cheque.', '2023-03-05 12:31:25', NULL, NULL),
+(5, 'BANK TRANSFER', NULL, 'Pay by transferring money amount banks ', '2023-03-05 12:31:25', NULL, NULL);
+
+INSERT INTO `payments` (`id`, `committed_date`, `transaction_id`, `reference`, `amount_paid`, `payment_type`, `comment`, `create_user`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(170, '2023-05-25', 104, 'null', 9000.000, 1, NULL, 3, '2023-05-25 23:00:24', '2023-05-25 23:00:24', NULL),
+(171, '2023-06-05', 105, 'null', 155000.000, 2, NULL, 3, '2023-06-05 10:41:45', '2023-06-05 10:41:45', NULL),
+(172, '2023-06-06', 106, 'null', 251500.000, 2, NULL, 3, '2023-06-06 12:16:06', '2023-06-06 12:16:06', NULL),
+(173, '2023-06-07', 107, 'null', 180500.000, 3, NULL, 3, '2023-06-07 14:31:16', '2023-06-07 14:31:16', NULL);
+
+INSERT INTO `product_categories` (`id`, `company_id`, `parent_id`, `name`, `description`, `created_by`, `created_at`, `deleted_at`, `updated_at`) VALUES
+(343, 2, NULL, 'Construction Materials', NULL, 3, '2023-05-19 13:51:30', NULL, '2023-05-19 13:51:30'),
+(344, 2, NULL, 'Plumbing Materials', NULL, 3, '2023-05-19 13:52:44', NULL, '2023-05-19 13:52:44'),
+(345, 2, 343, 'Electricity', NULL, 3, '2023-05-19 13:59:06', NULL, '2023-05-19 13:59:06');
+
+INSERT INTO `products` (`id`, `company_id`, `code`, `reference`, `name`, `unit_id`, `cost_price`, `rhia_price`, `private_price`, `inter_price`, `category_id`, `quantity`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`, `image`) VALUES
+(117, 2, 'MIHCR0KN', 'B595CFBB4232B6D3FC07', 'Imisumari 12mm', 29, 1200, 0, 1500, 0.00, 343, 105, 1, 3, '2023-05-25 18:46:07', '2023-06-07 14:31:16', NULL, 'product_images/0000/3/2023/05/25/nail-101.jpg'),
+(118, 2, '1KKS4A7E', '564433E949EDA2266DBF', 'CIMERWA 32', 9, 10000, 0, 10500, 0.00, 343, 91, 1, 3, '2023-05-25 20:06:13', '2023-06-07 14:31:16', NULL, 'product_images/0000/3/2023/05/25/surebuild.png'),
+(119, 2, '1B9EXJQL', 'DB2A402B47D6A040831F', 'CIMERWA 42', 9, 11000, 0, 12000, 0.00, 343, 95, 1, 3, '2023-05-25 20:06:40', '2023-06-07 14:31:16', NULL, 'product_images/0000/3/2023/05/25/cimerwa-surewall.png'),
+(120, 2, '13KWTVDB', '9F5EFCF843FD95407EA4', 'CABLE 1.2 SENEGAL', 9, 32000, 0, 35000, 0.00, 345, 100, 1, 3, '2023-05-25 20:07:43', '2023-06-12 11:33:07', NULL, NULL),
+(121, 2, '1FYM50VD', '835B33B640F48555FF90', 'CABLE 2.5 SENEGAL', 9, 40000, 0, 45000, 0.00, 345, 58, 1, 3, '2023-05-25 20:08:24', '2023-06-07 14:31:16', NULL, NULL),
+(122, 2, '1APXOO3F', '58836E0B41CAACD72AA2', 'CABLE 1.2 (ALPHA)', 9, 32000, 0, 35000, 0.00, 345, 70, 1, 3, '2023-05-25 20:09:33', '2023-06-12 11:33:07', NULL, NULL),
+(123, 2, 'OYLHX8LF', '37DE3D53407F8954C727', 'CABLE 2.5 (ALPHA)', 9, 35000, 0, 40000, 0.00, 345, 5, 1, 3, '2023-05-25 20:09:54', '2023-06-07 14:31:16', NULL, NULL),
+(124, 2, '1I91MBNK', '029CE07B4AC898AB9A01', 'Imisumari 10mm', 29, 1100, 0, 1500, 0.00, 343, 21, 1, 3, '2023-05-25 20:10:58', '2023-06-07 14:31:16', NULL, NULL),
+(125, 2, 'N59TWR3W', 'ED83AF574C18946C1316', 'TILES (AMAKARO) 6m', 9, 5000, 0, 8000, 0.00, 343, 19, 1, 3, '2023-05-25 20:13:55', '2023-05-26 12:11:30', NULL, NULL);
+
+INSERT INTO `requisition_items` (`id`, `requisition_id`, `product_id`, `requested_qty`, `price`, `received_qty`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(53, 30, 33, 10, 600, 0, '2023-03-28 12:13:55', '2023-03-28 12:13:55', NULL),
+(54, 30, 1, 17, 1000, 0, '2023-03-28 12:13:55', '2023-03-28 12:13:55', NULL);
+
+INSERT INTO `roles` (`id`, `name`, `permissions`, `company_id`, `status`, `description`) VALUES
+(7, 'Admin', '{\"dashboard\":{\"accessible\":true},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":true,\"users\":[\"C\",\"R\",\"U\",\"D\"],\"suppliers\":[\"C\",\"R\",\"U\",\"D\"]},\"inventory\":{\"accessible\":true,\"categories\":[\"C\",\"R\",\"U\",\"D\"],\"products\":[\"C\",\"R\",\"U\",\"D\"],\"receive_items\":[\"C\",\"R\",\"U\",\"D\"],\"transfer_items\":[\"C\",\"R\",\"U\",\"D\"],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[\"C\",\"R\",\"U\",\"D\"]},\"reports\":{\"accessible\":true,\"receiving_report\":[\"C\",\"R\",\"U\",\"D\"],\"transfers_report\":[\"C\",\"R\",\"U\",\"D\"],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments_report\":[\"C\",\"R\",\"U\",\"D\"],\"exipired_products\":[\"C\",\"R\",\"U\",\"D\"]},\"settings\":{\"accessible\":true,\"users_roles\":[\"C\",\"R\",\"U\",\"D\"],\"items_units\":[\"C\",\"R\",\"U\",\"D\"],\"insurances\":[\"C\",\"R\",\"U\",\"D\"],\"departments\":[\"C\",\"R\",\"U\",\"D\"]}}', NULL, 1, 'Admin authrization'),
+(8, 'Pharmacy Admin', '{\"dashboard\":{\"accessible\":true},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":true,\"users\":[\"C\",\"R\",\"U\",\"D\"],\"suppliers\":[\"C\",\"R\",\"U\",\"D\"],\"Clients\":[\"C\",\"R\",\"U\",\"D\"]},\"inventory\":{\"accessible\":true,\"categories\":[\"C\",\"R\",\"U\",\"D\"],\"products\":[\"C\",\"R\",\"U\",\"D\"],\"receive_items\":[\"C\",\"R\",\"U\",\"D\"],\"transfer_items\":[\"C\",\"R\",\"U\",\"D\"],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[\"C\",\"R\",\"U\",\"D\"]},\"expenses\":{\"accessible\":true},\"reports\":{\"accessible\":true,\"receiving_report\":[\"C\",\"R\",\"U\",\"D\"],\"transfers_report\":[\"C\",\"R\",\"U\",\"D\"],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments_report\":[\"C\",\"R\",\"U\",\"D\"],\"exipired_products\":[\"C\",\"R\",\"U\",\"D\"],\"sales_report\":[\"C\",\"R\",\"U\",\"D\"],\"Payment_History_report\":[\"C\",\"R\",\"U\",\"D\"]},\"settings\":{\"accessible\":true,\"users_roles\":[\"C\",\"R\",\"U\",\"D\"],\"items_units\":[\"C\",\"R\",\"U\",\"D\"],\"insurances\":[\"C\",\"R\",\"U\",\"D\"],\"departments\":[\"C\",\"R\",\"U\",\"D\"]},\"POS\":{\"accessible\":true}}', NULL, 1, ''),
+(9, 'Requisition', '{\"dashboard\":{\"accessible\":false},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":false,\"users\":[],\"suppliers\":[]},\"inventory\":{\"accessible\":true,\"categories\":[],\"products\":[],\"receive_items\":[],\"transfer_items\":[],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[]},\"reports\":{\"accessible\":true,\"receiving_report\":[],\"transfers_report\":[],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[],\"adjustments_report\":[],\"exipired_products\":[]},\"settings\":{\"accessible\":false,\"users_roles\":[],\"items_units\":[],\"insurances\":[],\"departments\":[]}}', 2, 1, NULL),
+(12, 'REQUISITIONER', '{\"dashboard\":{\"accessible\":false},\"companies\":{\"accessible\":true},\"leads\":{\"accessible\":false,\"users\":[],\"suppliers\":[]},\"inventory\":{\"accessible\":true,\"categories\":[],\"products\":[],\"receive_items\":[],\"transfer_items\":[],\"requisitions\":[\"C\",\"R\",\"U\",\"D\"],\"adjustments\":[]},\"reports\":{\"accessible\":true,\"receiving_report\":[],\"transfers_report\":[],\"requisition_report\":[\"C\",\"R\",\"U\",\"D\"],\"stock_status_report\":[],\"adjustments_report\":[],\"exipired_products\":[]},\"settings\":{\"accessible\":false,\"users_roles\":[],\"items_units\":[],\"insurances\":[],\"departments\":[]}}', 9, 1, NULL),
+(14, 'Sales', '{\"dashboard\":{\"accessible\":false},\"companies\":{\"accessible\":false},\"leads\":{\"accessible\":false,\"users\":[],\"suppliers\":[]},\"inventory\":{\"accessible\":false,\"categories\":[],\"products\":[],\"receive_items\":[],\"transfer_items\":[],\"requisitions\":[],\"adjustments\":[]},\"reports\":{\"accessible\":false,\"receiving_report\":[],\"transfers_report\":[],\"requisition_report\":[],\"stock_status_report\":[],\"adjustments_report\":[],\"exipired_products\":[],\"sales_report\":[]},\"settings\":{\"accessible\":false,\"users_roles\":[],\"items_units\":[],\"insurances\":[],\"departments\":[]},\"POS\":{\"accessible\":true}}', 2, 1, 'null');
+
+INSERT INTO `sale_items` (`id`, `sale_id`, `item_id`, `quantity`, `price`, `amount`, `comment`, `created_at`, `deleted_at`, `updated_at`) VALUES
+(528, 104, 117, 6, 1500.00, 9000.000, NULL, '2023-05-25 23:00:24', NULL, '2023-05-25 23:00:24'),
+(529, 105, 122, 1, 35000.00, 35000.000, NULL, '2023-06-05 10:41:45', NULL, '2023-06-05 10:41:45'),
+(530, 105, 120, 1, 35000.00, 35000.000, NULL, '2023-06-05 10:41:45', NULL, '2023-06-05 10:41:45'),
+(531, 105, 123, 1, 40000.00, 40000.000, NULL, '2023-06-05 10:41:45', NULL, '2023-06-05 10:41:45'),
+(532, 105, 121, 1, 45000.00, 45000.000, NULL, '2023-06-05 10:41:45', NULL, '2023-06-05 10:41:45'),
+(533, 106, 118, 1, 10500.00, 10500.000, NULL, '2023-06-06 12:16:06', NULL, '2023-06-06 12:16:06'),
+(534, 106, 119, 3, 12000.00, 36000.000, NULL, '2023-06-06 12:16:06', NULL, '2023-06-06 12:16:06'),
+(535, 106, 123, 4, 40000.00, 160000.000, NULL, '2023-06-06 12:16:06', NULL, '2023-06-06 12:16:06'),
+(536, 106, 121, 1, 45000.00, 45000.000, NULL, '2023-06-06 12:16:06', NULL, '2023-06-06 12:16:06'),
+(537, 107, 122, 1, 35000.00, 35000.000, NULL, '2023-06-07 14:31:16', NULL, '2023-06-07 14:31:16'),
+(538, 107, 120, 1, 35000.00, 35000.000, NULL, '2023-06-07 14:31:16', NULL, '2023-06-07 14:31:16'),
+(539, 107, 123, 1, 40000.00, 40000.000, NULL, '2023-06-07 14:31:16', NULL, '2023-06-07 14:31:16'),
+(540, 107, 121, 1, 45000.00, 45000.000, NULL, '2023-06-07 14:31:16', NULL, '2023-06-07 14:31:16'),
+(541, 107, 117, 1, 1500.00, 1500.000, NULL, '2023-06-07 14:31:16', NULL, '2023-06-07 14:31:16'),
+(542, 107, 124, 1, 1500.00, 1500.000, NULL, '2023-06-07 14:31:16', NULL, '2023-06-07 14:31:16'),
+(543, 107, 119, 1, 12000.00, 12000.000, NULL, '2023-06-07 14:31:16', NULL, '2023-06-07 14:31:16'),
+(544, 107, 118, 1, 10500.00, 10500.000, NULL, '2023-06-07 14:31:16', NULL, '2023-06-07 14:31:16');
+
+INSERT INTO `sales` (`id`, `type`, `reference`, `committed_date`, `total_amount`, `discounted_total`, `create_user`, `comment`, `amount_paid`, `amount_remain`, `discount_perc`, `discount_amount`, `payment_date`, `client_id`, `paid`, `branch_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(104, 'POS_SALE', '1FNSZGBA', '2023-05-25', 9000.000, 9000.000, 3, NULL, 9000.000, 0.000, 0, 0.000, '2023-05-25', 7, 1, NULL, '2023-05-25 23:00:24', '2023-05-25 23:00:24', NULL),
+(105, 'POS_SALE', '1NKDR2WB', '2023-06-05', 155000.000, 155000.000, 3, NULL, 155000.000, 0.000, 0, 0.000, '2023-06-05', NULL, 1, NULL, '2023-06-05 10:41:45', '2023-06-05 10:41:45', NULL),
+(106, 'POS_SALE', '1P86T03P', '2023-06-06', 251500.000, 251500.000, 3, NULL, 251500.000, 0.000, 0, 0.000, '2023-06-06', NULL, 1, NULL, '2023-06-06 12:16:06', '2023-06-06 12:16:06', NULL),
+(107, 'POS_SALE', '3FFO53O3', '2023-06-07', 180500.000, 180500.000, 3, NULL, 180500.000, 0.000, 0, 0.000, '2023-06-07', 4, 1, NULL, '2023-06-07 14:31:16', '2023-06-07 14:31:16', NULL);
+
+INSERT INTO `stock_receives` (`id`, `reference`, `company_id`, `date_received`, `supplier_id`, `amount`, `vat`, `file_url`, `amount_paid`, `paid`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(14, '77BD91EF4D5995E4408A', 2, '2023-05-25', 5010, 120000, 'exclusive', NULL, NULL, 0, 3, '2023-05-25 19:10:04', '2023-05-25 19:10:04', NULL),
+(15, 'B0E0E0E940FC97EDBF40', 2, '2023-05-26', 5010, 10040600, 'exclusive', NULL, NULL, 0, 3, '2023-05-26 12:11:30', '2023-05-26 12:11:30', NULL),
+(16, '3962A4A049BB8A72422C', 2, '2023-06-06', 5010, 441000, 'exclusive', NULL, NULL, 0, 3, '2023-06-06 20:55:50', '2023-06-06 20:55:50', NULL),
+(17, 'DF980B2743798B8542F0', 2, '2023-06-12', 5008, 64000, 'exclusive', NULL, NULL, 0, 3, '2023-06-12 11:33:07', '2023-06-12 11:33:07', NULL);
+
+INSERT INTO `stockin_histories` (`id`, `stockin_id`, `product_id`, `quantity`, `price`, `expiration_date`, `consumed_qty`, `status`, `barcode`, `created_at`, `deleted_at`, `updated_at`) VALUES
+(116, 14, 117, 100, 1200, '2023-08-10', 0, 'IN_STOCK', NULL, '2023-05-25 19:10:04', NULL, '2023-05-25 19:10:04'),
+(117, 15, 122, 71, 32000, '2023-08-17', 0, 'IN_STOCK', NULL, '2023-05-26 12:11:30', NULL, '2023-05-26 12:11:30'),
+(118, 15, 120, 91, 32000, '2023-08-10', 0, 'IN_STOCK', NULL, '2023-05-26 12:11:30', NULL, '2023-05-26 12:11:30'),
+(119, 15, 123, 11, 35000, '2023-10-20', 0, 'IN_STOCK', NULL, '2023-05-26 12:11:30', NULL, '2023-05-26 12:11:30'),
+(120, 15, 121, 61, 40000, '2023-08-23', 0, 'IN_STOCK', NULL, '2023-05-26 12:11:30', NULL, '2023-05-26 12:11:30'),
+(121, 15, 118, 93, 10000, '2023-09-14', 0, 'IN_STOCK', NULL, '2023-05-26 12:11:30', NULL, '2023-05-26 12:11:30'),
+(122, 15, 119, 88, 11000, '2023-09-20', 0, 'IN_STOCK', NULL, '2023-05-26 12:11:30', NULL, '2023-05-26 12:11:30'),
+(123, 15, 124, 22, 1100, '2023-09-21', 0, 'IN_STOCK', NULL, '2023-05-26 12:11:30', NULL, '2023-05-26 12:11:30'),
+(124, 15, 117, 12, 1200, '2023-10-25', 0, 'IN_STOCK', NULL, '2023-05-26 12:11:30', NULL, '2023-05-26 12:11:30'),
+(125, 15, 125, 19, 5000, '2023-12-28', 0, 'IN_STOCK', NULL, '2023-05-26 12:11:30', NULL, '2023-05-26 12:11:30'),
+(126, 16, 120, 10, 32000, '2023-10-27', 0, 'IN_STOCK', NULL, '2023-06-06 20:55:50', NULL, '2023-06-06 20:55:50'),
+(127, 16, 119, 11, 11000, '2023-12-29', 0, 'IN_STOCK', NULL, '2023-06-06 20:55:50', NULL, '2023-06-06 20:55:50'),
+(128, 17, 122, 1, 32000, '2023-07-05', 0, 'IN_STOCK', NULL, '2023-06-12 11:33:07', NULL, '2023-06-12 11:33:07'),
+(129, 17, 120, 1, 32000, '2023-09-28', 0, 'IN_STOCK', NULL, '2023-06-12 11:33:07', NULL, '2023-06-12 11:33:07');
 
 INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'VINE PHARMACY', '0781418920', 'vinepharmacy@gmail.com', 1496648780, 'Kigali-GASABO-REMERA', 1, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(4, 5, 'Wal-Mart Stores', '2053104898', 'clinicplus0@gmail.com', 1496648880, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(5, 5, 'Exxon Mobil', '4266048358', 'clinicplus1@gmail.com', 9970419283, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(6, 5, 'Chevron', '6805142778', 'clinicplus2@gmail.com', 2589139345, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(7, 5, 'Berkshire Hathaway', '7374562722', 'clinicplus3@gmail.com', 9281931465, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(8, 5, 'Apple', '6993898421', 'clinicplus4@gmail.com', 8555645753, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(9, 5, 'Phillips 66', '4709674580', 'clinicplus5@gmail.com', 2441420101, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(10, 5, 'General Motors', '5783030266', 'clinicplus6@gmail.com', 4344506324, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(11, 5, 'Ford Motor', '5000408215', 'clinicplus7@gmail.com', 2502789506, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(12, 5, 'General Electric', '4717220732', 'clinicplus8@gmail.com', 3535135927, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(13, 5, 'Valero Energy', '1713109212', 'clinicplus9@gmail.com', 9379935255, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(14, 5, 'AT&T', '2667442573', 'clinicplus10@gmail.com', 7944213244, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(15, 5, 'CVS Caremark', '1558323712', 'clinicplus11@gmail.com', 4569421356, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(16, 5, 'Fannie Mae', '9715019849', 'clinicplus12@gmail.com', 4823692795, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(17, 5, 'UnitedHealth Group', '7593746314', 'clinicplus13@gmail.com', 3175649519, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(18, 5, 'McKesson', '6058422848', 'clinicplus14@gmail.com', 1249628429, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(19, 5, 'Verizon Communications', '5713138680', 'clinicplus15@gmail.com', 2143114443, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(20, 5, 'Hewlett-Packard', '9594582162', 'clinicplus16@gmail.com', 6431572702, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(21, 5, 'J.P. Morgan Chase & Co.', '6622385180', 'clinicplus17@gmail.com', 3908054471, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(22, 5, 'Costco Wholesale', '7538894308', 'clinicplus18@gmail.com', 5060168583, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(23, 5, 'Express Scripts Holding', '1657677928', 'clinicplus19@gmail.com', 4796669244, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(24, 5, 'Bank of America', '6216988485', 'clinicplus20@gmail.com', 3768773853, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(25, 5, 'Cardinal Health', '5717063012', 'clinicplus21@gmail.com', 3525008857, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(26, 5, 'International Business Machines', '2129164622', 'clinicplus22@gmail.com', 8117118876, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(27, 5, 'Kroger', '5051285694', 'clinicplus23@gmail.com', 7517110163, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(28, 5, 'Marathon Petroleum', '4412600556', 'clinicplus24@gmail.com', 3794954208, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(29, 5, 'Citigroup', '2872171348', 'clinicplus25@gmail.com', 6804868674, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(30, 5, 'Archer Daniels Midland', '5130122055', 'clinicplus26@gmail.com', 8284984639, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(31, 5, 'AmerisourceBergen', '5293111324', 'clinicplus27@gmail.com', 7363858184, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(32, 5, 'Wells Fargo', '3398048575', 'clinicplus28@gmail.com', 5659087338, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(33, 5, 'Boeing', '6821281964', 'clinicplus29@gmail.com', 6687633931, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(34, 5, 'Procter & Gamble', '5844934640', 'clinicplus30@gmail.com', 2776656447, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(35, 5, 'Freddie Mac', '2414225725', 'clinicplus31@gmail.com', 5022151608, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(36, 5, 'Home Depot', '5770167984', 'clinicplus32@gmail.com', 9652596220, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(37, 5, 'Microsoft', '2566388641', 'clinicplus33@gmail.com', 9538799485, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(38, 5, 'Amazon.com', '2861051458', 'clinicplus34@gmail.com', 3954495802, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(39, 5, 'Target', '7053058657', 'clinicplus35@gmail.com', 8050178227, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(40, 5, 'Walgreen Co.', '5580581155', 'clinicplus36@gmail.com', 6635594953, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(41, 5, 'WellPoint', '3848710794', 'clinicplus37@gmail.com', 9584819229, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(42, 5, 'Johnson & Johnson', '5075667843', 'clinicplus38@gmail.com', 9644676494, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(43, 5, 'American International Group', '5346955586', 'clinicplus39@gmail.com', 6040680130, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(44, 5, 'State Farm Insurance Cos.', '4096140719', 'clinicplus40@gmail.com', 4114154171, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(45, 5, 'MetLife', '4550634299', 'clinicplus41@gmail.com', 3362648095, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(46, 5, 'PepsiCo', '7660014028', 'clinicplus42@gmail.com', 9812963479, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(47, 5, 'Comcast', '1128132776', 'clinicplus43@gmail.com', 7053845063, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(48, 5, 'United Technologies', '3823789578', 'clinicplus44@gmail.com', 9364645773, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(49, 5, 'Google', '2691239242', 'clinicplus45@gmail.com', 5052362735, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(50, 5, 'ConocoPhillips', '2912422764', 'clinicplus46@gmail.com', 1995157628, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(51, 5, 'Dow Chemical', '9813708459', 'clinicplus47@gmail.com', 3967583442, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(52, 5, 'Caterpillar', '5723641558', 'clinicplus48@gmail.com', 2734198839, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(53, 5, 'United Parcel Service', '3425842814', 'clinicplus49@gmail.com', 3361612192, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(54, 5, 'Pfizer', '3533148213', 'clinicplus50@gmail.com', 7931718268, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(55, 5, 'Lowe’s Companies', '4378637519', 'clinicplus51@gmail.com', 9936476482, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(56, 5, 'Intel Corporation', '1311541266', 'clinicplus52@gmail.com', 4970060039, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(57, 5, 'Energy Transfer Equity, L.P.', '2189579121', 'clinicplus53@gmail.com', 4834392884, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(58, 5, 'Cisco Systems, Inc.', '6393614496', 'clinicplus54@gmail.com', 2882818699, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(59, 5, 'Enterprise Products Partners L.P.', '8588722651', 'clinicplus55@gmail.com', 7435833371, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(60, 5, 'Aetna Inc.', '4637574729', 'clinicplus56@gmail.com', 4662349313, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(61, 5, 'The Coca-Cola Company', '8799325067', 'clinicplus57@gmail.com', 6024131377, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(62, 5, 'Lockheed Martin Corporation', '8595864607', 'clinicplus58@gmail.com', 9966717223, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(63, 5, 'Best Buy Co., Inc.', '3740286379', 'clinicplus59@gmail.com', 2824729273, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(64, 5, 'The Walt Disney Company', '2742239530', 'clinicplus60@gmail.com', 5210499831, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(65, 5, 'CHS Inc.', '9798135993', 'clinicplus61@gmail.com', 8400129516, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(66, 5, 'Sysco Corporation', '9492919946', 'clinicplus62@gmail.com', 6045256474, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(67, 5, 'FedEx Corporation', '9052141216', 'clinicplus63@gmail.com', 9022809424, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(68, 5, 'Merck & Co., Inc.', '2476470193', 'clinicplus64@gmail.com', 2848162400, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(69, 5, 'INTL FCStone Inc.', '9135667907', 'clinicplus65@gmail.com', 1081879635, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(70, 5, 'Safeway Inc.', '7609779441', 'clinicplus66@gmail.com', 6457243267, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(71, 5, 'Johnson Controls, Inc.', '3713193774', 'clinicplus67@gmail.com', 1709843842, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(72, 5, 'Ingram Micro Inc.', '8161898171', 'clinicplus68@gmail.com', 5806613295, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(73, 5, 'Plains GP Holdings, L.P.', '2343310227', 'clinicplus69@gmail.com', 9550489743, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(74, 5, 'World Fuel Services Corporation', '5508977119', 'clinicplus70@gmail.com', 2568643795, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(75, 5, 'Prudential Financial, Inc.', '3373651439', 'clinicplus71@gmail.com', 1594582856, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(76, 5, 'Humana Inc.', '8947713124', 'clinicplus72@gmail.com', 8737792854, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(77, 5, 'The Goldman Sachs Group, Inc.', '9109098981', 'clinicplus73@gmail.com', 9724760701, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(78, 5, 'Tesoro Corporation', '5942542720', 'clinicplus74@gmail.com', 6064567824, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(79, 5, 'Liberty Mutual Holding Company Inc.', '1696668026', 'clinicplus75@gmail.com', 1482367381, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(80, 5, 'Honeywell International Inc.', '3684440957', 'clinicplus76@gmail.com', 2990819674, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(81, 5, 'United Continental Holdings, Inc.', '5151166835', 'clinicplus77@gmail.com', 3032822896, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(82, 5, 'HCA Holdings, Inc.', '5824386620', 'clinicplus78@gmail.com', 5557918813, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(83, 5, 'Deere & Company', '5389267186', 'clinicplus79@gmail.com', 7297468990, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(84, 5, 'Delta Air Lines, Inc.', '8435926562', 'clinicplus80@gmail.com', 5783391614, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(85, 5, 'Oracle Corporation', '8390592076', 'clinicplus81@gmail.com', 6398692505, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(86, 5, 'Morgan Stanley', '9272731631', 'clinicplus82@gmail.com', 8497306047, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(87, 5, 'Hess Corporation', '7292867189', 'clinicplus83@gmail.com', 8645567795, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(88, 5, 'Twenty-First Century Fox, Inc.', '4610468132', 'clinicplus84@gmail.com', 4360663515, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(89, 5, 'E.I. du Pont de Nemours and Company', '1296024131', 'clinicplus85@gmail.com', 4405488281, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(90, 5, 'Sears Holdings Corporation', '3826119364', 'clinicplus86@gmail.com', 3100277138, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(91, 5, 'New York Life Insurance Company', '2170833424', 'clinicplus87@gmail.com', 9289818505, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(92, 5, 'Mondelez International, Inc.', '5321737353', 'clinicplus88@gmail.com', 3099822166, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(93, 5, 'American Express Company', '8364255376', 'clinicplus89@gmail.com', 9051563332, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(94, 5, 'Nationwide Mutual Insurance Co.', '7913278161', 'clinicplus90@gmail.com', 6967725855, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(95, 5, 'The Allstate Corporation', '5376648383', 'clinicplus91@gmail.com', 6859449173, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(96, 5, 'Tyson Foods, Inc.', '3948602534', 'clinicplus92@gmail.com', 9529027307, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(97, 5, 'Supervalu Inc.', '2169099682', 'clinicplus93@gmail.com', 1052754253, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(98, 5, 'TIAA-CREF', '9571563885', 'clinicplus94@gmail.com', 3103940636, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(99, 5, 'Massachusetts Mutual Life Insurance Company', '5730407422', 'clinicplus95@gmail.com', 3080214934, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(100, 5, 'CIGNA Corporation', '5514476810', 'clinicplus96@gmail.com', 8200226829, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(101, 5, 'DIRECTV', '6296558714', 'clinicplus97@gmail.com', 8529437437, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(102, 5, 'General Dynamics Corporation', '1028429232', 'clinicplus98@gmail.com', 6845370684, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(103, 5, 'Philip Morris International Inc.', '8452367795', 'clinicplus99@gmail.com', 7896730417, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(104, 5, '3M Company', '3086167900', 'clinicplus100@gmail.com', 1411423154, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(105, 5, 'Time Warner Inc.', '5582045238', 'clinicplus101@gmail.com', 5208132021, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(106, 5, 'Halliburton Company', '4944296177', 'clinicplus102@gmail.com', 1152613977, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(107, 5, 'Publix Super Markets, Inc.', '4188712568', 'clinicplus103@gmail.com', 4079356398, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(108, 5, 'International Paper Company', '8962205970', 'clinicplus104@gmail.com', 7359688947, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(109, 5, 'McDonald’s Corporation', '4968784396', 'clinicplus105@gmail.com', 9507668354, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(110, 5, 'Macy’s, Inc.', '4204093070', 'clinicplus106@gmail.com', 1610783011, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(111, 5, 'The TJX Companies, Inc.', '9679087705', 'clinicplus107@gmail.com', 3657517003, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(112, 5, 'Fluor Corporation', '9406902609', 'clinicplus108@gmail.com', 8220881072, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(113, 5, 'Northwestern Mutual Life Insurance Company,Inc.', '5991131536', 'clinicplus109@gmail.com', 5521236212, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(114, 5, 'Tech Data Corporation', '4838928112', 'clinicplus110@gmail.com', 3400937404, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(115, 5, 'American Airlines Group Inc.', '3597429929', 'clinicplus111@gmail.com', 4130375176, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(116, 5, 'The Hartford Financial Services Group, Inc.', '5734471197', 'clinicplus112@gmail.com', 6398744212, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(117, 5, 'The Travelers Companies, Inc.', '6522781881', 'clinicplus113@gmail.com', 2440715482, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(118, 5, 'Nike, Inc.', '9965100352', 'clinicplus114@gmail.com', 7548834167, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(119, 5, 'Occidental Petroleum Corporation', '1554761708', 'clinicplus115@gmail.com', 8301641341, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(120, 5, 'Avnet, Inc.', '4945158441', 'clinicplus116@gmail.com', 9031427879, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(121, 5, 'Rite Aid Corporation', '8421107531', 'clinicplus117@gmail.com', 9464488857, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(122, 5, 'Exelon Corporation', '3095795756', 'clinicplus118@gmail.com', 8712745582, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(123, 5, 'Qualcomm Incorporated', '3478377658', 'clinicplus119@gmail.com', 2302303436, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(124, 5, 'Emerson Electric Co.', '3149373386', 'clinicplus120@gmail.com', 1133511974, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(125, 5, 'Northrop Grumman Corporation', '5019056047', 'clinicplus121@gmail.com', 3221105561, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(126, 5, 'Duke Energy Corporation', '8628808528', 'clinicplus122@gmail.com', 4710535872, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(127, 5, 'Capital One Financial Corporation', '5849547221', 'clinicplus123@gmail.com', 8363239707, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(128, 5, 'Aflac Incorporated', '8011371049', 'clinicplus124@gmail.com', 5404655152, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(129, 5, 'Raytheon Company', '6912758572', 'clinicplus125@gmail.com', 8084990519, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(130, 5, 'Staples, Inc.', '6138457446', 'clinicplus126@gmail.com', 9296635755, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(131, 5, 'EMC Corporation', '7893813770', 'clinicplus127@gmail.com', 6938291285, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(132, 5, 'Eli Lilly and Company', '1353577599', 'clinicplus128@gmail.com', 9806225604, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(133, 5, 'Alcoa Inc.', '6087540164', 'clinicplus129@gmail.com', 6446536382, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(134, 5, 'National Oilwell Varco, Inc.', '5512266138', 'clinicplus130@gmail.com', 4192792983, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(135, 5, 'Baker Hughes Incorporated', '2337058604', 'clinicplus131@gmail.com', 3258552328, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(136, 5, 'US Foods, Inc.', '9145248011', 'clinicplus132@gmail.com', 4970563297, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(137, 5, 'Time Warner Cable Inc.', '7622180413', 'clinicplus133@gmail.com', 6894029366, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(138, 5, 'Union Pacific Corporation', '9950291494', 'clinicplus134@gmail.com', 1217375297, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(139, 5, 'Abbott Laboratories', '7885404269', 'clinicplus135@gmail.com', 4544610784, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(140, 5, 'Xerox Corporation', '8831814914', 'clinicplus136@gmail.com', 6206394659, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(141, 5, 'Arrow Electronics, Inc', '5210691465', 'clinicplus137@gmail.com', 5094051937, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(142, 5, 'Kimberly-Clark Corporation', '9344497782', 'clinicplus138@gmail.com', 4072210078, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(143, 5, 'U.S. Bancorp', '3146378233', 'clinicplus139@gmail.com', 5906489584, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(144, 5, 'United Services Automobile Association', '7562743704', 'clinicplus140@gmail.com', 1075013458, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(145, 5, 'Freeport-McMoRan Copper & Gold Inc.', '6393241465', 'clinicplus141@gmail.com', 9549350554, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(146, 5, 'Icahn Enterprises L.P.', '2687419918', 'clinicplus142@gmail.com', 9181696893, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(147, 5, 'ManpowerGroup Inc.', '6056318879', 'clinicplus143@gmail.com', 3476103423, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(148, 5, 'HollyFrontier Corporation', '2107804196', 'clinicplus144@gmail.com', 3196675994, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(149, 5, 'Global Partners LP', '3708634839', 'clinicplus145@gmail.com', 7256075518, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(150, 5, 'The Goodyear Tire & Rubber Company', '7285561581', 'clinicplus146@gmail.com', 5064199350, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(151, 5, 'PBF Energy Inc.', '8896052038', 'clinicplus147@gmail.com', 2479308822, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(152, 5, 'Danaher Corporation', '9169959392', 'clinicplus148@gmail.com', 8609348192, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(153, 5, 'Nucor Corporation', '7736023668', 'clinicplus149@gmail.com', 9264171227, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(154, 5, 'Kohl’s Corporation', '8002283550', 'clinicplus150@gmail.com', 2992042236, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(155, 5, 'AbbVie Inc.', '8752819049', 'clinicplus151@gmail.com', 2925932166, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(156, 5, 'Whirlpool Corporation', '4620391308', 'clinicplus152@gmail.com', 7979565808, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(157, 5, 'Amgen Inc.', '5481826581', 'clinicplus153@gmail.com', 1044553211, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(158, 5, 'Jabil Circuit, Inc.', '1573690429', 'clinicplus154@gmail.com', 6780753722, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(159, 5, 'Kraft Foods Group, Inc.', '7173575612', 'clinicplus155@gmail.com', 8373606782, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(160, 5, 'The Progressive Corporation', '8226765360', 'clinicplus156@gmail.com', 6494942021, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(161, 5, 'CenturyLink, Inc.', '4123667615', 'clinicplus157@gmail.com', 8705570371, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(162, 5, 'General Mills, Inc.', '3258717474', 'clinicplus158@gmail.com', 6454090086, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(163, 5, 'Southwest Airlines Co.', '2295352218', 'clinicplus159@gmail.com', 3921647758, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(164, 5, 'Altria Group, Inc.', '8662219234', 'clinicplus160@gmail.com', 6674941384, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(165, 5, 'AutoNation, Inc.', '2389428297', 'clinicplus161@gmail.com', 5495773449, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(166, 5, 'Chesapeake Energy Corporation', '4889341236', 'clinicplus162@gmail.com', 6409982064, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(167, 5, 'Dollar General Corporation', '1093895973', 'clinicplus163@gmail.com', 6234654862, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(168, 5, 'TRW Automotive Holdings Corp.', '7143567223', 'clinicplus164@gmail.com', 6628125060, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(169, 5, 'United States Steel Corporation', '4575605821', 'clinicplus165@gmail.com', 8341287307, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(170, 5, 'Colgate-Palmolive Company', '3610522662', 'clinicplus166@gmail.com', 1784210732, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(171, 5, 'Cummins Inc.', '2367465803', 'clinicplus167@gmail.com', 3002024478, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(172, 5, 'PACCAR Inc', '3279375088', 'clinicplus168@gmail.com', 3851515861, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(173, 5, 'The Southern Company', '9516191962', 'clinicplus169@gmail.com', 3163050539, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(174, 5, 'Illinois Tool Works Inc.', '9789796070', 'clinicplus170@gmail.com', 6550206142, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(175, 5, 'The PNC Financial Services Group, Inc.', '1162024139', 'clinicplus171@gmail.com', 1807022463, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(176, 5, 'Medtronic, Inc.', '5876344709', 'clinicplus172@gmail.com', 9863148509, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(177, 5, 'The AES Corporation', '9949686230', 'clinicplus173@gmail.com', 2497751618, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(178, 5, 'Murphy USA Inc.', '2369760352', 'clinicplus174@gmail.com', 2431322673, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(179, 5, 'Bristol-Myers Squibb Company', '8514424866', 'clinicplus175@gmail.com', 9758302160, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(180, 5, 'Lear Corporation', '4338180382', 'clinicplus176@gmail.com', 3965618649, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(181, 5, 'The Gap, Inc.', '3720287463', 'clinicplus177@gmail.com', 8148698205, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(182, 5, 'Apache Corporation', '6944793114', 'clinicplus178@gmail.com', 7389942411, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(183, 5, 'eBay Inc.', '7261537998', 'clinicplus179@gmail.com', 5091054596, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(184, 5, 'The Bank of New York Mellon Corporation', '7054521413', 'clinicplus180@gmail.com', 6137128565, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(185, 5, 'CBS Corporation', '8386303016', 'clinicplus181@gmail.com', 9358340836, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(186, 5, 'PG&E Corporation', '4793750124', 'clinicplus182@gmail.com', 6140444167, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(187, 5, 'ConAgra Foods, Inc.', '5325119564', 'clinicplus183@gmail.com', 3197146298, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(188, 5, 'Computer Sciences Corporation', '2535795999', 'clinicplus184@gmail.com', 2004927406, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(189, 5, 'American Electric Power Company, Inc.', '1275970560', 'clinicplus185@gmail.com', 6471736170, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(190, 5, 'Western Digital Corporation', '8028836217', 'clinicplus186@gmail.com', 3778500703, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(191, 5, 'Marathon Oil Corporation', '6744211901', 'clinicplus187@gmail.com', 4532280032, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(192, 5, 'Baxter International Inc.', '1526840529', 'clinicplus188@gmail.com', 1087382422, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(193, 5, 'PPG Industries, Inc.', '2004618878', 'clinicplus189@gmail.com', 5668516830, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(194, 5, 'NextEra Energy, Inc.', '7505955947', 'clinicplus190@gmail.com', 1348958387, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(195, 5, 'Community Health Systems, Inc.', '4524393643', 'clinicplus191@gmail.com', 1062664429, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(196, 5, 'Loews Corporation', '6319059739', 'clinicplus192@gmail.com', 2072571244, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(197, 5, 'Penske Automotive Group, Inc.', '1977872594', 'clinicplus193@gmail.com', 1660321223, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(198, 5, 'FirstEnergy Corp.', '3445455671', 'clinicplus194@gmail.com', 5798500365, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(199, 5, 'Starbucks Corporation', '7899459294', 'clinicplus195@gmail.com', 7674600562, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(200, 5, 'Monsanto Company', '3279225651', 'clinicplus196@gmail.com', 6485217660, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(201, 5, 'Kellogg Company', '2793795710', 'clinicplus197@gmail.com', 8095476549, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(202, 5, 'Land O’Lakes, Inc.', '7164648755', 'clinicplus198@gmail.com', 8555570768, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(203, 5, 'ONEOK, Inc.', '5631514377', 'clinicplus199@gmail.com', 7649081523, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(204, 5, 'Omnicom Group Inc.', '5294759613', 'clinicplus200@gmail.com', 5060759002, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(205, 5, 'Anadarko Petroleum Corporation', '9016208028', 'clinicplus201@gmail.com', 1116202958, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(206, 5, 'EOG Resources, Inc.', '2228705965', 'clinicplus202@gmail.com', 8568044602, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(207, 5, 'DISH Network Corporation', '7286130058', 'clinicplus203@gmail.com', 5058808826, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(208, 5, 'Genuine Parts Company', '3970116523', 'clinicplus204@gmail.com', 3373864810, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(209, 5, 'Kinder Morgan, Inc.', '2744297481', 'clinicplus205@gmail.com', 9387709200, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(210, 5, 'Waste Management, Inc.', '6457015983', 'clinicplus206@gmail.com', 3390316900, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(211, 5, 'The Chubb Corporation', '1245711402', 'clinicplus207@gmail.com', 9647400451, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(212, 5, 'Aramark Holdings Corporation', '2196064550', 'clinicplus208@gmail.com', 2684958961, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(213, 5, 'Viacom Inc.', '8836775510', 'clinicplus209@gmail.com', 8316407822, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(214, 5, 'Las Vegas Sands Corp.', '1306906867', 'clinicplus210@gmail.com', 9084333653, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(215, 5, 'Dominion Resources, Inc.', '1097419212', 'clinicplus211@gmail.com', 8960586144, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(216, 5, 'Ecolab Inc.', '1074496377', 'clinicplus212@gmail.com', 6605850155, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(217, 5, 'Smithfield Foods, Inc.', '9650856778', 'clinicplus213@gmail.com', 7514500017, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(218, 5, 'Thermo Fisher Scientific Inc.', '4079427814', 'clinicplus214@gmail.com', 8859193801, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(219, 5, 'Yum! Brands, Inc.', '9969386718', 'clinicplus215@gmail.com', 1822833246, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(220, 5, 'Parker-Hannifin Corporation', '7530530956', 'clinicplus216@gmail.com', 4443785574, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(221, 5, 'Whole Foods Market, Inc.', '5161738460', 'clinicplus217@gmail.com', 8393894352, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(222, 5, 'Marriott International, Inc.', '2181747165', 'clinicplus218@gmail.com', 6682411727, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(223, 5, 'C. H. Robinson Worldwide, Inc.', '5499267198', 'clinicplus219@gmail.com', 7292504048, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(224, 5, 'L-3 Communications Holdings, Inc.', '4266480261', 'clinicplus220@gmail.com', 8959604030, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(225, 5, 'Edison International', '9567525222', 'clinicplus221@gmail.com', 3262762003, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(226, 5, 'Toys “R” Us, Inc.', '3749424182', 'clinicplus222@gmail.com', 8793222090, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(227, 5, 'Nordstrom, Inc.', '2736611272', 'clinicplus223@gmail.com', 7098633754, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(228, 5, 'Consolidated Edison, Inc.', '2548889074', 'clinicplus224@gmail.com', 7526799853, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(229, 5, 'Marsh & McLennan Companies, Inc.', '6123493257', 'clinicplus225@gmail.com', 5447638072, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(230, 5, 'Texas Instruments Incorporated', '4222385317', 'clinicplus226@gmail.com', 8944244838, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(231, 5, 'Textron Inc.', '6982267514', 'clinicplus227@gmail.com', 6066429206, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(232, 5, 'Tenet Healthcare Corporation', '3589823637', 'clinicplus228@gmail.com', 8977026813, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(233, 5, 'DaVita HealthCare Partners Inc.', '7451867069', 'clinicplus229@gmail.com', 1322299744, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(234, 5, 'CSX Corporation', '6321556599', 'clinicplus230@gmail.com', 2496465890, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(235, 5, 'Lincoln National Corporation', '9838031217', 'clinicplus231@gmail.com', 9538254886, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(236, 5, 'Praxair, Inc.', '7819253104', 'clinicplus232@gmail.com', 1680681730, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(237, 5, 'PPL Corporation', '5849607531', 'clinicplus233@gmail.com', 5208619567, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(238, 5, 'J.C. Penney Company, Inc.', '6202697502', 'clinicplus234@gmail.com', 3132983501, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(239, 5, 'Peter Kiewit Sons’, Inc.', '3852843675', 'clinicplus235@gmail.com', 8053785656, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(240, 5, 'Jacobs Engineering Group Inc.', '1979341242', 'clinicplus236@gmail.com', 4541482028, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(241, 5, 'Visa Inc.', '4732431498', 'clinicplus237@gmail.com', 2100056914, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(242, 5, 'H.J. Heinz Company', '9386072526', 'clinicplus238@gmail.com', 1110004067, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(243, 5, 'CarMax, Inc.', '4694958414', 'clinicplus239@gmail.com', 8302344736, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(244, 5, 'V.F. Corporation', '9101632910', 'clinicplus240@gmail.com', 1734450527, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(245, 5, 'Entergy Corporation', '8916122682', 'clinicplus241@gmail.com', 1933811497, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(246, 5, 'Automatic Data Processing, Inc.', '4876766343', 'clinicplus242@gmail.com', 8623401328, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(247, 5, 'NRG Energy, Inc.', '2014237546', 'clinicplus243@gmail.com', 9901262830, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(248, 5, 'Guardian Life Ins. Co. of America', '8250623207', 'clinicplus244@gmail.com', 7980273160, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(249, 5, 'Liberty Interactive Corporation', '2168954222', 'clinicplus245@gmail.com', 1180626204, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(250, 5, 'Norfolk Southern Corporation', '8235885122', 'clinicplus246@gmail.com', 5731823218, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(251, 5, 'Office Depot, Inc.', '2278034082', 'clinicplus247@gmail.com', 1781804736, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(252, 5, 'Ameriprise Financial, Inc.', '8626606400', 'clinicplus248@gmail.com', 4226573944, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(253, 5, 'Gilead Sciences, Inc.', '7247736846', 'clinicplus249@gmail.com', 4023540231, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(254, 5, 'Centene Corporation', '9734395335', 'clinicplus250@gmail.com', 5831438446, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(255, 5, 'Leucadia National Corporation', '3931915544', 'clinicplus251@gmail.com', 3726244045, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(256, 5, 'Huntsman Corporation', '8434891785', 'clinicplus252@gmail.com', 8895637549, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(257, 5, 'Health Net, Inc.', '6802273913', 'clinicplus253@gmail.com', 6984864057, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(258, 5, 'Stanley Black & Decker, Inc.', '3948268372', 'clinicplus254@gmail.com', 4948431021, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(259, 5, 'URS Corporation', '8295233389', 'clinicplus255@gmail.com', 2355899338, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(260, 5, 'Xcel Energy Inc.', '3797184786', 'clinicplus256@gmail.com', 3241100519, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(261, 5, 'Bed Bath & Beyond Inc.', '3997648735', 'clinicplus257@gmail.com', 6835699393, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(262, 5, 'Navistar International Corporation', '1908621800', 'clinicplus258@gmail.com', 7136156012, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(263, 5, 'Synnex Corporation', '5642483740', 'clinicplus259@gmail.com', 5858198006, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(264, 5, 'First Data Corporation', '3083431938', 'clinicplus260@gmail.com', 6130025857, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(265, 5, 'AGCO Corporation', '5948264528', 'clinicplus261@gmail.com', 6739464570, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(266, 5, 'L Brands, Inc.', '5758833669', 'clinicplus262@gmail.com', 4296173813, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(267, 5, 'Hertz Global Holdings, Inc.', '4965671427', 'clinicplus263@gmail.com', 7913064840, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(268, 5, 'CDW Corporation', '7961799372', 'clinicplus264@gmail.com', 2929754099, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(269, 5, 'CST Brands, Inc.', '6003283711', 'clinicplus265@gmail.com', 4814643870, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(270, 5, 'Sempra Energy', '7490466737', 'clinicplus266@gmail.com', 9074848837, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(271, 5, 'R.R. Donnelley & Sons Company', '3641466650', 'clinicplus267@gmail.com', 6324089939, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(272, 5, 'BB&T Corporation', '2186070001', 'clinicplus268@gmail.com', 6452658063, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(273, 5, 'Devon Energy Corporation', '7771275369', 'clinicplus269@gmail.com', 2746312489, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(274, 5, 'Family Dollar Stores, Inc.', '7799152000', 'clinicplus270@gmail.com', 6303213288, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(275, 5, 'Unum Group', '4165779787', 'clinicplus271@gmail.com', 1854208525, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(276, 5, 'Ally Financial Inc.', '5457708504', 'clinicplus272@gmail.com', 4135300866, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(277, 5, 'Reinsurance Group of America, Incorporated', '9399521001', 'clinicplus273@gmail.com', 9374619452, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(278, 5, 'State Street Corporation', '2415028320', 'clinicplus274@gmail.com', 9476245031, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(279, 5, 'Air Products & Chemicals, Inc.', '8388530439', 'clinicplus275@gmail.com', 9485558070, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(280, 5, 'Ross Stores, Inc.', '1614371173', 'clinicplus276@gmail.com', 4497660115, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(281, 5, 'The Sherwin-Williams Company', '9567318437', 'clinicplus277@gmail.com', 7400893824, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(282, 5, 'The Estée Lauder Companies Inc.', '8876023456', 'clinicplus278@gmail.com', 4397742175, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(283, 5, 'BlackRock, Inc.', '9533531010', 'clinicplus279@gmail.com', 9654316515, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(284, 5, 'Western Refining, Inc.', '6455713805', 'clinicplus280@gmail.com', 3109494974, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(285, 5, 'Avon Products, Inc.', '8556819406', 'clinicplus281@gmail.com', 3018881315, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(286, 5, 'The Mosaic Company', '3555587208', 'clinicplus282@gmail.com', 4661990291, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(287, 5, 'Public Service Enterprise Group Incorporated', '4929794697', 'clinicplus283@gmail.com', 4170459790, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(288, 5, 'Dean Foods Company', '5789058193', 'clinicplus284@gmail.com', 3311888347, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(289, 5, 'Cameron International Corporation', '4457457858', 'clinicplus285@gmail.com', 3762902922, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(290, 5, 'MGM Resorts International', '7488150866', 'clinicplus286@gmail.com', 2916004082, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(291, 5, 'KKR & Co. L.P.', '3521441542', 'clinicplus287@gmail.com', 3735835632, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(292, 5, 'Hilton Worldwide Holdings Inc.', '8030918861', 'clinicplus288@gmail.com', 4416068976, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(293, 5, 'DTE Energy Company', '3248766972', 'clinicplus289@gmail.com', 3171142345, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(294, 5, 'Genworth Financial, Inc.', '6268482189', 'clinicplus290@gmail.com', 5896785733, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(295, 5, 'Henry Schein, Inc.', '4907049304', 'clinicplus291@gmail.com', 8638581798, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(296, 5, 'Rock-Tenn Company', '3321308544', 'clinicplus292@gmail.com', 2461531986, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(297, 5, 'WellCare Health Plans, Inc.', '2363278189', 'clinicplus293@gmail.com', 2020344637, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(298, 5, 'W.W. Grainger, Inc.', '1394796762', 'clinicplus294@gmail.com', 5152762243, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(299, 5, 'Discover Financial Services', '9309833593', 'clinicplus295@gmail.com', 8721115831, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(300, 5, 'Eastman Chemical Company', '3316318716', 'clinicplus296@gmail.com', 3300388565, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(301, 5, 'Principal Financial Group, Inc.', '4295780423', 'clinicplus297@gmail.com', 5202958933, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(302, 5, 'Reliance Steel & Aluminum Co.', '5941690613', 'clinicplus298@gmail.com', 4123416586, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(303, 5, 'AutoZone, Inc.', '4034020305', 'clinicplus299@gmail.com', 2662343598, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(304, 5, 'Dover Corporation', '5723657261', 'clinicplus300@gmail.com', 3200932982, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(305, 5, 'Micron Technology, Inc.', '9837741354', 'clinicplus301@gmail.com', 4996363475, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(306, 5, 'Owens & Minor, Inc.', '6582133187', 'clinicplus302@gmail.com', 3007172128, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(307, 5, 'Assurant, Inc.', '4518233864', 'clinicplus303@gmail.com', 8310796378, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(308, 5, 'GameStop Corp.', '2082434643', 'clinicplus304@gmail.com', 7007121357, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(309, 5, 'Stryker Corporation', '2660958032', 'clinicplus305@gmail.com', 4112740245, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(310, 5, 'Group 1 Automotive, Inc.', '5060045312', 'clinicplus306@gmail.com', 8778355291, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(311, 5, 'Cognizant Technology Solutions Corporation', '3852433132', 'clinicplus307@gmail.com', 6418278887, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(312, 5, 'Sonic Automotive, Inc.', '6312103072', 'clinicplus308@gmail.com', 3252858178, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(313, 5, 'Autoliv, Inc.', '2871767457', 'clinicplus309@gmail.com', 9037543988, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL);
+(1, 1, 'VINE PHARMACY', '0781418920', 'vinepharmacy@gmail.com', 1496648780, 'Kigali-GASABO-REMERA', 1, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(4, 5, 'Wal-Mart Stores', '2053104898', 'clinicplus0@gmail.com', 1496648880, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(5, 5, 'Exxon Mobil', '4266048358', 'clinicplus1@gmail.com', 9970419283, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(6, 5, 'Chevron', '6805142778', 'clinicplus2@gmail.com', 2589139345, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(7, 5, 'Berkshire Hathaway', '7374562722', 'clinicplus3@gmail.com', 9281931465, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(8, 5, 'Apple', '6993898421', 'clinicplus4@gmail.com', 8555645753, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(9, 5, 'Phillips 66', '4709674580', 'clinicplus5@gmail.com', 2441420101, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(10, 5, 'General Motors', '5783030266', 'clinicplus6@gmail.com', 4344506324, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(11, 5, 'Ford Motor', '5000408215', 'clinicplus7@gmail.com', 2502789506, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(12, 5, 'General Electric', '4717220732', 'clinicplus8@gmail.com', 3535135927, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(13, 5, 'Valero Energy', '1713109212', 'clinicplus9@gmail.com', 9379935255, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(14, 5, 'AT&T', '2667442573', 'clinicplus10@gmail.com', 7944213244, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(15, 5, 'CVS Caremark', '1558323712', 'clinicplus11@gmail.com', 4569421356, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(16, 5, 'Fannie Mae', '9715019849', 'clinicplus12@gmail.com', 4823692795, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(17, 5, 'UnitedHealth Group', '7593746314', 'clinicplus13@gmail.com', 3175649519, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(18, 5, 'McKesson', '6058422848', 'clinicplus14@gmail.com', 1249628429, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(19, 5, 'Verizon Communications', '5713138680', 'clinicplus15@gmail.com', 2143114443, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(20, 5, 'Hewlett-Packard', '9594582162', 'clinicplus16@gmail.com', 6431572702, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(21, 5, 'J.P. Morgan Chase & Co.', '6622385180', 'clinicplus17@gmail.com', 3908054471, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(22, 5, 'Costco Wholesale', '7538894308', 'clinicplus18@gmail.com', 5060168583, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(23, 5, 'Express Scripts Holding', '1657677928', 'clinicplus19@gmail.com', 4796669244, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(24, 5, 'Bank of America', '6216988485', 'clinicplus20@gmail.com', 3768773853, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(25, 5, 'Cardinal Health', '5717063012', 'clinicplus21@gmail.com', 3525008857, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(26, 5, 'International Business Machines', '2129164622', 'clinicplus22@gmail.com', 8117118876, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(27, 5, 'Kroger', '5051285694', 'clinicplus23@gmail.com', 7517110163, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(28, 5, 'Marathon Petroleum', '4412600556', 'clinicplus24@gmail.com', 3794954208, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(29, 5, 'Citigroup', '2872171348', 'clinicplus25@gmail.com', 6804868674, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(30, 5, 'Archer Daniels Midland', '5130122055', 'clinicplus26@gmail.com', 8284984639, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(31, 5, 'AmerisourceBergen', '5293111324', 'clinicplus27@gmail.com', 7363858184, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(32, 5, 'Wells Fargo', '3398048575', 'clinicplus28@gmail.com', 5659087338, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(33, 5, 'Boeing', '6821281964', 'clinicplus29@gmail.com', 6687633931, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(34, 5, 'Procter & Gamble', '5844934640', 'clinicplus30@gmail.com', 2776656447, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(35, 5, 'Freddie Mac', '2414225725', 'clinicplus31@gmail.com', 5022151608, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(36, 5, 'Home Depot', '5770167984', 'clinicplus32@gmail.com', 9652596220, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(37, 5, 'Microsoft', '2566388641', 'clinicplus33@gmail.com', 9538799485, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(38, 5, 'Amazon.com', '2861051458', 'clinicplus34@gmail.com', 3954495802, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(39, 5, 'Target', '7053058657', 'clinicplus35@gmail.com', 8050178227, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(40, 5, 'Walgreen Co.', '5580581155', 'clinicplus36@gmail.com', 6635594953, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(41, 5, 'WellPoint', '3848710794', 'clinicplus37@gmail.com', 9584819229, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(42, 5, 'Johnson & Johnson', '5075667843', 'clinicplus38@gmail.com', 9644676494, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(43, 5, 'American International Group', '5346955586', 'clinicplus39@gmail.com', 6040680130, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(44, 5, 'State Farm Insurance Cos.', '4096140719', 'clinicplus40@gmail.com', 4114154171, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(45, 5, 'MetLife', '4550634299', 'clinicplus41@gmail.com', 3362648095, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(46, 5, 'PepsiCo', '7660014028', 'clinicplus42@gmail.com', 9812963479, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(47, 5, 'Comcast', '1128132776', 'clinicplus43@gmail.com', 7053845063, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(48, 5, 'United Technologies', '3823789578', 'clinicplus44@gmail.com', 9364645773, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(49, 5, 'Google', '2691239242', 'clinicplus45@gmail.com', 5052362735, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(50, 5, 'ConocoPhillips', '2912422764', 'clinicplus46@gmail.com', 1995157628, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(51, 5, 'Dow Chemical', '9813708459', 'clinicplus47@gmail.com', 3967583442, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(52, 5, 'Caterpillar', '5723641558', 'clinicplus48@gmail.com', 2734198839, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(53, 5, 'United Parcel Service', '3425842814', 'clinicplus49@gmail.com', 3361612192, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(54, 5, 'Pfizer', '3533148213', 'clinicplus50@gmail.com', 7931718268, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(55, 5, 'Lowe’s Companies', '4378637519', 'clinicplus51@gmail.com', 9936476482, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(56, 5, 'Intel Corporation', '1311541266', 'clinicplus52@gmail.com', 4970060039, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(57, 5, 'Energy Transfer Equity, L.P.', '2189579121', 'clinicplus53@gmail.com', 4834392884, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(58, 5, 'Cisco Systems, Inc.', '6393614496', 'clinicplus54@gmail.com', 2882818699, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(59, 5, 'Enterprise Products Partners L.P.', '8588722651', 'clinicplus55@gmail.com', 7435833371, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(60, 5, 'Aetna Inc.', '4637574729', 'clinicplus56@gmail.com', 4662349313, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(61, 5, 'The Coca-Cola Company', '8799325067', 'clinicplus57@gmail.com', 6024131377, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(62, 5, 'Lockheed Martin Corporation', '8595864607', 'clinicplus58@gmail.com', 9966717223, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(63, 5, 'Best Buy Co., Inc.', '3740286379', 'clinicplus59@gmail.com', 2824729273, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(64, 5, 'The Walt Disney Company', '2742239530', 'clinicplus60@gmail.com', 5210499831, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(65, 5, 'CHS Inc.', '9798135993', 'clinicplus61@gmail.com', 8400129516, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(66, 5, 'Sysco Corporation', '9492919946', 'clinicplus62@gmail.com', 6045256474, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(67, 5, 'FedEx Corporation', '9052141216', 'clinicplus63@gmail.com', 9022809424, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(68, 5, 'Merck & Co., Inc.', '2476470193', 'clinicplus64@gmail.com', 2848162400, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(69, 5, 'INTL FCStone Inc.', '9135667907', 'clinicplus65@gmail.com', 1081879635, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(70, 5, 'Safeway Inc.', '7609779441', 'clinicplus66@gmail.com', 6457243267, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(71, 5, 'Johnson Controls, Inc.', '3713193774', 'clinicplus67@gmail.com', 1709843842, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(72, 5, 'Ingram Micro Inc.', '8161898171', 'clinicplus68@gmail.com', 5806613295, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(73, 5, 'Plains GP Holdings, L.P.', '2343310227', 'clinicplus69@gmail.com', 9550489743, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(74, 5, 'World Fuel Services Corporation', '5508977119', 'clinicplus70@gmail.com', 2568643795, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(75, 5, 'Prudential Financial, Inc.', '3373651439', 'clinicplus71@gmail.com', 1594582856, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(76, 5, 'Humana Inc.', '8947713124', 'clinicplus72@gmail.com', 8737792854, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(77, 5, 'The Goldman Sachs Group, Inc.', '9109098981', 'clinicplus73@gmail.com', 9724760701, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(78, 5, 'Tesoro Corporation', '5942542720', 'clinicplus74@gmail.com', 6064567824, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(79, 5, 'Liberty Mutual Holding Company Inc.', '1696668026', 'clinicplus75@gmail.com', 1482367381, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(80, 5, 'Honeywell International Inc.', '3684440957', 'clinicplus76@gmail.com', 2990819674, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(81, 5, 'United Continental Holdings, Inc.', '5151166835', 'clinicplus77@gmail.com', 3032822896, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(82, 5, 'HCA Holdings, Inc.', '5824386620', 'clinicplus78@gmail.com', 5557918813, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(83, 5, 'Deere & Company', '5389267186', 'clinicplus79@gmail.com', 7297468990, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(84, 5, 'Delta Air Lines, Inc.', '8435926562', 'clinicplus80@gmail.com', 5783391614, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(85, 5, 'Oracle Corporation', '8390592076', 'clinicplus81@gmail.com', 6398692505, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(86, 5, 'Morgan Stanley', '9272731631', 'clinicplus82@gmail.com', 8497306047, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(87, 5, 'Hess Corporation', '7292867189', 'clinicplus83@gmail.com', 8645567795, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(88, 5, 'Twenty-First Century Fox, Inc.', '4610468132', 'clinicplus84@gmail.com', 4360663515, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(89, 5, 'E.I. du Pont de Nemours and Company', '1296024131', 'clinicplus85@gmail.com', 4405488281, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(90, 5, 'Sears Holdings Corporation', '3826119364', 'clinicplus86@gmail.com', 3100277138, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(91, 5, 'New York Life Insurance Company', '2170833424', 'clinicplus87@gmail.com', 9289818505, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(92, 5, 'Mondelez International, Inc.', '5321737353', 'clinicplus88@gmail.com', 3099822166, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(93, 5, 'American Express Company', '8364255376', 'clinicplus89@gmail.com', 9051563332, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(94, 5, 'Nationwide Mutual Insurance Co.', '7913278161', 'clinicplus90@gmail.com', 6967725855, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(95, 5, 'The Allstate Corporation', '5376648383', 'clinicplus91@gmail.com', 6859449173, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(96, 5, 'Tyson Foods, Inc.', '3948602534', 'clinicplus92@gmail.com', 9529027307, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(97, 5, 'Supervalu Inc.', '2169099682', 'clinicplus93@gmail.com', 1052754253, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(98, 5, 'TIAA-CREF', '9571563885', 'clinicplus94@gmail.com', 3103940636, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(99, 5, 'Massachusetts Mutual Life Insurance Company', '5730407422', 'clinicplus95@gmail.com', 3080214934, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(100, 5, 'CIGNA Corporation', '5514476810', 'clinicplus96@gmail.com', 8200226829, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(101, 5, 'DIRECTV', '6296558714', 'clinicplus97@gmail.com', 8529437437, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(102, 5, 'General Dynamics Corporation', '1028429232', 'clinicplus98@gmail.com', 6845370684, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(103, 5, 'Philip Morris International Inc.', '8452367795', 'clinicplus99@gmail.com', 7896730417, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(104, 5, '3M Company', '3086167900', 'clinicplus100@gmail.com', 1411423154, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(105, 5, 'Time Warner Inc.', '5582045238', 'clinicplus101@gmail.com', 5208132021, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(106, 5, 'Halliburton Company', '4944296177', 'clinicplus102@gmail.com', 1152613977, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(107, 5, 'Publix Super Markets, Inc.', '4188712568', 'clinicplus103@gmail.com', 4079356398, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(108, 5, 'International Paper Company', '8962205970', 'clinicplus104@gmail.com', 7359688947, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(109, 5, 'McDonald’s Corporation', '4968784396', 'clinicplus105@gmail.com', 9507668354, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(110, 5, 'Macy’s, Inc.', '4204093070', 'clinicplus106@gmail.com', 1610783011, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(111, 5, 'The TJX Companies, Inc.', '9679087705', 'clinicplus107@gmail.com', 3657517003, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(112, 5, 'Fluor Corporation', '9406902609', 'clinicplus108@gmail.com', 8220881072, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(113, 5, 'Northwestern Mutual Life Insurance Company,Inc.', '5991131536', 'clinicplus109@gmail.com', 5521236212, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(114, 5, 'Tech Data Corporation', '4838928112', 'clinicplus110@gmail.com', 3400937404, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(115, 5, 'American Airlines Group Inc.', '3597429929', 'clinicplus111@gmail.com', 4130375176, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(116, 5, 'The Hartford Financial Services Group, Inc.', '5734471197', 'clinicplus112@gmail.com', 6398744212, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(117, 5, 'The Travelers Companies, Inc.', '6522781881', 'clinicplus113@gmail.com', 2440715482, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(118, 5, 'Nike, Inc.', '9965100352', 'clinicplus114@gmail.com', 7548834167, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(119, 5, 'Occidental Petroleum Corporation', '1554761708', 'clinicplus115@gmail.com', 8301641341, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(120, 5, 'Avnet, Inc.', '4945158441', 'clinicplus116@gmail.com', 9031427879, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(121, 5, 'Rite Aid Corporation', '8421107531', 'clinicplus117@gmail.com', 9464488857, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(122, 5, 'Exelon Corporation', '3095795756', 'clinicplus118@gmail.com', 8712745582, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(123, 5, 'Qualcomm Incorporated', '3478377658', 'clinicplus119@gmail.com', 2302303436, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(124, 5, 'Emerson Electric Co.', '3149373386', 'clinicplus120@gmail.com', 1133511974, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(125, 5, 'Northrop Grumman Corporation', '5019056047', 'clinicplus121@gmail.com', 3221105561, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(126, 5, 'Duke Energy Corporation', '8628808528', 'clinicplus122@gmail.com', 4710535872, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(127, 5, 'Capital One Financial Corporation', '5849547221', 'clinicplus123@gmail.com', 8363239707, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(128, 5, 'Aflac Incorporated', '8011371049', 'clinicplus124@gmail.com', 5404655152, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(129, 5, 'Raytheon Company', '6912758572', 'clinicplus125@gmail.com', 8084990519, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(130, 5, 'Staples, Inc.', '6138457446', 'clinicplus126@gmail.com', 9296635755, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(131, 5, 'EMC Corporation', '7893813770', 'clinicplus127@gmail.com', 6938291285, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(132, 5, 'Eli Lilly and Company', '1353577599', 'clinicplus128@gmail.com', 9806225604, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(133, 5, 'Alcoa Inc.', '6087540164', 'clinicplus129@gmail.com', 6446536382, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(134, 5, 'National Oilwell Varco, Inc.', '5512266138', 'clinicplus130@gmail.com', 4192792983, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(135, 5, 'Baker Hughes Incorporated', '2337058604', 'clinicplus131@gmail.com', 3258552328, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(136, 5, 'US Foods, Inc.', '9145248011', 'clinicplus132@gmail.com', 4970563297, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(137, 5, 'Time Warner Cable Inc.', '7622180413', 'clinicplus133@gmail.com', 6894029366, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(138, 5, 'Union Pacific Corporation', '9950291494', 'clinicplus134@gmail.com', 1217375297, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(139, 5, 'Abbott Laboratories', '7885404269', 'clinicplus135@gmail.com', 4544610784, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(140, 5, 'Xerox Corporation', '8831814914', 'clinicplus136@gmail.com', 6206394659, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(141, 5, 'Arrow Electronics, Inc', '5210691465', 'clinicplus137@gmail.com', 5094051937, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(142, 5, 'Kimberly-Clark Corporation', '9344497782', 'clinicplus138@gmail.com', 4072210078, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(143, 5, 'U.S. Bancorp', '3146378233', 'clinicplus139@gmail.com', 5906489584, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(144, 5, 'United Services Automobile Association', '7562743704', 'clinicplus140@gmail.com', 1075013458, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(145, 5, 'Freeport-McMoRan Copper & Gold Inc.', '6393241465', 'clinicplus141@gmail.com', 9549350554, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(146, 5, 'Icahn Enterprises L.P.', '2687419918', 'clinicplus142@gmail.com', 9181696893, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(147, 5, 'ManpowerGroup Inc.', '6056318879', 'clinicplus143@gmail.com', 3476103423, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(148, 5, 'HollyFrontier Corporation', '2107804196', 'clinicplus144@gmail.com', 3196675994, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(149, 5, 'Global Partners LP', '3708634839', 'clinicplus145@gmail.com', 7256075518, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(150, 5, 'The Goodyear Tire & Rubber Company', '7285561581', 'clinicplus146@gmail.com', 5064199350, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(151, 5, 'PBF Energy Inc.', '8896052038', 'clinicplus147@gmail.com', 2479308822, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(152, 5, 'Danaher Corporation', '9169959392', 'clinicplus148@gmail.com', 8609348192, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(153, 5, 'Nucor Corporation', '7736023668', 'clinicplus149@gmail.com', 9264171227, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(154, 5, 'Kohl’s Corporation', '8002283550', 'clinicplus150@gmail.com', 2992042236, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(155, 5, 'AbbVie Inc.', '8752819049', 'clinicplus151@gmail.com', 2925932166, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(156, 5, 'Whirlpool Corporation', '4620391308', 'clinicplus152@gmail.com', 7979565808, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(157, 5, 'Amgen Inc.', '5481826581', 'clinicplus153@gmail.com', 1044553211, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(158, 5, 'Jabil Circuit, Inc.', '1573690429', 'clinicplus154@gmail.com', 6780753722, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(159, 5, 'Kraft Foods Group, Inc.', '7173575612', 'clinicplus155@gmail.com', 8373606782, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(160, 5, 'The Progressive Corporation', '8226765360', 'clinicplus156@gmail.com', 6494942021, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(161, 5, 'CenturyLink, Inc.', '4123667615', 'clinicplus157@gmail.com', 8705570371, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(162, 5, 'General Mills, Inc.', '3258717474', 'clinicplus158@gmail.com', 6454090086, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(163, 5, 'Southwest Airlines Co.', '2295352218', 'clinicplus159@gmail.com', 3921647758, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(164, 5, 'Altria Group, Inc.', '8662219234', 'clinicplus160@gmail.com', 6674941384, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(165, 5, 'AutoNation, Inc.', '2389428297', 'clinicplus161@gmail.com', 5495773449, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(166, 5, 'Chesapeake Energy Corporation', '4889341236', 'clinicplus162@gmail.com', 6409982064, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(167, 5, 'Dollar General Corporation', '1093895973', 'clinicplus163@gmail.com', 6234654862, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(168, 5, 'TRW Automotive Holdings Corp.', '7143567223', 'clinicplus164@gmail.com', 6628125060, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(169, 5, 'United States Steel Corporation', '4575605821', 'clinicplus165@gmail.com', 8341287307, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(170, 5, 'Colgate-Palmolive Company', '3610522662', 'clinicplus166@gmail.com', 1784210732, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(171, 5, 'Cummins Inc.', '2367465803', 'clinicplus167@gmail.com', 3002024478, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(172, 5, 'PACCAR Inc', '3279375088', 'clinicplus168@gmail.com', 3851515861, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(173, 5, 'The Southern Company', '9516191962', 'clinicplus169@gmail.com', 3163050539, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(174, 5, 'Illinois Tool Works Inc.', '9789796070', 'clinicplus170@gmail.com', 6550206142, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(175, 5, 'The PNC Financial Services Group, Inc.', '1162024139', 'clinicplus171@gmail.com', 1807022463, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(176, 5, 'Medtronic, Inc.', '5876344709', 'clinicplus172@gmail.com', 9863148509, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(177, 5, 'The AES Corporation', '9949686230', 'clinicplus173@gmail.com', 2497751618, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(178, 5, 'Murphy USA Inc.', '2369760352', 'clinicplus174@gmail.com', 2431322673, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(179, 5, 'Bristol-Myers Squibb Company', '8514424866', 'clinicplus175@gmail.com', 9758302160, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(180, 5, 'Lear Corporation', '4338180382', 'clinicplus176@gmail.com', 3965618649, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(181, 5, 'The Gap, Inc.', '3720287463', 'clinicplus177@gmail.com', 8148698205, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(182, 5, 'Apache Corporation', '6944793114', 'clinicplus178@gmail.com', 7389942411, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(183, 5, 'eBay Inc.', '7261537998', 'clinicplus179@gmail.com', 5091054596, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(184, 5, 'The Bank of New York Mellon Corporation', '7054521413', 'clinicplus180@gmail.com', 6137128565, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(185, 5, 'CBS Corporation', '8386303016', 'clinicplus181@gmail.com', 9358340836, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(186, 5, 'PG&E Corporation', '4793750124', 'clinicplus182@gmail.com', 6140444167, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(187, 5, 'ConAgra Foods, Inc.', '5325119564', 'clinicplus183@gmail.com', 3197146298, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(188, 5, 'Computer Sciences Corporation', '2535795999', 'clinicplus184@gmail.com', 2004927406, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(189, 5, 'American Electric Power Company, Inc.', '1275970560', 'clinicplus185@gmail.com', 6471736170, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(190, 5, 'Western Digital Corporation', '8028836217', 'clinicplus186@gmail.com', 3778500703, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(191, 5, 'Marathon Oil Corporation', '6744211901', 'clinicplus187@gmail.com', 4532280032, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(192, 5, 'Baxter International Inc.', '1526840529', 'clinicplus188@gmail.com', 1087382422, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(193, 5, 'PPG Industries, Inc.', '2004618878', 'clinicplus189@gmail.com', 5668516830, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(194, 5, 'NextEra Energy, Inc.', '7505955947', 'clinicplus190@gmail.com', 1348958387, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(195, 5, 'Community Health Systems, Inc.', '4524393643', 'clinicplus191@gmail.com', 1062664429, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(196, 5, 'Loews Corporation', '6319059739', 'clinicplus192@gmail.com', 2072571244, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(197, 5, 'Penske Automotive Group, Inc.', '1977872594', 'clinicplus193@gmail.com', 1660321223, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(198, 5, 'FirstEnergy Corp.', '3445455671', 'clinicplus194@gmail.com', 5798500365, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(199, 5, 'Starbucks Corporation', '7899459294', 'clinicplus195@gmail.com', 7674600562, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(200, 5, 'Monsanto Company', '3279225651', 'clinicplus196@gmail.com', 6485217660, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(201, 5, 'Kellogg Company', '2793795710', 'clinicplus197@gmail.com', 8095476549, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(202, 5, 'Land O’Lakes, Inc.', '7164648755', 'clinicplus198@gmail.com', 8555570768, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(203, 5, 'ONEOK, Inc.', '5631514377', 'clinicplus199@gmail.com', 7649081523, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(204, 5, 'Omnicom Group Inc.', '5294759613', 'clinicplus200@gmail.com', 5060759002, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(205, 5, 'Anadarko Petroleum Corporation', '9016208028', 'clinicplus201@gmail.com', 1116202958, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(206, 5, 'EOG Resources, Inc.', '2228705965', 'clinicplus202@gmail.com', 8568044602, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(207, 5, 'DISH Network Corporation', '7286130058', 'clinicplus203@gmail.com', 5058808826, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(208, 5, 'Genuine Parts Company', '3970116523', 'clinicplus204@gmail.com', 3373864810, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(209, 5, 'Kinder Morgan, Inc.', '2744297481', 'clinicplus205@gmail.com', 9387709200, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(210, 5, 'Waste Management, Inc.', '6457015983', 'clinicplus206@gmail.com', 3390316900, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(211, 5, 'The Chubb Corporation', '1245711402', 'clinicplus207@gmail.com', 9647400451, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(212, 5, 'Aramark Holdings Corporation', '2196064550', 'clinicplus208@gmail.com', 2684958961, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(213, 5, 'Viacom Inc.', '8836775510', 'clinicplus209@gmail.com', 8316407822, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(214, 5, 'Las Vegas Sands Corp.', '1306906867', 'clinicplus210@gmail.com', 9084333653, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(215, 5, 'Dominion Resources, Inc.', '1097419212', 'clinicplus211@gmail.com', 8960586144, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(216, 5, 'Ecolab Inc.', '1074496377', 'clinicplus212@gmail.com', 6605850155, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(217, 5, 'Smithfield Foods, Inc.', '9650856778', 'clinicplus213@gmail.com', 7514500017, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(218, 5, 'Thermo Fisher Scientific Inc.', '4079427814', 'clinicplus214@gmail.com', 8859193801, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(219, 5, 'Yum! Brands, Inc.', '9969386718', 'clinicplus215@gmail.com', 1822833246, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(220, 5, 'Parker-Hannifin Corporation', '7530530956', 'clinicplus216@gmail.com', 4443785574, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(221, 5, 'Whole Foods Market, Inc.', '5161738460', 'clinicplus217@gmail.com', 8393894352, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(222, 5, 'Marriott International, Inc.', '2181747165', 'clinicplus218@gmail.com', 6682411727, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(223, 5, 'C. H. Robinson Worldwide, Inc.', '5499267198', 'clinicplus219@gmail.com', 7292504048, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(224, 5, 'L-3 Communications Holdings, Inc.', '4266480261', 'clinicplus220@gmail.com', 8959604030, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(225, 5, 'Edison International', '9567525222', 'clinicplus221@gmail.com', 3262762003, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(226, 5, 'Toys “R” Us, Inc.', '3749424182', 'clinicplus222@gmail.com', 8793222090, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(227, 5, 'Nordstrom, Inc.', '2736611272', 'clinicplus223@gmail.com', 7098633754, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(228, 5, 'Consolidated Edison, Inc.', '2548889074', 'clinicplus224@gmail.com', 7526799853, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(229, 5, 'Marsh & McLennan Companies, Inc.', '6123493257', 'clinicplus225@gmail.com', 5447638072, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(230, 5, 'Texas Instruments Incorporated', '4222385317', 'clinicplus226@gmail.com', 8944244838, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(231, 5, 'Textron Inc.', '6982267514', 'clinicplus227@gmail.com', 6066429206, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(232, 5, 'Tenet Healthcare Corporation', '3589823637', 'clinicplus228@gmail.com', 8977026813, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(233, 5, 'DaVita HealthCare Partners Inc.', '7451867069', 'clinicplus229@gmail.com', 1322299744, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(234, 5, 'CSX Corporation', '6321556599', 'clinicplus230@gmail.com', 2496465890, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(235, 5, 'Lincoln National Corporation', '9838031217', 'clinicplus231@gmail.com', 9538254886, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(236, 5, 'Praxair, Inc.', '7819253104', 'clinicplus232@gmail.com', 1680681730, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(237, 5, 'PPL Corporation', '5849607531', 'clinicplus233@gmail.com', 5208619567, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(238, 5, 'J.C. Penney Company, Inc.', '6202697502', 'clinicplus234@gmail.com', 3132983501, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(239, 5, 'Peter Kiewit Sons’, Inc.', '3852843675', 'clinicplus235@gmail.com', 8053785656, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(240, 5, 'Jacobs Engineering Group Inc.', '1979341242', 'clinicplus236@gmail.com', 4541482028, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(241, 5, 'Visa Inc.', '4732431498', 'clinicplus237@gmail.com', 2100056914, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(242, 5, 'H.J. Heinz Company', '9386072526', 'clinicplus238@gmail.com', 1110004067, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(243, 5, 'CarMax, Inc.', '4694958414', 'clinicplus239@gmail.com', 8302344736, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(244, 5, 'V.F. Corporation', '9101632910', 'clinicplus240@gmail.com', 1734450527, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(245, 5, 'Entergy Corporation', '8916122682', 'clinicplus241@gmail.com', 1933811497, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(246, 5, 'Automatic Data Processing, Inc.', '4876766343', 'clinicplus242@gmail.com', 8623401328, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(247, 5, 'NRG Energy, Inc.', '2014237546', 'clinicplus243@gmail.com', 9901262830, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(248, 5, 'Guardian Life Ins. Co. of America', '8250623207', 'clinicplus244@gmail.com', 7980273160, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(249, 5, 'Liberty Interactive Corporation', '2168954222', 'clinicplus245@gmail.com', 1180626204, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(250, 5, 'Norfolk Southern Corporation', '8235885122', 'clinicplus246@gmail.com', 5731823218, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(251, 5, 'Office Depot, Inc.', '2278034082', 'clinicplus247@gmail.com', 1781804736, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(252, 5, 'Ameriprise Financial, Inc.', '8626606400', 'clinicplus248@gmail.com', 4226573944, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(253, 5, 'Gilead Sciences, Inc.', '7247736846', 'clinicplus249@gmail.com', 4023540231, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(254, 5, 'Centene Corporation', '9734395335', 'clinicplus250@gmail.com', 5831438446, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(255, 5, 'Leucadia National Corporation', '3931915544', 'clinicplus251@gmail.com', 3726244045, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(256, 5, 'Huntsman Corporation', '8434891785', 'clinicplus252@gmail.com', 8895637549, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(257, 5, 'Health Net, Inc.', '6802273913', 'clinicplus253@gmail.com', 6984864057, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(258, 5, 'Stanley Black & Decker, Inc.', '3948268372', 'clinicplus254@gmail.com', 4948431021, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(259, 5, 'URS Corporation', '8295233389', 'clinicplus255@gmail.com', 2355899338, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(260, 5, 'Xcel Energy Inc.', '3797184786', 'clinicplus256@gmail.com', 3241100519, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(261, 5, 'Bed Bath & Beyond Inc.', '3997648735', 'clinicplus257@gmail.com', 6835699393, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(262, 5, 'Navistar International Corporation', '1908621800', 'clinicplus258@gmail.com', 7136156012, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(263, 5, 'Synnex Corporation', '5642483740', 'clinicplus259@gmail.com', 5858198006, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(264, 5, 'First Data Corporation', '3083431938', 'clinicplus260@gmail.com', 6130025857, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(265, 5, 'AGCO Corporation', '5948264528', 'clinicplus261@gmail.com', 6739464570, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(266, 5, 'L Brands, Inc.', '5758833669', 'clinicplus262@gmail.com', 4296173813, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(267, 5, 'Hertz Global Holdings, Inc.', '4965671427', 'clinicplus263@gmail.com', 7913064840, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(268, 5, 'CDW Corporation', '7961799372', 'clinicplus264@gmail.com', 2929754099, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(269, 5, 'CST Brands, Inc.', '6003283711', 'clinicplus265@gmail.com', 4814643870, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(270, 5, 'Sempra Energy', '7490466737', 'clinicplus266@gmail.com', 9074848837, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(271, 5, 'R.R. Donnelley & Sons Company', '3641466650', 'clinicplus267@gmail.com', 6324089939, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(272, 5, 'BB&T Corporation', '2186070001', 'clinicplus268@gmail.com', 6452658063, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(273, 5, 'Devon Energy Corporation', '7771275369', 'clinicplus269@gmail.com', 2746312489, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(274, 5, 'Family Dollar Stores, Inc.', '7799152000', 'clinicplus270@gmail.com', 6303213288, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(275, 5, 'Unum Group', '4165779787', 'clinicplus271@gmail.com', 1854208525, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(276, 5, 'Ally Financial Inc.', '5457708504', 'clinicplus272@gmail.com', 4135300866, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(277, 5, 'Reinsurance Group of America, Incorporated', '9399521001', 'clinicplus273@gmail.com', 9374619452, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(278, 5, 'State Street Corporation', '2415028320', 'clinicplus274@gmail.com', 9476245031, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(279, 5, 'Air Products & Chemicals, Inc.', '8388530439', 'clinicplus275@gmail.com', 9485558070, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(280, 5, 'Ross Stores, Inc.', '1614371173', 'clinicplus276@gmail.com', 4497660115, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(281, 5, 'The Sherwin-Williams Company', '9567318437', 'clinicplus277@gmail.com', 7400893824, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(282, 5, 'The Estée Lauder Companies Inc.', '8876023456', 'clinicplus278@gmail.com', 4397742175, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(283, 5, 'BlackRock, Inc.', '9533531010', 'clinicplus279@gmail.com', 9654316515, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(284, 5, 'Western Refining, Inc.', '6455713805', 'clinicplus280@gmail.com', 3109494974, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(285, 5, 'Avon Products, Inc.', '8556819406', 'clinicplus281@gmail.com', 3018881315, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(286, 5, 'The Mosaic Company', '3555587208', 'clinicplus282@gmail.com', 4661990291, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(287, 5, 'Public Service Enterprise Group Incorporated', '4929794697', 'clinicplus283@gmail.com', 4170459790, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(288, 5, 'Dean Foods Company', '5789058193', 'clinicplus284@gmail.com', 3311888347, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(289, 5, 'Cameron International Corporation', '4457457858', 'clinicplus285@gmail.com', 3762902922, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(290, 5, 'MGM Resorts International', '7488150866', 'clinicplus286@gmail.com', 2916004082, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(291, 5, 'KKR & Co. L.P.', '3521441542', 'clinicplus287@gmail.com', 3735835632, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(292, 5, 'Hilton Worldwide Holdings Inc.', '8030918861', 'clinicplus288@gmail.com', 4416068976, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(293, 5, 'DTE Energy Company', '3248766972', 'clinicplus289@gmail.com', 3171142345, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(294, 5, 'Genworth Financial, Inc.', '6268482189', 'clinicplus290@gmail.com', 5896785733, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(295, 5, 'Henry Schein, Inc.', '4907049304', 'clinicplus291@gmail.com', 8638581798, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(296, 5, 'Rock-Tenn Company', '3321308544', 'clinicplus292@gmail.com', 2461531986, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(297, 5, 'WellCare Health Plans, Inc.', '2363278189', 'clinicplus293@gmail.com', 2020344637, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(298, 5, 'W.W. Grainger, Inc.', '1394796762', 'clinicplus294@gmail.com', 5152762243, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(299, 5, 'Discover Financial Services', '9309833593', 'clinicplus295@gmail.com', 8721115831, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(300, 5, 'Eastman Chemical Company', '3316318716', 'clinicplus296@gmail.com', 3300388565, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(301, 5, 'Principal Financial Group, Inc.', '4295780423', 'clinicplus297@gmail.com', 5202958933, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(302, 5, 'Reliance Steel & Aluminum Co.', '5941690613', 'clinicplus298@gmail.com', 4123416586, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(303, 5, 'AutoZone, Inc.', '4034020305', 'clinicplus299@gmail.com', 2662343598, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(304, 5, 'Dover Corporation', '5723657261', 'clinicplus300@gmail.com', 3200932982, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(305, 5, 'Micron Technology, Inc.', '9837741354', 'clinicplus301@gmail.com', 4996363475, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(306, 5, 'Owens & Minor, Inc.', '6582133187', 'clinicplus302@gmail.com', 3007172128, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(307, 5, 'Assurant, Inc.', '4518233864', 'clinicplus303@gmail.com', 8310796378, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(308, 5, 'GameStop Corp.', '2082434643', 'clinicplus304@gmail.com', 7007121357, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(309, 5, 'Stryker Corporation', '2660958032', 'clinicplus305@gmail.com', 4112740245, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(310, 5, 'Group 1 Automotive, Inc.', '5060045312', 'clinicplus306@gmail.com', 8778355291, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(311, 5, 'Cognizant Technology Solutions Corporation', '3852433132', 'clinicplus307@gmail.com', 6418278887, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(312, 5, 'Sonic Automotive, Inc.', '6312103072', 'clinicplus308@gmail.com', 3252858178, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(313, 5, 'Autoliv, Inc.', '2871767457', 'clinicplus309@gmail.com', 9037543988, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(314, 5, 'Hormel Foods Corporation', '7304764915', 'clinicplus310@gmail.com', 2611270071, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(315, 5, 'Motorola Solutions, Inc.', '7237430198', 'clinicplus311@gmail.com', 9370686636, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(316, 5, 'Crown Holdings, Inc.', '2193343323', 'clinicplus312@gmail.com', 3744865879, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(317, 5, 'SunTrust Banks, Inc.', '7471746746', 'clinicplus313@gmail.com', 3382103903, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(318, 5, 'Campbell Soup Company', '5557855876', 'clinicplus314@gmail.com', 4048282122, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(319, 5, 'Fidelity National Financial, Inc.', '1321144687', 'clinicplus315@gmail.com', 4485083521, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(320, 5, 'HD Supply Holdings, Inc.', '6160053892', 'clinicplus316@gmail.com', 8200819288, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(321, 5, 'Caesars Entertainment Corporation', '6444871144', 'clinicplus317@gmail.com', 1615817902, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(322, 5, 'Darden Restaurants, Inc.', '5981478514', 'clinicplus318@gmail.com', 2749569308, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(323, 5, 'Weyerhaeuser Company', '9267044367', 'clinicplus319@gmail.com', 1246384561, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(324, 5, 'Ball Corporation', '1780483252', 'clinicplus320@gmail.com', 6339773689, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(325, 5, 'Precision Castparts Corp.', '1997020110', 'clinicplus321@gmail.com', 4487730228, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(326, 5, 'Masco Corporation', '2286921949', 'clinicplus322@gmail.com', 5210440973, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(327, 5, 'Universal Health Services, Inc.', '4771068022', 'clinicplus323@gmail.com', 3239348949, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(328, 5, 'Republic Services, Inc.', '9632919082', 'clinicplus324@gmail.com', 9465396323, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(329, 5, 'MasterCard Incorporated', '5064277573', 'clinicplus325@gmail.com', 2874017961, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(330, 5, 'Newmont Mining Corporation', '8515169092', 'clinicplus326@gmail.com', 9685552802, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(331, 5, 'Broadcom Corporation', '2687126188', 'clinicplus327@gmail.com', 3336709684, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(332, 5, 'Reynolds American Inc.', '8150959029', 'clinicplus328@gmail.com', 6597910802, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(333, 5, 'PVH Corp.', '3847499862', 'clinicplus329@gmail.com', 1601970111, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(334, 5, 'Charter Communications, Inc.', '9737858285', 'clinicplus330@gmail.com', 9603322341, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(335, 5, 'AECOM Technology Corporation', '2483243047', 'clinicplus331@gmail.com', 5370298468, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(336, 5, 'CenterPoint Energy, Inc.', '2952613372', 'clinicplus332@gmail.com', 8711558417, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(337, 5, 'Pacific Life', '1391893300', 'clinicplus333@gmail.com', 8222033287, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(338, 5, 'Thrivent Financial for Lutherans', '7755849909', 'clinicplus334@gmail.com', 4448612986, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(339, 5, 'Becton, Dickinson and Company', '2807889322', 'clinicplus335@gmail.com', 9889184363, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(340, 5, 'Franklin Resources, Inc.', '9471087661', 'clinicplus336@gmail.com', 9546261587, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(341, 5, 'Tenneco Inc.', '2176267596', 'clinicplus337@gmail.com', 5558299632, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(342, 5, 'TravelCenters of America LLC', '3085044427', 'clinicplus338@gmail.com', 2860290898, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(343, 5, 'Avis Budget Group, Inc.', '8834011144', 'clinicplus339@gmail.com', 3597777987, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(344, 5, 'Facebook, Inc.', '1291279694', 'clinicplus340@gmail.com', 1315283077, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(345, 5, 'Dollar Tree, Inc.', '2884128942', 'clinicplus341@gmail.com', 1690618681, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(346, 5, 'Corning Incorporated', '4320267282', 'clinicplus342@gmail.com', 8481753669, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(347, 5, 'Ashland Inc.', '1376674099', 'clinicplus343@gmail.com', 7117931033, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(348, 5, 'Sealed Air Corporation', '9890043221', 'clinicplus344@gmail.com', 5217483890, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(349, 5, 'Core-Mark Holding Company, Inc.', '8394133352', 'clinicplus345@gmail.com', 4272859096, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(350, 5, 'Oshkosh Corporation', '4026829901', 'clinicplus346@gmail.com', 1033095959, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(351, 5, 'Coca-Cola Enterprises, Inc.', '9815417935', 'clinicplus347@gmail.com', 8786776473, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(352, 5, 'WESCO International, Inc.', '5358942142', 'clinicplus348@gmail.com', 2013033173, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(353, 5, 'Applied Materials, Inc.', '4300681582', 'clinicplus349@gmail.com', 6840072503, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(354, 5, 'Visteon Corporation', '6971018886', 'clinicplus350@gmail.com', 6040610087, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(355, 5, 'BorgWarner Inc.', '5539269823', 'clinicplus351@gmail.com', 4496471417, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(356, 5, 'Spectrum Group International, Inc.', '1527181889', 'clinicplus352@gmail.com', 3499947525, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(357, 5, 'Oaktree Capital Group, LLC', '5756775727', 'clinicplus353@gmail.com', 9345366091, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(358, 5, 'Steel Dynamics, Inc.', '8984158603', 'clinicplus354@gmail.com', 2968188812, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(359, 5, 'Jarden Corporation', '7469399871', 'clinicplus355@gmail.com', 2600471542, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(360, 5, 'Mohawk Industries, Inc.', '5735921238', 'clinicplus356@gmail.com', 7196055431, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(361, 5, 'Terex Corporation', '4509705260', 'clinicplus357@gmail.com', 6526930490, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(362, 5, 'Northeast Utilities', '9975139067', 'clinicplus358@gmail.com', 8230345451, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(363, 5, 'KBR, Inc.', '5646308950', 'clinicplus359@gmail.com', 2909113749, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(364, 5, 'Fifth Third Bancorp', '4636927657', 'clinicplus360@gmail.com', 2778103168, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(365, 5, 'UGI Corporation', '6220423120', 'clinicplus361@gmail.com', 8404528072, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(366, 5, 'CBRE Group, Inc.', '1808837735', 'clinicplus362@gmail.com', 5629844958, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(367, 5, 'Quest Diagnostics Incorporated', '4934604814', 'clinicplus363@gmail.com', 1946187382, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(368, 5, 'Peabody Energy Corporation', '1965402816', 'clinicplus364@gmail.com', 1280464330, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(369, 5, 'The Hershey Company', '5609122068', 'clinicplus365@gmail.com', 5089571341, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(370, 5, 'Boston Scientific Corporation', '7205431125', 'clinicplus366@gmail.com', 8696936711, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(371, 5, 'FMC Technologies, Inc.', '4894777714', 'clinicplus367@gmail.com', 5489974990, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(372, 5, 'The Interpublic Group of Companies, Inc.', '2713861705', 'clinicplus368@gmail.com', 8259831609, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(373, 5, 'Commercial Metals Company', '9897481415', 'clinicplus369@gmail.com', 1660152654, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(374, 5, 'The Pantry, Inc.', '7173159376', 'clinicplus370@gmail.com', 6374119435, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(375, 5, 'Owens-Illinois, Inc.', '6469992519', 'clinicplus371@gmail.com', 2722090537, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(376, 5, 'American Family Ins. Group', '8409484044', 'clinicplus372@gmail.com', 7085928046, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(377, 5, 'Ralph Lauren Corporation', '4325267257', 'clinicplus373@gmail.com', 2384146000, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(378, 5, 'Biogen Idec Inc.', '2335380692', 'clinicplus374@gmail.com', 6194062244, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(379, 5, 'PetSmart, Inc.', '5296740286', 'clinicplus375@gmail.com', 3022649561, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(380, 5, 'Mylan Inc.', '1773618314', 'clinicplus376@gmail.com', 1833062492, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(381, 5, 'Symantec Corporation', '8352964129', 'clinicplus377@gmail.com', 8921933091, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(382, 5, 'Ameren Corporation', '2539073493', 'clinicplus378@gmail.com', 5592774212, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(383, 5, 'The Williams Companies, Inc.', '7356110233', 'clinicplus379@gmail.com', 9768080220, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(384, 5, 'Barnes & Noble, Inc.', '8728658149', 'clinicplus380@gmail.com', 2555974281, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(385, 5, 'Huntington Ingalls Industries, Inc.', '9429970540', 'clinicplus381@gmail.com', 2450383349, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(386, 5, 'The Priceline Group Inc.', '9267539129', 'clinicplus382@gmail.com', 2630892991, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(387, 5, 'Agilent Technologies, Inc.', '2213363554', 'clinicplus383@gmail.com', 2339637936, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(388, 5, 'Dana Holding Corporation', '5867209006', 'clinicplus384@gmail.com', 3309979417, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(389, 5, 'Dillard’s, Inc.', '5662546111', 'clinicplus385@gmail.com', 8127277720, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(390, 5, 'Seaboard Corporation', '2740107918', 'clinicplus386@gmail.com', 8087438637, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(391, 5, 'Vanguard Health Systems, Inc.', '6797647166', 'clinicplus387@gmail.com', 5854932713, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(392, 5, 'Casey’s General Stores, Inc.', '1811645155', 'clinicplus388@gmail.com', 2810685514, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(393, 5, 'O’Reilly Automotive, Inc.', '4462666823', 'clinicplus389@gmail.com', 7683308168, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(394, 5, 'The Blackstone Group L.P.', '6118558045', 'clinicplus390@gmail.com', 8658464212, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(395, 5, 'Mutual of Omaha Insurance Company', '8273397099', 'clinicplus391@gmail.com', 2027437809, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(396, 5, 'Molina Healthcare, Inc.', '1023660419', 'clinicplus392@gmail.com', 2588206235, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(397, 5, 'CMS Energy Corporation', '8222221126', 'clinicplus393@gmail.com', 8970610373, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(398, 5, 'Targa Resources Corp.', '4057742305', 'clinicplus394@gmail.com', 2012195421, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(399, 5, 'Quanta Services, Inc.', '6796076694', 'clinicplus395@gmail.com', 5183204904, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(400, 5, 'Cablevision Systems Corporation', '7174852513', 'clinicplus396@gmail.com', 2863801109, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(401, 5, 'Avery Dennison Corporation', '4568196328', 'clinicplus397@gmail.com', 7629529707, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(402, 5, 'Celanese Corporation', '7392574324', 'clinicplus398@gmail.com', 5942805600, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(403, 5, 'Foot Locker, Inc.', '4264716782', 'clinicplus399@gmail.com', 5499377701, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(404, 5, 'Celgene Corporation', '8053068060', 'clinicplus400@gmail.com', 3327050680, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(405, 5, 'Advance Auto Parts, Inc.', '9471139767', 'clinicplus401@gmail.com', 2785682012, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(406, 5, 'Mattel, Inc.', '9233435312', 'clinicplus402@gmail.com', 7806175989, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(407, 5, 'Live Nation Entertainment, Inc.', '4390489480', 'clinicplus403@gmail.com', 6564036918, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(408, 5, 'General Cable Corporation', '5138200688', 'clinicplus404@gmail.com', 7277988098, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(409, 5, 'Ryder System, Inc.', '7099224338', 'clinicplus405@gmail.com', 3306768961, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(410, 5, 'EMCOR Group, Inc.', '9444683294', 'clinicplus406@gmail.com', 1442565598, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(411, 5, 'Allergan, Inc.', '9276935630', 'clinicplus407@gmail.com', 7999196177, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(412, 5, 'W.R. Berkley Corporation', '1738773886', 'clinicplus408@gmail.com', 1210093549, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(413, 5, 'Rockwell Automation, Inc.', '7484999358', 'clinicplus409@gmail.com', 4061350773, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(414, 5, 'NetApp, Inc.', '1041703532', 'clinicplus410@gmail.com', 3873801433, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(415, 5, 'Ingredion Incorporated', '6812027022', 'clinicplus411@gmail.com', 9956450876, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(416, 5, 'Level 3 Communications, Inc.', '1976054837', 'clinicplus412@gmail.com', 2776623771, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(417, 5, 'Calpine Corporation', '3632246923', 'clinicplus413@gmail.com', 5746495310, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(418, 5, 'Omnicare, Inc.', '5596495125', 'clinicplus414@gmail.com', 8298374465, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(419, 5, 'Erie Insurance Group', '7140810378', 'clinicplus415@gmail.com', 9211471109, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(420, 5, 'SLM Corporation', '6279673799', 'clinicplus416@gmail.com', 1066775867, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(421, 5, 'D.R. Horton, Inc.', '6741036336', 'clinicplus417@gmail.com', 9605547147, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(422, 5, 'CC Media Holdings, Inc.', '3301808022', 'clinicplus418@gmail.com', 1543560765, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(423, 5, 'Anixter International Inc.', '3989706460', 'clinicplus419@gmail.com', 9506439287, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(424, 5, 'Dick’s Sporting Goods, Inc.', '9746251185', 'clinicplus420@gmail.com', 3120086353, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(425, 5, 'SanDisk Corporation', '1734202976', 'clinicplus421@gmail.com', 9522026340, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(426, 5, 'NCR Corporation', '6773099302', 'clinicplus422@gmail.com', 7750903040, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(427, 5, 'Starwood Hotels & Resorts Worldwide, Inc.', '1179238981', 'clinicplus423@gmail.com', 6092186491, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(428, 5, 'Expeditors International of Washington, Inc.', '1932550187', 'clinicplus424@gmail.com', 8844305396, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(429, 5, 'Fidelity National Information Services, Inc.', '5116310459', 'clinicplus425@gmail.com', 9401116081, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(430, 5, 'United Natural Foods, Inc.', '7414525867', 'clinicplus426@gmail.com', 4751362875, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(431, 5, 'Auto-Owners Insurance Group', '9457030365', 'clinicplus427@gmail.com', 3474172656, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(432, 5, 'Windstream Holdings, Inc.', '6795129004', 'clinicplus428@gmail.com', 8104959921, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(433, 5, 'Dr Pepper Snapple Group, Inc.', '8837603582', 'clinicplus429@gmail.com', 5152069012, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(434, 5, 'Lennar Corporation', '3958087818', 'clinicplus430@gmail.com', 9953239880, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(435, 5, 'Sanmina', '4014696437', 'clinicplus431@gmail.com', 7411960851, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(436, 5, 'Harley-Davidson, Inc.', '2209010283', 'clinicplus432@gmail.com', 6909148153, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(437, 5, 'CONSOL Energy Inc.', '8431546337', 'clinicplus433@gmail.com', 4962471322, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(438, 5, 'The J.M. Smucker Company', '3645797248', 'clinicplus434@gmail.com', 8255624519, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(439, 5, 'Newell Rubbermaid Inc.', '9806833251', 'clinicplus435@gmail.com', 2525256905, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(440, 5, 'CH2M HILL Companies, Ltd.', '8188972599', 'clinicplus436@gmail.com', 9859308201, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(441, 5, 'Energy Future Holdings Corp.', '6492374405', 'clinicplus437@gmail.com', 6432156629, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(442, 5, 'Susser Holdings Corporation', '1671697355', 'clinicplus438@gmail.com', 4340365414, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(443, 5, 'Laboratory Corporation of America Holdings', '5351989034', 'clinicplus439@gmail.com', 4053201910, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(444, 5, 'Kindred Healthcare, Inc.', '3821497118', 'clinicplus440@gmail.com', 8347571458, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(445, 5, 'Leidos Holdings Inc.', '6805807475', 'clinicplus441@gmail.com', 9968819154, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(446, 5, 'Booz Allen Hamilton Holding Corp.', '6176653295', 'clinicplus442@gmail.com', 5288927603, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(447, 5, 'The Jones Financial Companies,L.L.L.P.', '9002291527', 'clinicplus443@gmail.com', 2338200406, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(448, 5, 'Cliffs Natural Resources Inc.', '2027319710', 'clinicplus444@gmail.com', 9386478816, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(449, 5, 'PulteGroup, Inc.', '3069535387', 'clinicplus445@gmail.com', 3263745509, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(450, 5, 'Regions Financial Corporation', '1855939453', 'clinicplus446@gmail.com', 1761147293, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(451, 5, 'NiSource Inc.', '4676390504', 'clinicplus447@gmail.com', 4161521678, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(452, 5, 'Graybar Electric Company, Inc.', '4967184762', 'clinicplus448@gmail.com', 4571983759, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(453, 5, 'Integrys Energy Group, Inc.', '7514303509', 'clinicplus449@gmail.com', 4485286616, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(454, 5, 'The Clorox Company', '1448223474', 'clinicplus450@gmail.com', 4754931330, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(455, 5, 'Wynn Resorts, Limited', '2532652824', 'clinicplus451@gmail.com', 1537794465, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(456, 5, 'The Andersons, Inc.', '5024984085', 'clinicplus452@gmail.com', 9137025042, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(457, 5, 'J.B. Hunt Transport Services, Inc.', '3804551236', 'clinicplus453@gmail.com', 2771508568, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(458, 5, 'AK Steel Holding Corporation', '1632319922', 'clinicplus454@gmail.com', 1370596797, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(459, 5, 'Harbinger Group Inc.', '5686456770', 'clinicplus455@gmail.com', 4037167226, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(460, 5, 'MeadWestvaco Corporation', '5064444128', 'clinicplus456@gmail.com', 1780308407, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(461, 5, 'The Western Union Company', '2546079034', 'clinicplus457@gmail.com', 8661110294, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(462, 5, 'The Charles Schwab Corporation', '3272739600', 'clinicplus458@gmail.com', 1457003181, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(463, 5, 'Discovery Communications, Inc.', '5691643667', 'clinicplus459@gmail.com', 7153346404, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(464, 5, 'Spectra Energy Corp', '3729718102', 'clinicplus460@gmail.com', 5975324405, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(465, 5, 'St. Jude Medical, Inc.', '8119219515', 'clinicplus461@gmail.com', 2835111159, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(466, 5, 'CF Industries Holdings, Inc.', '3748346682', 'clinicplus462@gmail.com', 4529508450, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(467, 5, 'Con-way Inc.', '5209618989', 'clinicplus463@gmail.com', 8502707332, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(468, 5, 'Old Republic International Corporation', '8943640120', 'clinicplus464@gmail.com', 1271076120, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(469, 5, 'JetBlue Airways Corporation', '8674052635', 'clinicplus465@gmail.com', 9094003038, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(470, 5, 'Calumet Specialty Products Partners, L.P.', '9815644149', 'clinicplus466@gmail.com', 6260701797, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(471, 5, 'Kelly Services, Inc.', '1865371431', 'clinicplus467@gmail.com', 3421476806, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(472, 5, 'Domtar Corporation', '4936517359', 'clinicplus468@gmail.com', 6444203077, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(473, 5, 'Murphy Oil Corporation', '7160845495', 'clinicplus469@gmail.com', 1402660888, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(474, 5, 'Harris Corporation', '5211333769', 'clinicplus470@gmail.com', 5319430338, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(475, 5, 'Asbury Automotive Group, Inc.', '2034160743', 'clinicplus471@gmail.com', 1823916908, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(476, 5, 'Big Lots, Inc.', '5542473839', 'clinicplus472@gmail.com', 3087094064, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(477, 5, 'Advanced Micro Devices, Inc.', '2746868307', 'clinicplus473@gmail.com', 8737632382, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(478, 5, 'Owens Corning', '2376592650', 'clinicplus474@gmail.com', 7185361112, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(479, 5, 'Realogy Holdings Corp.', '6565860609', 'clinicplus475@gmail.com', 4522853033, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(480, 5, 'Host Hotels & Resorts, Inc.', '5207093257', 'clinicplus476@gmail.com', 7534415799, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(481, 5, 'MRC Global Inc.', '6628621208', 'clinicplus477@gmail.com', 1866333803, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(482, 5, 'Simon Property Group, Inc.', '2883871183', 'clinicplus478@gmail.com', 2464972397, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(483, 5, 'Tractor Supply Company', '6354208238', 'clinicplus479@gmail.com', 4522146690, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(484, 5, 'Gannett Co., Inc.', '3472154783', 'clinicplus480@gmail.com', 5591801608, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(485, 5, 'Alaska Air Group, Inc.', '9540237533', 'clinicplus481@gmail.com', 9747507343, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(486, 5, 'Insight Enterprises, Inc.', '8309577943', 'clinicplus482@gmail.com', 1270636134, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(487, 5, 'McGraw Hill Financial, Inc.', '8381615767', 'clinicplus483@gmail.com', 3247439108, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(488, 5, 'Buckeye Partners, L.P.', '6693692887', 'clinicplus484@gmail.com', 1415777244, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(489, 5, 'Quintiles Transnational Holdings Inc.', '6101522465', 'clinicplus485@gmail.com', 2538335353, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(490, 5, 'American Financial Group, Inc.', '9673705154', 'clinicplus486@gmail.com', 1799310053, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(491, 5, 'United Stationers Inc.', '7119236245', 'clinicplus487@gmail.com', 1449046687, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(492, 5, 'Coach, Inc.', '6036306907', 'clinicplus488@gmail.com', 2118562491, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(493, 5, 'LKQ Corporation', '3988460125', 'clinicplus489@gmail.com', 3323626128, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(494, 5, 'Noble Energy, Inc.', '8312393312', 'clinicplus490@gmail.com', 6541224339, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(495, 5, 'Bemis Company, Inc.', '7548984743', 'clinicplus491@gmail.com', 3070422347, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(496, 5, 'Joy Global Inc.', '1604214664', 'clinicplus492@gmail.com', 5563791680, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(497, 5, 'Wyndham Worldwide Corporation', '9126551271', 'clinicplus493@gmail.com', 7041049234, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(498, 5, 'NII Holdings, Inc.', '9524560522', 'clinicplus494@gmail.com', 5729529829, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(499, 5, 'Lorillard, Inc.', '7395091262', 'clinicplus495@gmail.com', 2062468818, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(500, 5, 'Alleghany Corporation', '4744705207', 'clinicplus496@gmail.com', 1045598420, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(501, 5, 'Airgas, Inc.', '3757828874', 'clinicplus497@gmail.com', 4228763112, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(502, 5, 'First American Financial Corporation', '5782704325', 'clinicplus498@gmail.com', 7035821799, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL);
+
 INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(314, 5, 'Hormel Foods Corporation', '7304764915', 'clinicplus310@gmail.com', 2611270071, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(315, 5, 'Motorola Solutions, Inc.', '7237430198', 'clinicplus311@gmail.com', 9370686636, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(316, 5, 'Crown Holdings, Inc.', '2193343323', 'clinicplus312@gmail.com', 3744865879, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(317, 5, 'SunTrust Banks, Inc.', '7471746746', 'clinicplus313@gmail.com', 3382103903, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(318, 5, 'Campbell Soup Company', '5557855876', 'clinicplus314@gmail.com', 4048282122, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(319, 5, 'Fidelity National Financial, Inc.', '1321144687', 'clinicplus315@gmail.com', 4485083521, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(320, 5, 'HD Supply Holdings, Inc.', '6160053892', 'clinicplus316@gmail.com', 8200819288, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(321, 5, 'Caesars Entertainment Corporation', '6444871144', 'clinicplus317@gmail.com', 1615817902, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(322, 5, 'Darden Restaurants, Inc.', '5981478514', 'clinicplus318@gmail.com', 2749569308, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(323, 5, 'Weyerhaeuser Company', '9267044367', 'clinicplus319@gmail.com', 1246384561, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(324, 5, 'Ball Corporation', '1780483252', 'clinicplus320@gmail.com', 6339773689, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(325, 5, 'Precision Castparts Corp.', '1997020110', 'clinicplus321@gmail.com', 4487730228, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(326, 5, 'Masco Corporation', '2286921949', 'clinicplus322@gmail.com', 5210440973, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(327, 5, 'Universal Health Services, Inc.', '4771068022', 'clinicplus323@gmail.com', 3239348949, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(328, 5, 'Republic Services, Inc.', '9632919082', 'clinicplus324@gmail.com', 9465396323, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(329, 5, 'MasterCard Incorporated', '5064277573', 'clinicplus325@gmail.com', 2874017961, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(330, 5, 'Newmont Mining Corporation', '8515169092', 'clinicplus326@gmail.com', 9685552802, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(331, 5, 'Broadcom Corporation', '2687126188', 'clinicplus327@gmail.com', 3336709684, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(332, 5, 'Reynolds American Inc.', '8150959029', 'clinicplus328@gmail.com', 6597910802, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(333, 5, 'PVH Corp.', '3847499862', 'clinicplus329@gmail.com', 1601970111, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(334, 5, 'Charter Communications, Inc.', '9737858285', 'clinicplus330@gmail.com', 9603322341, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(335, 5, 'AECOM Technology Corporation', '2483243047', 'clinicplus331@gmail.com', 5370298468, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(336, 5, 'CenterPoint Energy, Inc.', '2952613372', 'clinicplus332@gmail.com', 8711558417, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(337, 5, 'Pacific Life', '1391893300', 'clinicplus333@gmail.com', 8222033287, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(338, 5, 'Thrivent Financial for Lutherans', '7755849909', 'clinicplus334@gmail.com', 4448612986, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(339, 5, 'Becton, Dickinson and Company', '2807889322', 'clinicplus335@gmail.com', 9889184363, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(340, 5, 'Franklin Resources, Inc.', '9471087661', 'clinicplus336@gmail.com', 9546261587, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(341, 5, 'Tenneco Inc.', '2176267596', 'clinicplus337@gmail.com', 5558299632, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(342, 5, 'TravelCenters of America LLC', '3085044427', 'clinicplus338@gmail.com', 2860290898, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(343, 5, 'Avis Budget Group, Inc.', '8834011144', 'clinicplus339@gmail.com', 3597777987, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(344, 5, 'Facebook, Inc.', '1291279694', 'clinicplus340@gmail.com', 1315283077, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(345, 5, 'Dollar Tree, Inc.', '2884128942', 'clinicplus341@gmail.com', 1690618681, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(346, 5, 'Corning Incorporated', '4320267282', 'clinicplus342@gmail.com', 8481753669, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(347, 5, 'Ashland Inc.', '1376674099', 'clinicplus343@gmail.com', 7117931033, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(348, 5, 'Sealed Air Corporation', '9890043221', 'clinicplus344@gmail.com', 5217483890, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(349, 5, 'Core-Mark Holding Company, Inc.', '8394133352', 'clinicplus345@gmail.com', 4272859096, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(350, 5, 'Oshkosh Corporation', '4026829901', 'clinicplus346@gmail.com', 1033095959, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(351, 5, 'Coca-Cola Enterprises, Inc.', '9815417935', 'clinicplus347@gmail.com', 8786776473, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(352, 5, 'WESCO International, Inc.', '5358942142', 'clinicplus348@gmail.com', 2013033173, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(353, 5, 'Applied Materials, Inc.', '4300681582', 'clinicplus349@gmail.com', 6840072503, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(354, 5, 'Visteon Corporation', '6971018886', 'clinicplus350@gmail.com', 6040610087, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(355, 5, 'BorgWarner Inc.', '5539269823', 'clinicplus351@gmail.com', 4496471417, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(356, 5, 'Spectrum Group International, Inc.', '1527181889', 'clinicplus352@gmail.com', 3499947525, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(357, 5, 'Oaktree Capital Group, LLC', '5756775727', 'clinicplus353@gmail.com', 9345366091, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(358, 5, 'Steel Dynamics, Inc.', '8984158603', 'clinicplus354@gmail.com', 2968188812, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(359, 5, 'Jarden Corporation', '7469399871', 'clinicplus355@gmail.com', 2600471542, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(360, 5, 'Mohawk Industries, Inc.', '5735921238', 'clinicplus356@gmail.com', 7196055431, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(361, 5, 'Terex Corporation', '4509705260', 'clinicplus357@gmail.com', 6526930490, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(362, 5, 'Northeast Utilities', '9975139067', 'clinicplus358@gmail.com', 8230345451, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(363, 5, 'KBR, Inc.', '5646308950', 'clinicplus359@gmail.com', 2909113749, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(364, 5, 'Fifth Third Bancorp', '4636927657', 'clinicplus360@gmail.com', 2778103168, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(365, 5, 'UGI Corporation', '6220423120', 'clinicplus361@gmail.com', 8404528072, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(366, 5, 'CBRE Group, Inc.', '1808837735', 'clinicplus362@gmail.com', 5629844958, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(367, 5, 'Quest Diagnostics Incorporated', '4934604814', 'clinicplus363@gmail.com', 1946187382, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(368, 5, 'Peabody Energy Corporation', '1965402816', 'clinicplus364@gmail.com', 1280464330, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(369, 5, 'The Hershey Company', '5609122068', 'clinicplus365@gmail.com', 5089571341, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(370, 5, 'Boston Scientific Corporation', '7205431125', 'clinicplus366@gmail.com', 8696936711, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(371, 5, 'FMC Technologies, Inc.', '4894777714', 'clinicplus367@gmail.com', 5489974990, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(372, 5, 'The Interpublic Group of Companies, Inc.', '2713861705', 'clinicplus368@gmail.com', 8259831609, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(373, 5, 'Commercial Metals Company', '9897481415', 'clinicplus369@gmail.com', 1660152654, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(374, 5, 'The Pantry, Inc.', '7173159376', 'clinicplus370@gmail.com', 6374119435, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(375, 5, 'Owens-Illinois, Inc.', '6469992519', 'clinicplus371@gmail.com', 2722090537, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(376, 5, 'American Family Ins. Group', '8409484044', 'clinicplus372@gmail.com', 7085928046, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(377, 5, 'Ralph Lauren Corporation', '4325267257', 'clinicplus373@gmail.com', 2384146000, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(378, 5, 'Biogen Idec Inc.', '2335380692', 'clinicplus374@gmail.com', 6194062244, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(379, 5, 'PetSmart, Inc.', '5296740286', 'clinicplus375@gmail.com', 3022649561, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(380, 5, 'Mylan Inc.', '1773618314', 'clinicplus376@gmail.com', 1833062492, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(381, 5, 'Symantec Corporation', '8352964129', 'clinicplus377@gmail.com', 8921933091, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(382, 5, 'Ameren Corporation', '2539073493', 'clinicplus378@gmail.com', 5592774212, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(383, 5, 'The Williams Companies, Inc.', '7356110233', 'clinicplus379@gmail.com', 9768080220, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(384, 5, 'Barnes & Noble, Inc.', '8728658149', 'clinicplus380@gmail.com', 2555974281, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(385, 5, 'Huntington Ingalls Industries, Inc.', '9429970540', 'clinicplus381@gmail.com', 2450383349, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(386, 5, 'The Priceline Group Inc.', '9267539129', 'clinicplus382@gmail.com', 2630892991, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(387, 5, 'Agilent Technologies, Inc.', '2213363554', 'clinicplus383@gmail.com', 2339637936, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(388, 5, 'Dana Holding Corporation', '5867209006', 'clinicplus384@gmail.com', 3309979417, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(389, 5, 'Dillard’s, Inc.', '5662546111', 'clinicplus385@gmail.com', 8127277720, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(390, 5, 'Seaboard Corporation', '2740107918', 'clinicplus386@gmail.com', 8087438637, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(391, 5, 'Vanguard Health Systems, Inc.', '6797647166', 'clinicplus387@gmail.com', 5854932713, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(392, 5, 'Casey’s General Stores, Inc.', '1811645155', 'clinicplus388@gmail.com', 2810685514, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(393, 5, 'O’Reilly Automotive, Inc.', '4462666823', 'clinicplus389@gmail.com', 7683308168, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(394, 5, 'The Blackstone Group L.P.', '6118558045', 'clinicplus390@gmail.com', 8658464212, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(395, 5, 'Mutual of Omaha Insurance Company', '8273397099', 'clinicplus391@gmail.com', 2027437809, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(396, 5, 'Molina Healthcare, Inc.', '1023660419', 'clinicplus392@gmail.com', 2588206235, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(397, 5, 'CMS Energy Corporation', '8222221126', 'clinicplus393@gmail.com', 8970610373, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(398, 5, 'Targa Resources Corp.', '4057742305', 'clinicplus394@gmail.com', 2012195421, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(399, 5, 'Quanta Services, Inc.', '6796076694', 'clinicplus395@gmail.com', 5183204904, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(400, 5, 'Cablevision Systems Corporation', '7174852513', 'clinicplus396@gmail.com', 2863801109, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(401, 5, 'Avery Dennison Corporation', '4568196328', 'clinicplus397@gmail.com', 7629529707, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(402, 5, 'Celanese Corporation', '7392574324', 'clinicplus398@gmail.com', 5942805600, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(403, 5, 'Foot Locker, Inc.', '4264716782', 'clinicplus399@gmail.com', 5499377701, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(404, 5, 'Celgene Corporation', '8053068060', 'clinicplus400@gmail.com', 3327050680, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(405, 5, 'Advance Auto Parts, Inc.', '9471139767', 'clinicplus401@gmail.com', 2785682012, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(406, 5, 'Mattel, Inc.', '9233435312', 'clinicplus402@gmail.com', 7806175989, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(407, 5, 'Live Nation Entertainment, Inc.', '4390489480', 'clinicplus403@gmail.com', 6564036918, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(408, 5, 'General Cable Corporation', '5138200688', 'clinicplus404@gmail.com', 7277988098, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(409, 5, 'Ryder System, Inc.', '7099224338', 'clinicplus405@gmail.com', 3306768961, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(410, 5, 'EMCOR Group, Inc.', '9444683294', 'clinicplus406@gmail.com', 1442565598, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(411, 5, 'Allergan, Inc.', '9276935630', 'clinicplus407@gmail.com', 7999196177, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(412, 5, 'W.R. Berkley Corporation', '1738773886', 'clinicplus408@gmail.com', 1210093549, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(413, 5, 'Rockwell Automation, Inc.', '7484999358', 'clinicplus409@gmail.com', 4061350773, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(414, 5, 'NetApp, Inc.', '1041703532', 'clinicplus410@gmail.com', 3873801433, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(415, 5, 'Ingredion Incorporated', '6812027022', 'clinicplus411@gmail.com', 9956450876, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(416, 5, 'Level 3 Communications, Inc.', '1976054837', 'clinicplus412@gmail.com', 2776623771, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(417, 5, 'Calpine Corporation', '3632246923', 'clinicplus413@gmail.com', 5746495310, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(418, 5, 'Omnicare, Inc.', '5596495125', 'clinicplus414@gmail.com', 8298374465, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(419, 5, 'Erie Insurance Group', '7140810378', 'clinicplus415@gmail.com', 9211471109, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(420, 5, 'SLM Corporation', '6279673799', 'clinicplus416@gmail.com', 1066775867, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(421, 5, 'D.R. Horton, Inc.', '6741036336', 'clinicplus417@gmail.com', 9605547147, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(422, 5, 'CC Media Holdings, Inc.', '3301808022', 'clinicplus418@gmail.com', 1543560765, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(423, 5, 'Anixter International Inc.', '3989706460', 'clinicplus419@gmail.com', 9506439287, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(424, 5, 'Dick’s Sporting Goods, Inc.', '9746251185', 'clinicplus420@gmail.com', 3120086353, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(425, 5, 'SanDisk Corporation', '1734202976', 'clinicplus421@gmail.com', 9522026340, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(426, 5, 'NCR Corporation', '6773099302', 'clinicplus422@gmail.com', 7750903040, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(427, 5, 'Starwood Hotels & Resorts Worldwide, Inc.', '1179238981', 'clinicplus423@gmail.com', 6092186491, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(428, 5, 'Expeditors International of Washington, Inc.', '1932550187', 'clinicplus424@gmail.com', 8844305396, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(429, 5, 'Fidelity National Information Services, Inc.', '5116310459', 'clinicplus425@gmail.com', 9401116081, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(430, 5, 'United Natural Foods, Inc.', '7414525867', 'clinicplus426@gmail.com', 4751362875, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(431, 5, 'Auto-Owners Insurance Group', '9457030365', 'clinicplus427@gmail.com', 3474172656, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(432, 5, 'Windstream Holdings, Inc.', '6795129004', 'clinicplus428@gmail.com', 8104959921, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(433, 5, 'Dr Pepper Snapple Group, Inc.', '8837603582', 'clinicplus429@gmail.com', 5152069012, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(434, 5, 'Lennar Corporation', '3958087818', 'clinicplus430@gmail.com', 9953239880, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(435, 5, 'Sanmina', '4014696437', 'clinicplus431@gmail.com', 7411960851, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(436, 5, 'Harley-Davidson, Inc.', '2209010283', 'clinicplus432@gmail.com', 6909148153, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(437, 5, 'CONSOL Energy Inc.', '8431546337', 'clinicplus433@gmail.com', 4962471322, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(438, 5, 'The J.M. Smucker Company', '3645797248', 'clinicplus434@gmail.com', 8255624519, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(439, 5, 'Newell Rubbermaid Inc.', '9806833251', 'clinicplus435@gmail.com', 2525256905, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(440, 5, 'CH2M HILL Companies, Ltd.', '8188972599', 'clinicplus436@gmail.com', 9859308201, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(441, 5, 'Energy Future Holdings Corp.', '6492374405', 'clinicplus437@gmail.com', 6432156629, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(442, 5, 'Susser Holdings Corporation', '1671697355', 'clinicplus438@gmail.com', 4340365414, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(443, 5, 'Laboratory Corporation of America Holdings', '5351989034', 'clinicplus439@gmail.com', 4053201910, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(444, 5, 'Kindred Healthcare, Inc.', '3821497118', 'clinicplus440@gmail.com', 8347571458, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(445, 5, 'Leidos Holdings Inc.', '6805807475', 'clinicplus441@gmail.com', 9968819154, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(446, 5, 'Booz Allen Hamilton Holding Corp.', '6176653295', 'clinicplus442@gmail.com', 5288927603, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(447, 5, 'The Jones Financial Companies,L.L.L.P.', '9002291527', 'clinicplus443@gmail.com', 2338200406, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(448, 5, 'Cliffs Natural Resources Inc.', '2027319710', 'clinicplus444@gmail.com', 9386478816, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(449, 5, 'PulteGroup, Inc.', '3069535387', 'clinicplus445@gmail.com', 3263745509, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(450, 5, 'Regions Financial Corporation', '1855939453', 'clinicplus446@gmail.com', 1761147293, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(451, 5, 'NiSource Inc.', '4676390504', 'clinicplus447@gmail.com', 4161521678, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(452, 5, 'Graybar Electric Company, Inc.', '4967184762', 'clinicplus448@gmail.com', 4571983759, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(453, 5, 'Integrys Energy Group, Inc.', '7514303509', 'clinicplus449@gmail.com', 4485286616, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(454, 5, 'The Clorox Company', '1448223474', 'clinicplus450@gmail.com', 4754931330, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(455, 5, 'Wynn Resorts, Limited', '2532652824', 'clinicplus451@gmail.com', 1537794465, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(456, 5, 'The Andersons, Inc.', '5024984085', 'clinicplus452@gmail.com', 9137025042, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(457, 5, 'J.B. Hunt Transport Services, Inc.', '3804551236', 'clinicplus453@gmail.com', 2771508568, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(458, 5, 'AK Steel Holding Corporation', '1632319922', 'clinicplus454@gmail.com', 1370596797, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(459, 5, 'Harbinger Group Inc.', '5686456770', 'clinicplus455@gmail.com', 4037167226, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(460, 5, 'MeadWestvaco Corporation', '5064444128', 'clinicplus456@gmail.com', 1780308407, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(461, 5, 'The Western Union Company', '2546079034', 'clinicplus457@gmail.com', 8661110294, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(462, 5, 'The Charles Schwab Corporation', '3272739600', 'clinicplus458@gmail.com', 1457003181, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(463, 5, 'Discovery Communications, Inc.', '5691643667', 'clinicplus459@gmail.com', 7153346404, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(464, 5, 'Spectra Energy Corp', '3729718102', 'clinicplus460@gmail.com', 5975324405, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(465, 5, 'St. Jude Medical, Inc.', '8119219515', 'clinicplus461@gmail.com', 2835111159, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(466, 5, 'CF Industries Holdings, Inc.', '3748346682', 'clinicplus462@gmail.com', 4529508450, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(467, 5, 'Con-way Inc.', '5209618989', 'clinicplus463@gmail.com', 8502707332, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(468, 5, 'Old Republic International Corporation', '8943640120', 'clinicplus464@gmail.com', 1271076120, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(469, 5, 'JetBlue Airways Corporation', '8674052635', 'clinicplus465@gmail.com', 9094003038, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(470, 5, 'Calumet Specialty Products Partners, L.P.', '9815644149', 'clinicplus466@gmail.com', 6260701797, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(471, 5, 'Kelly Services, Inc.', '1865371431', 'clinicplus467@gmail.com', 3421476806, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(472, 5, 'Domtar Corporation', '4936517359', 'clinicplus468@gmail.com', 6444203077, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(473, 5, 'Murphy Oil Corporation', '7160845495', 'clinicplus469@gmail.com', 1402660888, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(474, 5, 'Harris Corporation', '5211333769', 'clinicplus470@gmail.com', 5319430338, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(475, 5, 'Asbury Automotive Group, Inc.', '2034160743', 'clinicplus471@gmail.com', 1823916908, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(476, 5, 'Big Lots, Inc.', '5542473839', 'clinicplus472@gmail.com', 3087094064, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(477, 5, 'Advanced Micro Devices, Inc.', '2746868307', 'clinicplus473@gmail.com', 8737632382, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(478, 5, 'Owens Corning', '2376592650', 'clinicplus474@gmail.com', 7185361112, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(479, 5, 'Realogy Holdings Corp.', '6565860609', 'clinicplus475@gmail.com', 4522853033, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(480, 5, 'Host Hotels & Resorts, Inc.', '5207093257', 'clinicplus476@gmail.com', 7534415799, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(481, 5, 'MRC Global Inc.', '6628621208', 'clinicplus477@gmail.com', 1866333803, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(482, 5, 'Simon Property Group, Inc.', '2883871183', 'clinicplus478@gmail.com', 2464972397, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(483, 5, 'Tractor Supply Company', '6354208238', 'clinicplus479@gmail.com', 4522146690, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(484, 5, 'Gannett Co., Inc.', '3472154783', 'clinicplus480@gmail.com', 5591801608, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(485, 5, 'Alaska Air Group, Inc.', '9540237533', 'clinicplus481@gmail.com', 9747507343, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(486, 5, 'Insight Enterprises, Inc.', '8309577943', 'clinicplus482@gmail.com', 1270636134, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(487, 5, 'McGraw Hill Financial, Inc.', '8381615767', 'clinicplus483@gmail.com', 3247439108, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(488, 5, 'Buckeye Partners, L.P.', '6693692887', 'clinicplus484@gmail.com', 1415777244, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(489, 5, 'Quintiles Transnational Holdings Inc.', '6101522465', 'clinicplus485@gmail.com', 2538335353, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(490, 5, 'American Financial Group, Inc.', '9673705154', 'clinicplus486@gmail.com', 1799310053, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(491, 5, 'United Stationers Inc.', '7119236245', 'clinicplus487@gmail.com', 1449046687, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(492, 5, 'Coach, Inc.', '6036306907', 'clinicplus488@gmail.com', 2118562491, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(493, 5, 'LKQ Corporation', '3988460125', 'clinicplus489@gmail.com', 3323626128, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(494, 5, 'Noble Energy, Inc.', '8312393312', 'clinicplus490@gmail.com', 6541224339, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(495, 5, 'Bemis Company, Inc.', '7548984743', 'clinicplus491@gmail.com', 3070422347, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(496, 5, 'Joy Global Inc.', '1604214664', 'clinicplus492@gmail.com', 5563791680, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(497, 5, 'Wyndham Worldwide Corporation', '9126551271', 'clinicplus493@gmail.com', 7041049234, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(498, 5, 'NII Holdings, Inc.', '9524560522', 'clinicplus494@gmail.com', 5729529829, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(499, 5, 'Lorillard, Inc.', '7395091262', 'clinicplus495@gmail.com', 2062468818, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(500, 5, 'Alleghany Corporation', '4744705207', 'clinicplus496@gmail.com', 1045598420, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(501, 5, 'Airgas, Inc.', '3757828874', 'clinicplus497@gmail.com', 4228763112, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(502, 5, 'First American Financial Corporation', '5782704325', 'clinicplus498@gmail.com', 7035821799, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(503, 5, 'United Rentals, Inc.', '9640819035', 'clinicplus499@gmail.com', 9439160830, 'Kigali, Kicukiro', 3, '2023-01-21 17:49:07', '2023-01-21 17:49:07', NULL),
-(504, 10, 'KIPHARMA', '0786787899', NULL, 8879909, 'Kigali-remera', 3, '2023-02-02 20:16:01', '2023-02-02 20:16:01', NULL),
-(505, 10, 'Vine Pharmacy', '0789899', 'vine@gmail.com', 34353, 'Kigali-remera', 3, '2023-02-04 10:46:55', '2023-02-13 07:02:50', NULL),
+(503, 5, 'United Rentals, Inc.', '9640819035', 'clinicplus499@gmail.com', 9439160830, 'Kigali, Kicukiro', 3, '2023-01-21 19:49:07', '2023-01-21 19:49:07', NULL),
+(504, 10, 'KIPHARMA', '0786787899', NULL, 8879909, 'Kigali-remera', 3, '2023-02-02 22:16:01', '2023-02-02 22:16:01', NULL),
+(505, 10, 'Vine Pharmacy', '0789899', 'vine@gmail.com', 34353, 'Kigali-remera', 3, '2023-02-04 12:46:55', '2023-02-13 09:02:50', NULL),
 (506, 5, 'Wal-Mart Stores', '4707276339', 'clinicplus0@gmail.com', 9129583034, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (507, 5, 'Exxon Mobil', '1663675943', 'clinicplus1@gmail.com', 4174605328, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (508, 5, 'Chevron', '6561578783', 'clinicplus2@gmail.com', 4757381906, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -1653,8 +1246,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (651, 5, 'Global Partners LP', '3270760632', 'clinicplus145@gmail.com', 7148009573, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (652, 5, 'The Goodyear Tire & Rubber Company', '2988195414', 'clinicplus146@gmail.com', 5906891412, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (653, 5, 'PBF Energy Inc.', '4559281248', 'clinicplus147@gmail.com', 5983760722, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(654, 5, 'Danaher Corporation', '1127587510', 'clinicplus148@gmail.com', 6026607779, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(654, 5, 'Danaher Corporation', '1127587510', 'clinicplus148@gmail.com', 6026607779, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (655, 5, 'Nucor Corporation', '3475612455', 'clinicplus149@gmail.com', 6695521698, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (656, 5, 'Kohl’s Corporation', '1340676961', 'clinicplus150@gmail.com', 6166993683, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (657, 5, 'AbbVie Inc.', '1790247990', 'clinicplus151@gmail.com', 9095955996, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -2002,7 +1594,9 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (999, 5, 'Wyndham Worldwide Corporation', '6159301153', 'clinicplus493@gmail.com', 1213730804, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1000, 5, 'NII Holdings, Inc.', '5205219431', 'clinicplus494@gmail.com', 1143809224, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1001, 5, 'Lorillard, Inc.', '3392058022', 'clinicplus495@gmail.com', 6835702319, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(1002, 5, 'Alleghany Corporation', '1216639311', 'clinicplus496@gmail.com', 2539529779, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(1002, 5, 'Alleghany Corporation', '1216639311', 'clinicplus496@gmail.com', 2539529779, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
+
+INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1003, 5, 'Airgas, Inc.', '1180395843', 'clinicplus497@gmail.com', 7292671841, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1004, 5, 'First American Financial Corporation', '6366747855', 'clinicplus498@gmail.com', 8416941208, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1005, 5, 'United Rentals, Inc.', '4660158568', 'clinicplus499@gmail.com', 3130487949, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -2044,8 +1638,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (1041, 5, 'Target', '8340735879', 'clinicplus35@gmail.com', 3266718962, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1042, 5, 'Walgreen Co.', '3370753170', 'clinicplus36@gmail.com', 9350925625, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1043, 5, 'WellPoint', '8341314456', 'clinicplus37@gmail.com', 3227737734, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(1044, 5, 'Johnson & Johnson', '6345740385', 'clinicplus38@gmail.com', 6440916767, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1044, 5, 'Johnson & Johnson', '6345740385', 'clinicplus38@gmail.com', 6440916767, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1045, 5, 'American International Group', '1014527446', 'clinicplus39@gmail.com', 5896257526, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1046, 5, 'State Farm Insurance Cos.', '7388723447', 'clinicplus40@gmail.com', 3271427338, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1047, 5, 'MetLife', '5280663073', 'clinicplus41@gmail.com', 2989076565, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -2432,8 +2025,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (1428, 5, 'NCR Corporation', '3862594822', 'clinicplus422@gmail.com', 9140620825, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1429, 5, 'Starwood Hotels & Resorts Worldwide, Inc.', '9473617059', 'clinicplus423@gmail.com', 5996970575, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1430, 5, 'Expeditors International of Washington, Inc.', '5586277873', 'clinicplus424@gmail.com', 6352011761, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(1431, 5, 'Fidelity National Information Services, Inc.', '1252845955', 'clinicplus425@gmail.com', 7362185251, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1431, 5, 'Fidelity National Information Services, Inc.', '1252845955', 'clinicplus425@gmail.com', 7362185251, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1432, 5, 'United Natural Foods, Inc.', '8092258537', 'clinicplus426@gmail.com', 3049594375, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1433, 5, 'Auto-Owners Insurance Group', '5171609203', 'clinicplus427@gmail.com', 1571945711, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1434, 5, 'Windstream Holdings, Inc.', '3041038503', 'clinicplus428@gmail.com', 6694898934, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -2504,7 +2096,9 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (1499, 5, 'Wyndham Worldwide Corporation', '3493299654', 'clinicplus493@gmail.com', 5309149562, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1500, 5, 'NII Holdings, Inc.', '6966176233', 'clinicplus494@gmail.com', 3756435115, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1501, 5, 'Lorillard, Inc.', '5225516337', 'clinicplus495@gmail.com', 5885572815, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(1502, 5, 'Alleghany Corporation', '5556279167', 'clinicplus496@gmail.com', 2878498947, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(1502, 5, 'Alleghany Corporation', '5556279167', 'clinicplus496@gmail.com', 2878498947, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
+
+INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1503, 5, 'Airgas, Inc.', '7580100169', 'clinicplus497@gmail.com', 9386827461, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1504, 5, 'First American Financial Corporation', '3495539533', 'clinicplus498@gmail.com', 5876087453, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1505, 5, 'United Rentals, Inc.', '2581173551', 'clinicplus499@gmail.com', 8955391265, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -2822,8 +2416,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (1817, 5, 'Motorola Solutions, Inc.', '5083648772', 'clinicplus311@gmail.com', 8327679561, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1818, 5, 'Crown Holdings, Inc.', '4288146119', 'clinicplus312@gmail.com', 2453161084, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1819, 5, 'SunTrust Banks, Inc.', '2051543141', 'clinicplus313@gmail.com', 5572688122, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(1820, 5, 'Campbell Soup Company', '3927584635', 'clinicplus314@gmail.com', 4976444276, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1820, 5, 'Campbell Soup Company', '3927584635', 'clinicplus314@gmail.com', 4976444276, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1821, 5, 'Fidelity National Financial, Inc.', '5057534333', 'clinicplus315@gmail.com', 7759436671, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1822, 5, 'HD Supply Holdings, Inc.', '5549006503', 'clinicplus316@gmail.com', 8888863800, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (1823, 5, 'Caesars Entertainment Corporation', '6357966876', 'clinicplus317@gmail.com', 8289573799, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -3005,12 +2598,14 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (1999, 5, 'Wyndham Worldwide Corporation', '8182050625', 'clinicplus493@gmail.com', 5258709638, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2000, 5, 'NII Holdings, Inc.', '6577878288', 'clinicplus494@gmail.com', 9288268388, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2001, 5, 'Lorillard, Inc.', '9395584018', 'clinicplus495@gmail.com', 3603008569, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(2002, 5, 'Alleghany Corporation', '1703227493', 'clinicplus496@gmail.com', 8942637933, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(2002, 5, 'Alleghany Corporation', '1703227493', 'clinicplus496@gmail.com', 8942637933, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
+
+INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (2003, 5, 'Airgas, Inc.', '4157423724', 'clinicplus497@gmail.com', 4755648591, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2004, 5, 'First American Financial Corporation', '2692012725', 'clinicplus498@gmail.com', 6349070253, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2005, 5, 'United Rentals, Inc.', '1414567220', 'clinicplus499@gmail.com', 2857743558, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(2006, 2, 'KIPHARMA', '0781418920', 'kipharma@gmail.com', 1234567, NULL, 3, '2023-03-14 15:04:41', '2023-03-14 15:04:41', NULL),
-(2007, 9, 'KIPHARMA', '0781418920', NULL, 12345, NULL, 7, '2023-03-30 07:39:14', '2023-03-30 07:39:14', NULL),
+(2006, 2, 'KIPHARMA', '0781418920', 'kipharma@gmail.com', 1234567, NULL, 3, '2023-03-14 17:04:41', '2023-03-14 17:04:41', NULL),
+(2007, 9, 'KIPHARMA', '0781418920', NULL, 12345, NULL, 7, '2023-03-30 09:39:14', '2023-03-30 09:39:14', NULL),
 (2008, 5, 'Wal-Mart Stores', '7101070369', 'clinicplus0@gmail.com', 5599382540, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2009, 5, 'Exxon Mobil', '2678267452', 'clinicplus1@gmail.com', 3820602540, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2010, 5, 'Chevron', '5595230311', 'clinicplus2@gmail.com', 8283871359, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -3212,8 +2807,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (2206, 5, 'Land O’Lakes, Inc.', '7889980520', 'clinicplus198@gmail.com', 8646637729, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2207, 5, 'ONEOK, Inc.', '9126002032', 'clinicplus199@gmail.com', 1039512450, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2208, 5, 'Omnicom Group Inc.', '2472140354', 'clinicplus200@gmail.com', 7039902779, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(2209, 5, 'Anadarko Petroleum Corporation', '1863098444', 'clinicplus201@gmail.com', 4386868805, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(2209, 5, 'Anadarko Petroleum Corporation', '1863098444', 'clinicplus201@gmail.com', 4386868805, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2210, 5, 'EOG Resources, Inc.', '9619662317', 'clinicplus202@gmail.com', 6249786691, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2211, 5, 'DISH Network Corporation', '8777439564', 'clinicplus203@gmail.com', 2430347850, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2212, 5, 'Genuine Parts Company', '2596176010', 'clinicplus204@gmail.com', 7607221586, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -3506,7 +3100,9 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (2499, 5, 'Bemis Company, Inc.', '9963383148', 'clinicplus491@gmail.com', 7239988707, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2500, 5, 'Joy Global Inc.', '6813697147', 'clinicplus492@gmail.com', 3017876153, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2501, 5, 'Wyndham Worldwide Corporation', '2996741285', 'clinicplus493@gmail.com', 1621569088, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(2502, 5, 'NII Holdings, Inc.', '5824197757', 'clinicplus494@gmail.com', 4214529517, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(2502, 5, 'NII Holdings, Inc.', '5824197757', 'clinicplus494@gmail.com', 4214529517, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
+
+INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (2503, 5, 'Lorillard, Inc.', '3849041045', 'clinicplus495@gmail.com', 2795662681, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2504, 5, 'Alleghany Corporation', '7691133144', 'clinicplus496@gmail.com', 6072554976, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2505, 5, 'Airgas, Inc.', '4294462236', 'clinicplus497@gmail.com', 4188171418, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -3602,8 +3198,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (2595, 5, 'New York Life Insurance Company', '2135921013', 'clinicplus87@gmail.com', 3292767544, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2596, 5, 'Mondelez International, Inc.', '1063794601', 'clinicplus88@gmail.com', 3239928451, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2597, 5, 'American Express Company', '2938143631', 'clinicplus89@gmail.com', 8778454692, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(2598, 5, 'Nationwide Mutual Insurance Co.', '3901305949', 'clinicplus90@gmail.com', 6143780670, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(2598, 5, 'Nationwide Mutual Insurance Co.', '3901305949', 'clinicplus90@gmail.com', 6143780670, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2599, 5, 'The Allstate Corporation', '3440315102', 'clinicplus91@gmail.com', 9515784002, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2600, 5, 'Tyson Foods, Inc.', '6205908832', 'clinicplus92@gmail.com', 2980008704, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2601, 5, 'Supervalu Inc.', '6213963437', 'clinicplus93@gmail.com', 8932977797, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -3988,8 +3583,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (2980, 5, 'Big Lots, Inc.', '6271546012', 'clinicplus472@gmail.com', 2500538904, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2981, 5, 'Advanced Micro Devices, Inc.', '5867663058', 'clinicplus473@gmail.com', 3687184025, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2982, 5, 'Owens Corning', '9446076486', 'clinicplus474@gmail.com', 8994841716, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(2983, 5, 'Realogy Holdings Corp.', '7007243878', 'clinicplus475@gmail.com', 8074979468, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(2983, 5, 'Realogy Holdings Corp.', '7007243878', 'clinicplus475@gmail.com', 8074979468, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2984, 5, 'Host Hotels & Resorts, Inc.', '2143349302', 'clinicplus476@gmail.com', 4652746756, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2985, 5, 'MRC Global Inc.', '2130719409', 'clinicplus477@gmail.com', 8179525634, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (2986, 5, 'Simon Property Group, Inc.', '8262057754', 'clinicplus478@gmail.com', 2703187126, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -4008,7 +3602,9 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (2999, 5, 'Bemis Company, Inc.', '7715794388', 'clinicplus491@gmail.com', 5135207554, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3000, 5, 'Joy Global Inc.', '8676231565', 'clinicplus492@gmail.com', 5039418037, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3001, 5, 'Wyndham Worldwide Corporation', '5492615706', 'clinicplus493@gmail.com', 3444184171, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(3002, 5, 'NII Holdings, Inc.', '5295242195', 'clinicplus494@gmail.com', 9020139276, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(3002, 5, 'NII Holdings, Inc.', '5295242195', 'clinicplus494@gmail.com', 9020139276, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
+
+INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (3003, 5, 'Lorillard, Inc.', '2355458656', 'clinicplus495@gmail.com', 8189874146, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3004, 5, 'Alleghany Corporation', '4901045050', 'clinicplus496@gmail.com', 3820608035, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3005, 5, 'Airgas, Inc.', '7673243084', 'clinicplus497@gmail.com', 3753427808, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -4379,8 +3975,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (3370, 5, 'CBRE Group, Inc.', '6748807826', 'clinicplus362@gmail.com', 3825844630, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3371, 5, 'Quest Diagnostics Incorporated', '6780551785', 'clinicplus363@gmail.com', 3362719589, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3372, 5, 'Peabody Energy Corporation', '4513547305', 'clinicplus364@gmail.com', 1872277071, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(3373, 5, 'The Hershey Company', '5596931033', 'clinicplus365@gmail.com', 5113391049, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(3373, 5, 'The Hershey Company', '5596931033', 'clinicplus365@gmail.com', 5113391049, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3374, 5, 'Boston Scientific Corporation', '9628639055', 'clinicplus366@gmail.com', 2709389981, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3375, 5, 'FMC Technologies, Inc.', '2198244243', 'clinicplus367@gmail.com', 1786733293, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3376, 5, 'The Interpublic Group of Companies, Inc.', '8156504254', 'clinicplus368@gmail.com', 8248611328, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -4509,7 +4104,9 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (3499, 5, 'Bemis Company, Inc.', '1927888651', 'clinicplus491@gmail.com', 1924296794, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3500, 5, 'Joy Global Inc.', '7948676459', 'clinicplus492@gmail.com', 6792556136, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3501, 5, 'Wyndham Worldwide Corporation', '8880775930', 'clinicplus493@gmail.com', 1068502712, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(3502, 5, 'NII Holdings, Inc.', '3263584649', 'clinicplus494@gmail.com', 8470148707, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(3502, 5, 'NII Holdings, Inc.', '3263584649', 'clinicplus494@gmail.com', 8470148707, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
+
+INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (3503, 5, 'Lorillard, Inc.', '4333731361', 'clinicplus495@gmail.com', 6959131228, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3504, 5, 'Alleghany Corporation', '3181694316', 'clinicplus496@gmail.com', 2478089912, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3505, 5, 'Airgas, Inc.', '6227658847', 'clinicplus497@gmail.com', 4261857117, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -4769,8 +4366,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (3759, 5, 'Leucadia National Corporation', '3956861168', 'clinicplus251@gmail.com', 3071146874, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3760, 5, 'Huntsman Corporation', '3525363046', 'clinicplus252@gmail.com', 8682469794, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3761, 5, 'Health Net, Inc.', '2358389426', 'clinicplus253@gmail.com', 6889793298, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(3762, 5, 'Stanley Black & Decker, Inc.', '3172617628', 'clinicplus254@gmail.com', 3209600998, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(3762, 5, 'Stanley Black & Decker, Inc.', '3172617628', 'clinicplus254@gmail.com', 3209600998, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3763, 5, 'URS Corporation', '2886823949', 'clinicplus255@gmail.com', 5302372518, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3764, 5, 'Xcel Energy Inc.', '6265952725', 'clinicplus256@gmail.com', 4588612259, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (3765, 5, 'Bed Bath & Beyond Inc.', '3509235603', 'clinicplus257@gmail.com', 4566559679, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -5010,7 +4606,9 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (3999, 5, 'Bemis Company, Inc.', '6047551412', 'clinicplus491@gmail.com', 3704941848, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4000, 5, 'Joy Global Inc.', '6894666449', 'clinicplus492@gmail.com', 6051169395, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4001, 5, 'Wyndham Worldwide Corporation', '5506775484', 'clinicplus493@gmail.com', 9598924124, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(4002, 5, 'NII Holdings, Inc.', '5648774084', 'clinicplus494@gmail.com', 1417034639, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(4002, 5, 'NII Holdings, Inc.', '5648774084', 'clinicplus494@gmail.com', 1417034639, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
+
+INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (4003, 5, 'Lorillard, Inc.', '7565770723', 'clinicplus495@gmail.com', 1546283668, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4004, 5, 'Alleghany Corporation', '3084678726', 'clinicplus496@gmail.com', 3347939975, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4005, 5, 'Airgas, Inc.', '1168546380', 'clinicplus497@gmail.com', 8463259529, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -5159,8 +4757,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (4148, 5, 'United Services Automobile Association', '2899459524', 'clinicplus140@gmail.com', 4416678541, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4149, 5, 'Freeport-McMoRan Copper & Gold Inc.', '2100923205', 'clinicplus141@gmail.com', 7387510958, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4150, 5, 'Icahn Enterprises L.P.', '4461246222', 'clinicplus142@gmail.com', 1315418752, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(4151, 5, 'ManpowerGroup Inc.', '9892089854', 'clinicplus143@gmail.com', 4015521642, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(4151, 5, 'ManpowerGroup Inc.', '9892089854', 'clinicplus143@gmail.com', 4015521642, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4152, 5, 'HollyFrontier Corporation', '2886177046', 'clinicplus144@gmail.com', 3986821715, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4153, 5, 'Global Partners LP', '7524701893', 'clinicplus145@gmail.com', 9592704122, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4154, 5, 'The Goodyear Tire & Rubber Company', '7670810956', 'clinicplus146@gmail.com', 3000076195, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -5511,7 +5108,9 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (4499, 5, 'Bemis Company, Inc.', '5436851272', 'clinicplus491@gmail.com', 1230405244, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4500, 5, 'Joy Global Inc.', '7644697779', 'clinicplus492@gmail.com', 4111116993, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4501, 5, 'Wyndham Worldwide Corporation', '9612355411', 'clinicplus493@gmail.com', 5373946972, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(4502, 5, 'NII Holdings, Inc.', '6865092915', 'clinicplus494@gmail.com', 5221198331, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(4502, 5, 'NII Holdings, Inc.', '6865092915', 'clinicplus494@gmail.com', 5221198331, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
+
+INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (4503, 5, 'Lorillard, Inc.', '7857570326', 'clinicplus495@gmail.com', 3409597954, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4504, 5, 'Alleghany Corporation', '6111043194', 'clinicplus496@gmail.com', 6664521037, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4505, 5, 'Airgas, Inc.', '4005911604', 'clinicplus497@gmail.com', 7763977992, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -5547,8 +5146,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (4535, 5, 'AmerisourceBergen', '2927169876', 'clinicplus27@gmail.com', 3823427226, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4536, 5, 'Wells Fargo', '3243284842', 'clinicplus28@gmail.com', 5278395208, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4537, 5, 'Boeing', '4376704223', 'clinicplus29@gmail.com', 5391993400, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(4538, 5, 'Procter & Gamble', '5778255503', 'clinicplus30@gmail.com', 3282411758, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(4538, 5, 'Procter & Gamble', '5778255503', 'clinicplus30@gmail.com', 3282411758, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4539, 5, 'Freddie Mac', '6875506288', 'clinicplus31@gmail.com', 7059905127, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4540, 5, 'Home Depot', '8097967485', 'clinicplus32@gmail.com', 7975049281, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4541, 5, 'Microsoft', '1115950957', 'clinicplus33@gmail.com', 1178579232, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -5936,8 +5534,7 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (4923, 5, 'Erie Insurance Group', '9581895603', 'clinicplus415@gmail.com', 6613111185, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4924, 5, 'SLM Corporation', '4009963031', 'clinicplus416@gmail.com', 2099119571, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4925, 5, 'D.R. Horton, Inc.', '3972460095', 'clinicplus417@gmail.com', 6610066428, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(4926, 5, 'CC Media Holdings, Inc.', '9028281416', 'clinicplus418@gmail.com', 4794835945, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(4926, 5, 'CC Media Holdings, Inc.', '9028281416', 'clinicplus418@gmail.com', 4794835945, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4927, 5, 'Anixter International Inc.', '2173872090', 'clinicplus419@gmail.com', 5088869790, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4928, 5, 'Dick’s Sporting Goods, Inc.', '9372965915', 'clinicplus420@gmail.com', 9505063987, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (4929, 5, 'SanDisk Corporation', '2141934207', 'clinicplus421@gmail.com', 2379667363, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
@@ -6013,115 +5610,62 @@ INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_numb
 (4999, 5, 'Bemis Company, Inc.', '1381870617', 'clinicplus491@gmail.com', 9072769760, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (5000, 5, 'Joy Global Inc.', '7707889702', 'clinicplus492@gmail.com', 7478314595, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (5001, 5, 'Wyndham Worldwide Corporation', '3226673763', 'clinicplus493@gmail.com', 1285328652, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(5002, 5, 'NII Holdings, Inc.', '4736321541', 'clinicplus494@gmail.com', 1275017608, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(5002, 5, 'NII Holdings, Inc.', '4736321541', 'clinicplus494@gmail.com', 1275017608, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
+
+INSERT INTO `suppliers` (`id`, `company_id`, `name`, `phone`, `email`, `tin_number`, `address`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (5003, 5, 'Lorillard, Inc.', '9967199538', 'clinicplus495@gmail.com', 6429870854, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (5004, 5, 'Alleghany Corporation', '1566747735', 'clinicplus496@gmail.com', 5055710211, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (5005, 5, 'Airgas, Inc.', '5239515515', 'clinicplus497@gmail.com', 6603902363, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
 (5006, 5, 'First American Financial Corporation', '2007331900', 'clinicplus498@gmail.com', 2581396936, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
-(5007, 5, 'United Rentals, Inc.', '2505437366', 'clinicplus499@gmail.com', 9848306460, 'Kigali, Kicukiro', 3, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `units`
---
-
-DROP TABLE IF EXISTS `units`;
-CREATE TABLE IF NOT EXISTS `units` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `description` varchar(100) DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `units`
---
+(5007, 5, 'United Rentals, Inc.', '2505437366', 'clinicplus499@gmail.com', 9848306460, 'Kigali, Kicukiro', 3, NULL, NULL, NULL),
+(5008, 2, 'ALPHA CABLES', '0787654', NULL, 12345, NULL, 3, '2023-05-08 14:55:34', '2023-05-08 14:55:34', NULL),
+(5009, 2, 'SENEGAL CABLES', '98776543', NULL, 34554, NULL, 3, '2023-05-08 14:55:48', '2023-05-08 14:55:48', NULL),
+(5010, 2, 'UBUMWE HARDWARE PARTS', '34567', NULL, 3454657, NULL, 3, '2023-05-08 14:57:21', '2023-05-08 14:57:21', NULL);
 
 INSERT INTO `units` (`id`, `name`, `description`, `deleted_at`, `updated_at`, `created_at`) VALUES
-(1, 'G', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(2, 'Mg', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(3, 'L', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(4, 'Ml', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(5, '%', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(6, 'Number', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(7, 'Meter', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(8, 'Cm', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(9, 'Piece', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(10, 'Tablet', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(11, 'Flacon', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(12, 'Strip', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(13, 'Bottle', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(14, 'Vial', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(15, 'Ampoule', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(16, 'Roll', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(17, 'Box', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(18, 'Pair', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(19, 'Set', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(20, 'Blister', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(21, 'Catheter', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(22, 'Blad', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(23, 'Sterile', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(24, 'Lancet', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(25, 'Tip', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(26, 'Container', NULL, NULL, NULL, '2023-03-14 09:33:49'),
-(27, 'Cell', NULL, NULL, NULL, '2023-03-14 09:33:49');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) UNSIGNED DEFAULT NULL,
-  `department_id` int(11) DEFAULT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `remember_token` varchar(50) DEFAULT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `role_id` int(11) DEFAULT NULL,
-  `last_login` datetime DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_by` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`,`phone`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `users`
---
+(1, 'G', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(2, 'Mg', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(3, 'L', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(4, 'Ml', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(5, '%', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(6, 'Number', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(7, 'Meter', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(8, 'Cm', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(9, 'Piece', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(10, 'Tablet', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(11, 'Flacon', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(12, 'Strip', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(13, 'Bottle', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(14, 'Vial', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(15, 'Ampoule', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(16, 'Roll', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(17, 'Box', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(18, 'Pair', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(19, 'Set', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(20, 'Blister', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(21, 'Catheter', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(22, 'Blad', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(23, 'Sterile', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(24, 'Lancet', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(25, 'Tip', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(26, 'Container', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(27, 'Cell', NULL, NULL, NULL, '2023-03-14 11:33:49'),
+(28, 'SAC', NULL, NULL, '2023-05-21 21:00:06', '2023-05-21 21:00:06'),
+(29, 'Kg', NULL, NULL, '2023-05-25 18:45:47', '2023-05-25 18:45:47');
 
 INSERT INTO `users` (`id`, `company_id`, `department_id`, `first_name`, `last_name`, `name`, `email`, `password`, `phone`, `remember_token`, `email_verified_at`, `role_id`, `last_login`, `status`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, NULL, NULL, 'Webmaster', 'Admin', 'Webmaster Admin', 'webmaster@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', NULL, NULL, NULL, NULL, '2023-04-25 10:20:39', 1, NULL, NULL, '2023-04-25 08:20:39', NULL),
-(3, 2, NULL, 'Vah', 'Kwizera', 'Vah Kwizera', 'vah@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', '788254478', NULL, NULL, 8, '2023-04-25 10:22:12', 1, 1, '2023-01-18 16:15:50', '2023-04-25 08:22:12', NULL),
-(6, 2, 17, 'UWAMAHORO', 'Sophie', 'UWAMAHORO Sophie', 'sophie@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', '785485782', NULL, NULL, 9, '2023-04-21 14:23:42', 1, 3, '2023-03-14 17:15:00', '2023-04-21 12:23:42', NULL),
-(7, 9, NULL, 'NZIZA', 'Prince', 'NZIZA Prince', 'nziza@gmail.com', '$2y$10$SBY2X0nbWgpv/zMXnF2bQunWkKAr7nVu.Y4BnzS/xXBC7ELs4us4C', '781418920', NULL, NULL, 7, '2023-03-30 10:20:16', 1, 1, '2023-03-30 06:31:50', '2023-03-30 08:20:16', NULL);
+(1, NULL, NULL, 'Webmaster', 'Admin', 'Webmaster Admin', 'webmaster@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', NULL, NULL, NULL, NULL, '2023-06-06 22:03:23', 1, NULL, NULL, '2023-06-06 22:03:23', NULL),
+(3, 2, NULL, 'Vah', 'Kwizera', 'Vah Kwizera', 'vah@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', '788254478', NULL, NULL, 8, '2023-06-13 21:48:22', 1, 1, '2023-01-18 18:15:50', '2023-06-13 21:48:22', NULL),
+(6, 2, 17, 'UWAMAHORO', 'Sophie', 'UWAMAHORO Sophie', 'sophie@gmail.com', '$2y$10$/sPmt73SgNEORz2bQdyx2ea.jmAiOF7RVGJDDYHHsrRXL8MyOSHTS', '785485782', NULL, NULL, 9, '2023-04-28 11:26:39', 1, 3, '2023-03-14 19:15:00', '2023-04-28 11:26:39', NULL),
+(7, 9, NULL, 'NZIZA', 'Prince', 'NZIZA Prince', 'nziza@gmail.com', '$2y$10$SBY2X0nbWgpv/zMXnF2bQunWkKAr7nVu.Y4BnzS/xXBC7ELs4us4C', '781418920', NULL, NULL, 7, '2023-03-30 10:20:16', 1, 1, '2023-03-30 08:31:50', '2023-03-30 10:20:16', NULL),
+(8, 2, NULL, 'Mugisha', 'Hirwa Arnaud', 'Mugisha Hirwa Arnaud', 'hirwa@gmail.com', '$2y$10$vTwL/fGQcl3CBwfhEgZhUOUTfqFMuaOcB/JSG9o5q02Ohd8Qhyyv.', NULL, NULL, NULL, 14, '2023-05-25 21:48:53', 1, 1, '2023-05-08 15:43:16', '2023-05-25 21:48:53', NULL);
 
---
--- Constraints for dumped tables
---
 
---
--- Constraints for table `payments`
---
-ALTER TABLE `payments`
-  ADD CONSTRAINT `PAID_SALE` FOREIGN KEY (`transaction_id`) REFERENCES `sales` (`id`),
-  ADD CONSTRAINT `PAYMENT_MODE` FOREIGN KEY (`payment_type`) REFERENCES `payment_methods` (`id`) ON DELETE CASCADE;
-COMMIT;
 
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
