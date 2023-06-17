@@ -19,7 +19,7 @@ class ExpenseCategoryController extends Controller
 
         return response()->json([
             'status'    => 1,
-            'rows'       => ExpenseCategory::orderByDesc('id')->get()
+            'rows'      => ExpenseCategory::orderByDesc('id')->get()
         ]);
     }
 
@@ -33,7 +33,7 @@ class ExpenseCategoryController extends Controller
         // Show all data in Model
 
         return response()->json([
-            'status'    => 1,
+            'status' => 1,
             'rows'   => ExpenseCategory::orderByDesc('id')->with('creator')->paginate(\request()->query('per_page') ?? 45)
         ]);
     }
@@ -56,11 +56,14 @@ class ExpenseCategoryController extends Controller
         }
 
         $ExpenseCategory->fill($request->input());
+        $ExpenseCategory->created_by = auth()->id();
         $ExpenseCategory->save();
+        $id = $ExpenseCategory->id;
+
 
         return response()->json([
-            'status'    => 0,
-            'row'       => ExpenseCategory::find($ExpenseCategory->id)
+            'status'    => 1,
+            'row'       => ExpenseCategory::find($id)
         ]);
     }
 
