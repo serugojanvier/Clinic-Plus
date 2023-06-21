@@ -2,11 +2,34 @@
 <html>
 <head>
     <title>Stock Report</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        #customers {
+            font-family: nunito;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+        #customers tr:hover {background-color: #ddd;}
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #3c3c3c;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <h1>Stock Report</h1>
-    <table>
+    <table id="customers">
         <thead>
             <tr>
                 <th>Total Receives amount</th>
@@ -20,13 +43,13 @@
         </thead>
         <tbody>
             <tr>
-                <td>{{ $stockReportData['ReceiveData'] }}</td>
-                <td>{{ $stockReportData['transferData'] }}</td>
-                <td>{{ $stockReportData['sales_count'] }}</td>
-                <td>{{ $stockReportData['total_sales'] }}</td>
-                <td>{{ $stockReportData['total_paid'] }}</td>
-                <td>{{ $stockReportData['total_pending'] }}</td>
-                <td>{{ $stockReportData['total_expenses']}}</td>
+                <td><h3>{{ number_format($stockReportData['ReceiveData'], 2) }}</h3></td>
+                <td><h3>{{ number_format($stockReportData['transferData'], 2) }}</h3></td>
+                <td><h3>{{ number_format($stockReportData['sales_count'], 2)}}</h3></td>
+                <td><h3>{{ number_format($stockReportData['total_sales'], 2) }}</h3></td>
+                <td><h3>{{ number_format($stockReportData['total_paid'], 2) }}</h3></td>
+                <td><h3>{{ number_format($stockReportData['total_pending'], 2) }}</h3></td>
+                <td><h3>{{ number_format($stockReportData['total_expenses'], 2) }}</h3></td>
             </tr>
         </tbody>
     </table>
