@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Stock;
 use App\Models\Stock\Sale;
 use App\Models\Stock\Stock;
 use Illuminate\Http\Request;
-use App\Models\Stock\SaleItem;
+use App\Models\Stock\Expense;
 use App\Models\Stock\Payment;
 use App\Models\Stock\Product;
+use App\Models\Stock\SaleItem;
 use Illuminate\Support\Facades\DB;
 use App\Models\Stock\PaymentMethod;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class POSController extends Controller
 {
@@ -35,15 +37,32 @@ class POSController extends Controller
             $pendingChart[] = Sale::where("committed_date", $days[$i - 1])->where('paid', 0)->sum('discounted_total');   
             $paidChart[]    = Sale::where("committed_date", $days[$i - 1])->where('paid', 1)->sum('discounted_total');   
         }
+        
+        $sales_count    = Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->count();
+        $total_paid     = Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->where('paid', 1)->sum('discounted_total');
+        $total_pending  = Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->where('paid', 0)->sum('discounted_total');
+        $total_expenses = Expense::where('committed_date', 'LIKE', "%{$yearMonth}%")->sum('amount');
+        $total_sales    = Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->sum('discounted_total');
+
+        $PosCache = [
+            'sales_count'       =>(int)$sales_count,
+            'total_paid'        =>(int)$total_paid,
+            'total_pending'     =>(int)$total_pending,
+            'total_expenses'    =>(int)$total_expenses,
+            'total_sales'       =>(int)$total_sales
+        ];
+
+        Cache::put('PosCache', $PosCache ,60);
 
         return response()->json([
-            'sales_count'    => Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->count(),
-            'total_sales'    => Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->sum('discounted_total'),
-            'total_paid'     => Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->where('paid', 1)->sum('discounted_total'),
-            'total_pending'  => Sale::where('committed_date', 'LIKE', "%{$yearMonth}%")->where('paid', 0)->sum('discounted_total'),
+            'sales_count'    => $sales_count,
+            'total_sales'    => $total_sales,
+            'total_expenses' => intval($total_expenses),
+            'total_paid'     => $total_paid,
+            'total_pending'  => $total_pending,
             'labels'         => $labels,
             'pending_chart'  => $pendingChart,
-            'paid_chart'  => $paidChart
+            'paid_chart'     => $paidChart
         ]);
     }
 
@@ -59,6 +78,7 @@ class POSController extends Controller
         return response()->json([
             'sales_count'    => Sale::where('committed_date', '>=', $from)->where('committed_date', '<=', $to)->count(),
             'total_sales'    => Sale::where('committed_date', '>=', $from)->where('committed_date', '<=', $to)->sum('discounted_total'),
+            'total_expenses' => Expense::where('committed_date', '>=', $from)->where('committed_date', '<=', $to)->sum('amount'),
             'total_paid'     => Sale::where('committed_date', '>=', $from)->where('committed_date', '<=', $to)->where('paid', 1)->sum('discounted_total'),
             'total_pending'  => Sale::where('committed_date', '>=', $from)->where('committed_date', '<=', $to)->where('paid', 0)->sum('discounted_total'),
         ]);

@@ -13,11 +13,31 @@ class ExpenseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $result = Expense::select('*');
+        $from = date('Y-m-d');
+        if(!empty($fromd = $request->get('from'))){
+            $from = $fromd;
+        }
+
+        $to = $request->get('to');
+        if (empty($to)){
+            $result->where('committed_date', $from);
+        } else {
+            $result->where('committed_date', '>=', $from)
+                    ->where('committed_date', '<=', $to);
+        }
+
+        if(!empty($expense = $request->get('expense'))){
+            $result->where('category_id', $expense);
+        }
+
         return response()->json([
             'status' => 1,
-            'rows'   => Expense::orderByDesc('id')->with('category','PaymentMethod','creator')->paginate(\request()->query('per_page') ?? 45)
+            'rows'   => $result->with('category','PaymentMethod','creator')
+                                ->orderBy('id', 'DESC')
+                                ->paginate(45)
         ]);
     }
 

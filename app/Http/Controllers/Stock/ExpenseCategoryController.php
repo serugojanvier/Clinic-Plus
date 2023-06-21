@@ -28,13 +28,19 @@ class ExpenseCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function ExpensesCategories()
+    public function ExpensesCategories(Request $request)
     {
         // Show all data in Model
-
+        $result = ExpenseCategory::select('*');
+        if(!empty($category = $request->get('category'))){
+            $result->where('id', $category);
+        }
         return response()->json([
             'status' => 1,
-            'rows'   => ExpenseCategory::orderByDesc('id')->with('creator')->paginate(\request()->query('per_page') ?? 45)
+            'rows'   => $result->with('creator')
+                               ->orderBy('id', 'DESC')
+                               ->paginate(45)
+                       
         ]);
     }
 
@@ -109,5 +115,21 @@ class ExpenseCategoryController extends Controller
             'status'    =>1,
             'error'     => 'Expense Category Deleted Successly!'
         ]);
+    }
+
+             /**
+     * search fora category
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $result = ExpenseCategory::select('*');
+        $keyword = $request->get('query');
+        if (empty($keyword)) {
+            return  response()->json($result->orderBy('name', 'ASC')->take(250)->get());
+        } else {
+            return response()->json($result->where('name', 'LIKE', '%' . $keyword . '%')->orderBy('name', 'ASC')->get());
+        }
     }
 }

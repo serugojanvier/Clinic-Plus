@@ -15,6 +15,7 @@ use App\Models\Stock\ProductTracker;
 use App\Models\Stock\StockinHistory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Stock\ProductCategory;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Stock\StockTransferItems;
 
 class ReportsController extends Controller
@@ -210,6 +211,14 @@ class ReportsController extends Controller
     {
         $receiveData =  $this->getReceivesDashboard();
         $transferData = $this->getTransfersDashboard();
+
+        $cachesData = [
+            'ReceiveData' => (int)$receiveData['amount'],
+            'transferData' => (int)$transferData['amount']
+        ];
+
+        Cache::put('ReceiveAndTransferStockData', $cachesData, 60);
+
         return response()->json([
             'stock_value' => Product::selectRaw('COALESCE(SUM(quantity * cost_price), 0) as stock_value')
                                     ->first()
