@@ -115,24 +115,4 @@ function handleConsumedItems(int $itemId, int $quantity)
             $row->save();
         }
     }
-
-    function getMonthDays($month = NULL, $year = NULL)
-    {
-        if(is_null($month)) $month = date('m');
-        if(is_null($year)) $year = date('Y');
-        $startDate = "01-" . $month . "-" . $year;
-        $startTime = strtotime($startDate);
-        $endTime = strtotime("+1 month", $startTime);
-        for($i=$startTime; $i < $endTime; $i+=86400){
-            $list[] = date('Y-m-d', $i);
-        }
-        return $list;
-    }
-
-    function unlinkFile($file_path){
-        $storage = Storage::disk('uploads');
-        if($storage->exists($file_path)){
-            $storage->delete($file_path);
-        }
-    }
 }
