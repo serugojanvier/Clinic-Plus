@@ -193,6 +193,12 @@ class ReportsController extends Controller
             $result->where('id', $product)
                     ->where('company_id', auth()->user()->company_id);
         }
+
+        if (!empty($category = $request->get('category'))) {
+            $result->where('category_id', $category)
+                    ->where('company_id', auth()->user()->company_id);
+        }
+
         return response()->json([
             'status' => 1,
             'rows'   => $result
