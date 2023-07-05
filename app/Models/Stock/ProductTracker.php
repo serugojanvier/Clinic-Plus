@@ -41,8 +41,17 @@ class ProductTracker extends Model
      */
     public function unit()
     {
-        return $this->belongsTo(Unit::class, 'unit_id')->select('units.id', 'units.name');
+        return $this->belongsTo(Unit::class, 'id')->select('units.id', 'units.name');
     }
+
+        /**
+     * @return BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(ProductCategory::class, 'category_id')->select('product_categories.id', 'product_categories.name');
+    }
+
 
     public function getReceiveQtyAttribute()
     {

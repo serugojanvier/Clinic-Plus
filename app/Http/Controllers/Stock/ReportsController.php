@@ -187,7 +187,7 @@ class ReportsController extends Controller
 
     public function trackProductsStock(Request $request)
     {
-        $result = ProductTracker::select('id','name','unit_id','quantity as currentQty', 'company_id')
+        $result = ProductTracker::select('id','name','unit_id','category_id','quantity as currentQty', 'company_id')
                                     ->where('company_id', auth()->user()->company_id);
         if (!empty($product = $request->get('product'))) {
             $result->where('id', $product)
@@ -199,10 +199,15 @@ class ReportsController extends Controller
                     ->where('company_id', auth()->user()->company_id);
         }
 
+        if (!empty($scategory = $request->get('scategory'))) {
+            $result->where('category_id', $scategory)
+                    ->where('company_id', auth()->user()->company_id);
+        }
+
         return response()->json([
             'status' => 1,
             'rows'   => $result
-                               ->with('unit')
+                               ->with('unit','category')
                                ->orderBy('name', 'ASC')
                                ->paginate(\request()->query('per_page') ?? 45)
         ]);

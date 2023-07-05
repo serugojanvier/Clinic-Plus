@@ -63,6 +63,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
   
   Route::group(['prefix' =>'categories'], function(){
     Route::get('', 'CategoriesController@index');
+    Route::get('subcategory', 'CategoriesController@subcategory');
     Route::get('show/{id}', 'CategoriesController@show');
     Route::post('store', 'CategoriesController@store');
     Route::get('destroy/{id}', 'CategoriesController@destroy');

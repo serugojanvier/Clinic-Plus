@@ -30,6 +30,25 @@ class CategoriesController extends Controller
         ]);
     }
 
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function subcategory(Request $request)
+    {
+        $categories = Category::select('*');
+        $categories->where(function ($query) {
+            $query->whereNotNull('parent_id');
+        });
+        
+        return response()->json([
+            'status' => 1,
+            'rows'   => $categories->orderByDesc('id')->get()
+        ]);
+    }
+
+
      /**
      * Store a newly created resource in storage.
      *
