@@ -111,6 +111,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('receives/download/{reference}', 'ReportsController@downloadRecieveReport');
     Route::get('transfers', 'ReportsController@getTransfersReport');  
     Route::get('requisitions/{reference?}', 'RequisitionsController@index');  
+    Route::get('purchase-order/{reference?}', 'PurchaseOrderController@index');  
     Route::get('adjustments', 'AdjustmentsController@index');  
     Route::get('tracker', 'ReportsController@getTrackerReport');  
     Route::get('store-status', 'ReportsController@trackProductsStock');  
@@ -124,6 +125,14 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::post('store', 'RequisitionsController@store');
     Route::get('destroy/{id}', 'RequisitionsController@destroy');
     Route::get('items/{itemId}/destroy', 'RequisitionsController@deleteItem');
+  });
+
+  Route::group(['prefix' => 'purchase-order'], function(){
+    Route::get('show/{reference}/items', 'PurchaseOrderController@getItems');
+    Route::get('status/{id}update', 'PurchaseOrderController@updateStatus');
+    Route::post('store', 'PurchaseOrderController@store');
+    Route::get('destroy/{id}', 'PurchaseOrderController@destroy');
+    Route::get('items/{itemId}/destroy', 'PurchaseOrderController@deleteItem');
   });
 
   Route::group(['prefix' => 'adjustments'], function(){
