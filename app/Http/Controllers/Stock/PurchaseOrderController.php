@@ -70,9 +70,9 @@ class PurchaseOrderController extends Controller
             PurchaseOrderItem::create([
                 'order_id' => $id,
                 'product_id'    => $item->id,
-                'requested_qty' => $item->quantity,
+                'order_qty' => $item->quantity,
                 'price' => $item->price,
-                'received_qty'  => 0
+                'requested_qty'  => $item->quantity
             ]);
         }
         $currentUser = auth()->user();
@@ -111,7 +111,7 @@ class PurchaseOrderController extends Controller
         return response()->json([
             'status' => 1,
             'row'    => $PurchaseOrder,
-            'items'  => PurchaseOrderItem::select('id', 'product_id', 'requested_qty as quantity', 'price', 'received_qty')
+            'items'  => PurchaseOrderItem::select('id', 'product_id', 'order_qty as quantity', 'price', 'requested_qty')
                                       ->where('order_id', $PurchaseOrder->id)
                                       ->with('product')
                                       ->get()
@@ -180,7 +180,7 @@ class PurchaseOrderController extends Controller
             ], 404);
         }
         $PurchaseOrder = PurchaseOrder::find($row->order_id);
-        $PurchaseOrder->amount -= ($row->price * $row->requested_qty);
+        $PurchaseOrder->amount -= ($row->price * $row->order_qty);
         $PurchaseOrder->save();
 
         $row->delete();

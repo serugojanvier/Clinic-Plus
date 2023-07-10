@@ -11,12 +11,15 @@ use App\Models\Stock\Requisition;
 use App\Models\Stock\StockoutItem;
 use App\Models\Stock\StockReceive;
 use Illuminate\Support\Facades\DB;
+use App\Models\stock\PurchaseOrder;
 use App\Models\Stock\StockTransfer;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Stock\StockinHistory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Stock\ProductCategory;
 use App\Models\Stock\RequisitionItem;
+use App\Models\stock\PurchaseOrderItem;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Stock\StockTransferItems;
 
@@ -45,14 +48,25 @@ class StockController extends Controller
                 'vat'           => $request->input('vat'),
             ])->id;
         }
-        $items = json_decode($request->input('items'));
-        $this->commitReceivedItems($id, $items);
+
         if (!empty($file = $request->file('file'))) {
             $result = $this->storeFile($request);
             $row = StockReceive::find($id);
             $row->file_url = $result;
             $row->save();
         }
+
+        $is_order = 0;
+        if (!empty($order_id = $request->input('order_id'))) {
+            $PurchaseOrder = PurchaseOrder::find($order_id);
+            $PurchaseOrder->status = 'ACCEPTED';
+            $is_order = 1;
+            $PurchaseOrder->save();
+        }
+
+        $items = json_decode($request->input('items'));
+        $this->commitReceivedItems($id, $items,$is_order);
+
         return response()->json([
             'status'  => 1,
             'message' => 'Records saved successfully'
@@ -144,7 +158,7 @@ class StockController extends Controller
       * @param array $items
       * @return void
       */
-     private function commitReceivedItems($receivedId, $items)
+     private function commitReceivedItems($receivedId, $items,$is_order)
      {
          foreach($items as $item) {
             $product = Product::find($item->id);
@@ -177,6 +191,13 @@ class StockController extends Controller
                     'consumed_qty' => 0,
                     'status'       => 'IN_STOCK'
                 ]);
+            }
+
+            if($is_order==1){
+                $orderItem = PurchaseOrderItem::find($item->Order_Item_id);
+                $orderItem->price = $item->price;
+                $orderItem->order_qty = $item->quantity;
+                $orderItem->save();
             }
         }
      }
