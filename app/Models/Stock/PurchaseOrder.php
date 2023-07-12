@@ -2,6 +2,7 @@
 
 namespace App\Models\stock;
 
+use App\Models\User;
 use App\Traits\CrudTrait;
 use App\Scopes\CompanyScope;
 use App\Models\stock\PurchaseOrderItem;
@@ -37,5 +38,15 @@ class PurchaseOrder extends Model
     public function getTotalItemsAttribute()
     {
         return PurchaseOrderItem::where('order_id', $this->id)->count();
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, "created_by")
+                    ->select('id','name')
+                    ->withTrashed();
     }
 }

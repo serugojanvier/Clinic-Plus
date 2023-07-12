@@ -131,6 +131,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::get('show/{reference}/items', 'PurchaseOrderController@getItems');
     Route::get('status/{id}update', 'PurchaseOrderController@updateStatus');
     Route::post('store', 'PurchaseOrderController@store');
+    Route::post('editOrder', 'PurchaseOrderController@editOrder');
+    Route::get('verify/{id}', 'PurchaseOrderController@verifyPurchaseOrder');
     Route::get('destroy/{id}', 'PurchaseOrderController@destroy');
     Route::get('items/{itemId}/destroy', 'PurchaseOrderController@deleteItem');
   });

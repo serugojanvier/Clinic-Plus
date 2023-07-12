@@ -92,6 +92,41 @@ class PurchaseOrderController extends Controller
         ]);
     }
 
+        /**
+     * Update Purchase Order Item
+     * @param Request $request
+     * @return JsonResponse
+     */
+
+     public function editOrder(Request $request){
+        $items = json_decode($request->input('items'));
+        if (!empty($id = $request->input('order_id'))) {
+            $record = PurchaseOrder::find($id);
+            $record->date_initiated = $request->input('date_received');
+            $record->amount = $request->input('amount');
+            $record->save();
+    
+            foreach($items as $item){
+                $row = PurchaseOrderItem::find($item->id);
+                $row->order_qty = $item->quantity;
+                $row->requested_qty = $item->quantity;
+                $row->price = $item->price;
+                $row->save();
+            }
+
+            return response()->json([
+                'status'  => 1,
+                'message' => 'Purchase Order Updated successfully'
+            ]);
+        }else{
+            return response()->json([
+                'status'  => 0,
+                'message' => 'Oops! Some Errors Occur.'
+            ]);
+        }
+     } 
+
+
     /**
      * Get Purchase Items
      * @param string $reference
@@ -100,6 +135,7 @@ class PurchaseOrderController extends Controller
     public function getItems($reference)
     {
         $PurchaseOrder = PurchaseOrder::where('reference', $reference)
+                                    ->with('creator')
                                     ->first();
         if (!$PurchaseOrder) {
             return response()->json([
@@ -115,6 +151,30 @@ class PurchaseOrderController extends Controller
                                       ->where('order_id', $PurchaseOrder->id)
                                       ->with('product')
                                       ->get()
+        ]);
+    }
+
+   /**
+    * Delete Purchase Order
+    * @param string $reference
+     * @return JsonResponse
+    */
+    public function verifyPurchaseOrder($id)
+    {   
+        $row = PurchaseOrder::find($id);
+        if(empty($row)){
+            return response()->json([
+                'status' =>0,
+                'message'=>'No Order Found!'
+            ],404);
+        }
+
+        $row->status = "VERIFIED";
+        $row->save();
+
+        return response()->json([
+            'status' =>1,
+            'message'=>'Purchase Order #'.$id.' Marked as Verified Successfuly!'
         ]);
     }
 
