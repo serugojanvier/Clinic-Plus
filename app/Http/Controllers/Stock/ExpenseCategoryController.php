@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\stock;
+namespace App\Http\Controllers\Stock;
 
 use App\Models\Stock\ExpenseCategory;
 use Illuminate\Http\Request;

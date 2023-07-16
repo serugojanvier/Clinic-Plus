@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\stock;
+namespace App\Models\Stock;
 
 use App\Models\Stock\Stock;
 use App\Models\Stock\Product;

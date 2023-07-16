@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\stock;
+namespace App\Models\Stock;
 
 use App\Models\User;
 use App\Traits\CrudTrait;
 use App\Scopes\CompanyScope;
-use App\Models\stock\PurchaseOrderItem;
+use App\Models\Stock\PurchaseOrderItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
