@@ -145,6 +145,11 @@ class ProductsController extends Controller
                 'products' => $products
             ]);
         }
+        
+        return response()->json([
+                'message' => "No expired products found",
+                'products' => []
+        ]);
      }
 
      /**
