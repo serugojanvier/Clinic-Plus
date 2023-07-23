@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $lastExpiredCheck = env('LAST_EXPIRATION_CHECK') ?? null;
+        $lastExpiredCheck = env('LAST_EXPIRATION_CHECK') ?? date('Y-m-d');
         if (!$lastExpiredCheck || date('Y-m-d', strtotime($lastExpiredCheck)) < date('Y-m-d')) {
             // Log::info( $lastExpiredCheck);
               // check expired products

@@ -26,6 +26,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth' ,'middleware' => 'api',
     Route::post('me', 'AuthController@updateUser');
     Route::post('change-password', 'AuthController@changePassword');
     Route::get('notifications/read', 'AuthController@readNotifications');
+    Route::get('notifications/read/{id}', 'AuthController@readSingleNotifications');
+    Route::get('notifications/today', 'AuthController@getNotificationsForToday');
 });
 
 //Stock API'S
@@ -86,6 +88,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Stock' ,'middleware' => 'auth
     Route::post('store', 'ProductsController@store');
     Route::post('store/file', 'ProductsController@storeFile');
     Route::get('expired', 'ProductsController@expired');
+    Route::get('expiredInPeriod', 'ProductsController@expirationCheckInthreeMo');
     Route::get('destroy/{id}', 'ProductsController@destroy');
     Route::get('bulk-destroy/{ids}', 'ProductsController@bulkDelete');
   });

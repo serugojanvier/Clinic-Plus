@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use JWTAuth;
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use App\Events\SuccessLoginEvent;
-use JWTAuth;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -132,5 +134,27 @@ class AuthController extends Controller
         return response()->json([
             'success' => true
         ]);
+    }
+
+    public function readSingleNotifications($notificationId){
+        $notification = Auth::user()->notifications()->find($notificationId);
+        if($notification){
+            $notification->markAsRead();
+        }
+
+        return response()->json([
+            'success'=> true
+        ]);
+    }
+
+    public function getNotificationsForToday(){
+        $today = Carbon::now()->toDateString();
+        $notifications = DB::table('notifications')
+                            ->whereRaw('DATE(read_at) = ?', [$today])
+                            ->select('data')
+                            ->get();
+        return response()->json([
+            'notifications' =>$notifications,
+        ],200);
     }
 }

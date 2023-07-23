@@ -79,6 +79,7 @@ class RequisitionsController extends Controller
                 'received_qty'  => 0
             ]);
         }
+        
         $currentUser = auth()->user();
         $users = getNotifiableUsers($currentUser);
         $itemsCount = sizeof($items);

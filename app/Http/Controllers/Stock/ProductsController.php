@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Stock;
 
+use Carbon\Carbon;
 use App\Models\Stock\Unit;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -122,6 +123,28 @@ class ProductsController extends Controller
             'status' => 1,
             'rows'  => $expiredData
         ]);
+     }
+
+    /**
+     * Show Expired Products.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+     public function expirationCheckInthreeMo(){
+        $products = StockinHistory::whereDate('expiration_date', '<=', Carbon::now()->addMonths(3))
+                            ->whereNotIn('status', ['EXPIRED','CONSUMED'])   
+                            ->with('product') 
+                            ->orderBy('expiration_date', 'ASC')             
+                            ->get();
+
+        if ($products->isNotEmpty()) {
+            return response()->json([
+                'message' => "expired products",
+                'products' => $products
+            ]);
+        }
      }
 
      /**
