@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Events\SuccessLoginEvent;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -41,7 +40,6 @@ class AuthController extends Controller
 
         $request->merge([$field => $input]);
         $credentials = request([$field, 'password']);
-        Log::info($credentials);
         //$token = JWTAuth::attempt($credentials, ['exp' => Carbon\Carbon::now()->addDays(7)->timestamp]);
 
         if (! $token = auth('api')->attempt($credentials)) {
