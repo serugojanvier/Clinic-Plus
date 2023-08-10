@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Stock;
 
 use Illuminate\Http\Request;
-use App\Models\stock\PurchaseOrder;
+use App\Models\Stock\PurchaseOrder;
 use App\Http\Controllers\Controller;
 use App\Notifications\ChannelServices;
-use App\Models\stock\PurchaseOrderItem;
+use App\Models\Stock\PurchaseOrderItem;
 use Illuminate\Support\Facades\Notification;
 
 class PurchaseOrderController extends Controller
