@@ -209,7 +209,7 @@ class ReportsController extends Controller
             'rows'   => $result
                                ->with('unit','category')
                                ->orderBy('name', 'ASC')
-                               ->paginate(\request()->query('per_page') ?? 45)
+                               ->paginate(\request()->query('per_page') ?? 200)
         ]);
     }
 
