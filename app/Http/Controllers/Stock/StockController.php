@@ -11,7 +11,7 @@ use App\Models\Stock\Requisition;
 use App\Models\Stock\StockoutItem;
 use App\Models\Stock\StockReceive;
 use Illuminate\Support\Facades\DB;
-use App\Models\stock\PurchaseOrder;
+use App\Models\Stock\PurchaseOrder;
 use App\Models\Stock\StockTransfer;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -19,7 +19,7 @@ use App\Models\Stock\StockinHistory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Stock\ProductCategory;
 use App\Models\Stock\RequisitionItem;
-use App\Models\stock\PurchaseOrderItem;
+use App\Models\Stock\PurchaseOrderItem;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Stock\StockTransferItems;
 
