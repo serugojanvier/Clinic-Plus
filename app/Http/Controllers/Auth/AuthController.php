@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Events\SuccessLoginEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,9 +30,18 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
+        $input = $request->input('username');
+        if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
+            $field = 'email';
+        } else {
+            $field = 'phone';
+        }
+
+        $request->merge([$field => $input]);
+        $credentials = request([$field, 'password']);
+        Log::info($credentials);
         //$token = JWTAuth::attempt($credentials, ['exp' => Carbon\Carbon::now()->addDays(7)->timestamp]);
 
         if (! $token = auth('api')->attempt($credentials)) {
@@ -90,7 +100,9 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
-        $user = User::where('email', \request()->input('email'))->first();
+        $user = User::where('email', \request()->input('email'))
+                    ->orWhere('phone', \request()->input('phone'))
+                    ->first();
         event(new SuccessLoginEvent($user));
         return response()->json([
             'status'=>1,
