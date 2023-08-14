@@ -38,6 +38,7 @@ class ClientsController extends Controller
        }
 
         $client->name = $request->input('name');
+        $client->tinnumber = $request->input('tinnumber');
         $client->phone = $request->input('phone');
         $client->email = $request->input('email');
         $client->discount = $request->input('discount') || 0;
