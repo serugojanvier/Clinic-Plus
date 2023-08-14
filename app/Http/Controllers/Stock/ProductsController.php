@@ -95,10 +95,12 @@ class ProductsController extends Controller
         }
 
         $product->fill($request->input());
-        $product->cost_price = $request->input('cost_price');
-        $product->rhia_price = $request->input('rhia_price');
-        $product->private_price = $request->input('private_price');
-        $product->inter_price = $request->input('inter_price');
+        $product->cost_price = $request->input('cost_price') || 0;
+        $product->rhia_price = $request->input('rhia_price') || 0;
+        $product->private_price = $request->input('private_price') || 0;
+        $product->inter_price = $request->input('inter_price') || 0;
+        $product->packaging = $request->input('packaging');
+        $product->image = NULL;
         $product->save();
         $id = $product->id;
 

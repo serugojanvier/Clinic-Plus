@@ -24,6 +24,7 @@ class Product extends Model
         'reference',	
         'name',	
         'image',
+        'packaging',
         'unit_id',	
         'cost_price',	
         'rhia_price',	
