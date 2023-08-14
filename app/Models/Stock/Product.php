@@ -36,11 +36,15 @@ class Product extends Model
 
     public function unit()
     {
-        return $this->belongsTo(Unit::class, 'unit_id')->select('units.id', 'units.name');
+        return $this->belongsTo(Unit::class, 'unit_id')
+                    ->select('units.id', 'units.name')
+                    ->withTrashed();
     }
 
     public function category()
     {
-        return $this->belongsTo(ProductCategory::class, 'category_id')->select('product_categories.id', 'product_categories.name');
+        return $this->belongsTo(ProductCategory::class, 'category_id')
+                    ->select('product_categories.id', 'product_categories.name')
+                    ->withTrashed();
     }
 }
