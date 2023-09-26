@@ -2,6 +2,7 @@
 
 namespace App\Models\Stock;
 
+use App\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,10 +10,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class StockinHistory extends Model
 {
     use HasFactory, SoftDeletes;
+    
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     protected $table = 'stockin_histories';
     
     protected $fillable = [
+        'company_id',
         'stockin_id',
         'product_id',	
         'quantity',	

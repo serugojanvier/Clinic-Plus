@@ -183,6 +183,7 @@ class StockController extends Controller
                 $product->save();
                 StockinHistory::create([
                     'stockin_id' => $receivedId,
+                    'company_id' => auth()->user()->company_id,
                     'product_id' => $item->id,	
                     'quantity'   => $item->quantity,	
                     'price'      => $item->price,
