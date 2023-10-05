@@ -51,7 +51,7 @@ class UserController extends Controller
                 'email.required' => 'Email field is required', 
                 'email.email'    => 'Email field must be a valid email', 
                 'email.unique'   => 'User with the same email address exists',
-                'phone.unique'   => 'User with the same email address exists'
+                'phone.unique'   => 'User with the same Phone Number exists'
             ];
 
             $validator = Validator::make($request->all(), $rules, $messages);
