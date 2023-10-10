@@ -158,8 +158,6 @@ class ProductsController extends Controller
                                 ->orderBy('stockin_histories.expiration_date', 'ASC')
                                 ->get();
 
-        Log::info($products);
-
         if ($products->isNotEmpty()) {
             return response()->json([
                 'message' => "expired products",
@@ -248,7 +246,7 @@ class ProductsController extends Controller
           
         $keyword = $request->get('query');
         if (empty($keyword)) {
-            return  response()->json($result->orderBy('products.name', 'ASC')->take(250)->get());
+            return  response()->json($result->orderBy('products.name', 'ASC')->take(1000)->get());
         } else {
             return response()->json($result->where('products.name', 'LIKE', '%' . $keyword . '%')->orderBy('name', 'ASC')->get());
         }
