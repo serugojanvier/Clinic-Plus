@@ -45,6 +45,19 @@ class AuthController extends Controller
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json(['status'=>0,'message' => __('Password is not correct'),'status'=>0], 401);
         }
+        
+        $expiredProducts = DB::table('stockin_histories')->where('expiration_date', '<', date('Y-m-d'))->whereNotIn('status', ['EXPIRED','CONSUMED'])->get();
+        foreach ($expiredProducts as $row) {
+            $product = DB::table('products')->where('id', $row->product_id)->first();
+            $expiredQty = $row->quantity - $row->consumed_qty;
+            if ($expiredQty > $product->quantity) {
+                $productQuantity = 0;
+            } else {
+                $productQuantity = $product->quantity - $expiredQty;
+            }
+            DB::table('products')->where('id', $row->product_id)->update(['quantity' => $productQuantity]);
+            DB::table('stockin_histories')->where('id', $row->id)->update(['status' => 'EXPIRED']);
+        }
 
         return $this->respondWithToken($token);
     }
