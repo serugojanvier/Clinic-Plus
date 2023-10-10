@@ -7,7 +7,9 @@ use App\Models\Stock\Unit;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Stock\Product;
+use App\Models\Stock\StockReceive;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Stock\StockinHistory;
 use Illuminate\Support\Facades\Auth;
@@ -99,6 +101,8 @@ class ProductsController extends Controller
         $product->rhia_price = $request->input('rhia_price');
         $product->private_price = $request->input('private_price');
         $product->inter_price = $request->input('inter_price');
+        $product->packaging = $request->input('packaging');
+        $product->image = NULL;
         $product->save();
         $id = $product->id;
 
@@ -117,8 +121,19 @@ class ProductsController extends Controller
 
      public function expired(){
         $expired = 'EXPIRED';
-        $expiredData = StockinHistory::where('status', $expired)
-                                    ->with('product')->paginate(\request()->query('per_page') ?? 45);
+        // $expiredData = StockReceive::select('stockin_histories.quantity,stockin_histories.consumed_qty, stockin_histories.expiration_date, stockin_histories.status')
+        //                             ->join('stockin_histories','stock_receives.id', '=', 'stockin_histories.stockin_id')
+        //                             ->where('stockin_histories.status', $expired)
+        //                             ->with('product')
+        //                             ->paginate(\request()->query('per_page') ?? 45);
+        $expiredData = StockReceive::select('stockin_histories.quantity','stockin_histories.consumed_qty','stockin_histories.expiration_date', 'products.name', 'stockin_histories.price', 'units.name AS unit', 'stockin_histories.status', 'product_categories.name AS category')
+                        ->join('stockin_histories', 'stock_receives.id', '=', 'stockin_histories.stockin_id')
+                        ->join('products', 'products.id', '=', 'stockin_histories.product_id')
+                        ->leftJoin('units', 'products.unit_id', '=', 'units.id')
+                        ->leftJoin('product_categories', 'product_categories.id', '=', 'products.category_id')
+                        ->where('stockin_histories.status', $expired)
+                        ->paginate(\request()->query('per_page') ?? 45);
+                        
         return response()->json([
             'status' => 1,
             'rows'  => $expiredData
@@ -133,11 +148,15 @@ class ProductsController extends Controller
      */
 
      public function expirationCheckInthreeMo(){
-        $products = StockinHistory::whereDate('expiration_date', '<=', Carbon::now()->addMonths(3))
-                            ->whereNotIn('status', ['EXPIRED','CONSUMED'])   
-                            ->with('product') 
-                            ->orderBy('expiration_date', 'ASC')             
-                            ->get();
+        $products = StockReceive::select('stockin_histories.quantity','stockin_histories.consumed_qty','stockin_histories.expiration_date', 'products.name', 'stockin_histories.price', 'units.name AS unit', 'stockin_histories.status', 'product_categories.name AS category')
+                                ->join('stockin_histories', 'stock_receives.id', '=', 'stockin_histories.stockin_id')
+                                ->join('products', 'products.id', '=', 'stockin_histories.product_id')
+                                ->leftJoin('units', 'products.unit_id', '=', 'units.id')
+                                ->leftJoin('product_categories', 'product_categories.id', '=', 'products.category_id')
+                                ->whereDate('stockin_histories.expiration_date', '<=', Carbon::now()->addMonths(3))
+                                ->whereNotIn('stockin_histories.status', ['EXPIRED', 'CONSUMED'])
+                                ->orderBy('stockin_histories.expiration_date', 'ASC')
+                                ->get();
 
         if ($products->isNotEmpty()) {
             return response()->json([
@@ -227,7 +246,7 @@ class ProductsController extends Controller
           
         $keyword = $request->get('query');
         if (empty($keyword)) {
-            return  response()->json($result->orderBy('products.name', 'ASC')->take(250)->get());
+            return  response()->json($result->orderBy('products.name', 'ASC')->take(1000)->get());
         } else {
             return response()->json($result->where('products.name', 'LIKE', '%' . $keyword . '%')->orderBy('name', 'ASC')->get());
         }
