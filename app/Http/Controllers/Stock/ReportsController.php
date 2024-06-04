@@ -47,6 +47,7 @@ class ReportsController extends Controller
     public function getReceivesReport(Request $request)
     {
         $result = StockReceive::select('*');
+        $pagination = 200;
         if (!empty($company = $request->input('company'))) {
             $result->where('company_id', $company);
         }
@@ -55,15 +56,17 @@ class ReportsController extends Controller
         }
         if (empty($this->to)) {
             $result->where('date_received', $this->from);
+            $pagination = 1000000000;
         } else {
             $result->where('date_received', '>=', $this->from)
                    ->where('date_received', '<=', $this->to);
+                   $pagination = 1000000000;
         }
         return response()->json([
             'status' => 1,
             'rows'   => $result->with('supplier', 'creator')
                                ->orderBy('id', 'DESC')
-                               ->paginate(\request()->query('per_page') ?? 45)
+                               ->paginate(\request()->query('per_page') ?? $pagination)
         ]);
     }
 
@@ -107,20 +110,24 @@ class ReportsController extends Controller
         if (!empty($company = $request->input('company'))) {
             $result->where('company_id', $company);
         }
+        $pagination = 200;
         if (!empty($department = $request->input('department'))) {
             $result->where('department_id', $department);
+            $pagination = 1000000000;
         }
         if (empty($this->to)) {
             $result->where('date_transfered', $this->from);
+            $pagination = 1000000000;
         } else {
             $result->where('date_transfered', '>=', $this->from)
                    ->where('date_transfered', '<=', $this->to);
+                   $pagination = 1000000000;
         }
         return response()->json([
             'status' => 1,
             'rows'   => $result->with('department', 'creator', 'employee')
                                ->orderBy('id', 'DESC')
-                               ->paginate(\request()->query('per_page') ?? 45)
+                               ->paginate(\request()->query('per_page') ?? $pagination)
         ]);
     }
 
@@ -132,6 +139,7 @@ class ReportsController extends Controller
     public function getTrackerReport(Request $request)
     {
         $result = Product::selectRaw('products.id, products.name, products.unit_id, products.quantity as currentQty, SUM(stockin_histories.quantity) AS receiveQty, SUM(stock_transfer_items.quantity) AS transferedQty');
+        $pagination = 200;
         if (empty($this->to)) {
             $result->leftJoin('stockin_histories', function($join) {
                 $join->on('products.id', '=', 'stockin_histories.product_id');
@@ -141,6 +149,7 @@ class ReportsController extends Controller
                 $join->on('products.id', '=', 'stock_transfer_items.product_id');
                 $join->on(DB::raw("date(stock_transfer_items.created_at)"), "=", DB::raw("'".$this->from."'"));
             });
+            $pagination = 1000000000;
         } else {
             $result->leftJoin('stockin_histories', function($join) {
                 $join->on('products.id', '=', 'stockin_histories.product_id');
@@ -152,6 +161,7 @@ class ReportsController extends Controller
                 $join->on(DB::raw("date(stock_transfer_items.created_at)"), ">=", DB::raw($this->from));
                 $join->on(DB::raw("date(stock_transfer_items.created_ats)"), "<=", DB::raw($this->to));
             });
+            $pagination = 1000000000;
         }
 
         // Log::info($result);
@@ -161,7 +171,7 @@ class ReportsController extends Controller
             'rows'   => $result->groupBy('products.id')
                                ->with('unit')
                                ->orderBy('products.name', 'ASC')
-                               ->paginate(\request()->query('per_page') ?? 45)
+                               ->paginate(\request()->query('per_page') ?? $pagination)
         ]);
     }
     /**
@@ -189,19 +199,24 @@ class ReportsController extends Controller
     {
         $result = ProductTracker::select('id','name','unit_id','category_id','quantity as currentQty', 'company_id')
                                     ->where('company_id', auth()->user()->company_id);
+        
+        $pagination = 200;
         if (!empty($product = $request->get('product'))) {
             $result->where('id', $product)
                     ->where('company_id', auth()->user()->company_id);
+                    $pagination = 1000000000;
         }
 
         if (!empty($category = $request->get('category'))) {
             $result->where('category_id', $category)
                     ->where('company_id', auth()->user()->company_id);
+                    $pagination = 1000000000;
         }
 
         if (!empty($scategory = $request->get('scategory'))) {
             $result->where('category_id', $scategory)
                     ->where('company_id', auth()->user()->company_id);
+                    $pagination = 1000000000;
         }
 
         return response()->json([
@@ -209,7 +224,7 @@ class ReportsController extends Controller
             'rows'   => $result
                                ->with('unit','category')
                                ->orderBy('name', 'ASC')
-                               ->paginate(\request()->query('per_page') ?? 200)
+                               ->paginate(\request()->query('per_page') ?? $pagination)
         ]);
     }
 

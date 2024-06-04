@@ -45,6 +45,32 @@ class AuthController extends Controller
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json(['status'=>0,'message' => __('Password is not correct'),'status'=>0], 401);
         }
+        
+        $expiredProducts = DB::table('stockin_histories')->where('expiration_date', '<', date('Y-m-d'))->whereNotIn('status', ['EXPIRED','CONSUMED'])->get();
+        foreach ($expiredProducts as $row) {
+            $product = DB::table('products')->where('id', $row->product_id)->first();
+            $expiredQty = $row->quantity - $row->consumed_qty;
+            if ($expiredQty > $product->quantity) {
+                $productQuantity = 0;
+            } else {
+                $productQuantity = $product->quantity - $expiredQty;
+            }
+            DB::table('products')->where('id', $row->product_id)->update(['quantity' => $productQuantity]);
+            DB::table('stockin_histories')->where('id', $row->id)->update(['status' => 'EXPIRED']);
+        }
+
+        $expiredProducts = DB::table('stockin_histories')->where('expiration_date', '<', date('Y-m-d'))->whereNotIn('status', ['EXPIRED','CONSUMED'])->get();
+        foreach ($expiredProducts as $row) {
+            $product = DB::table('products')->where('id', $row->product_id)->first();
+            $expiredQty = $row->quantity - $row->consumed_qty;
+            if ($expiredQty > $product->quantity) {
+                $productQuantity = 0;
+            } else {
+                $productQuantity = $product->quantity - $expiredQty;
+            }
+            DB::table('products')->where('id', $row->product_id)->update(['quantity' => $productQuantity]);
+            DB::table('stockin_histories')->where('id', $row->id)->update(['status' => 'EXPIRED']);
+        }
 
         return $this->respondWithToken($token);
     }
@@ -112,24 +138,24 @@ class AuthController extends Controller
 
     public function changePassword(Request $request)
     {
-        if (!(Hash::check($request->get('current_password'), Auth::user()->password))) {
+        if (!(Hash::check($request->get('currentPassword'), Auth::user()->password))) {
             return response()->json([
                 'status' => 0,
                 'error' => "Your current password does not matches with the password you provided. Please try again."
             ]);
         }
-        if (strcmp($request->get('current_password'), $request->get('new_password')) == 0) {
+        if (strcmp($request->get('currentPassword'), $request->get('newPassword')) == 0) {
             return response()->json([
                 'status' => 0,
                 'error'  => "New Password cannot be same as your current password. Please choose a different password."
             ]);
         }
         // $request->validate([
-        //     'current_password' => 'required',
-        //     'new_password'     => 'required|string|min:6',
+        //     'currentPassword' => 'required',
+        //     'newPassword' => 'required|confirmed',
         // ]);
         $user = Auth::user();
-        $user->password = bcrypt($request->get('new_password'));
+        $user->password = bcrypt($request->get('newPassword'));
         $user->save();
         return response()->json([
             'status'  => 1,

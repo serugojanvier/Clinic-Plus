@@ -10,11 +10,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class StockinHistory extends Model
 {
     use HasFactory, SoftDeletes;
-    
-    protected static function booted()
-    {
-        static::addGlobalScope(new CompanyScope);
-    }
 
     protected $table = 'stockin_histories';
     
